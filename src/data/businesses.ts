@@ -18,6 +18,16 @@ export const businesses: Business[] = [
     address: '456 Wonder Ave',
     phone: '(760) 555-0124',
     website: 'https://example.com',
-    imageUrl: 'https://images.unsplash.com/photo-1533668317344-74ca89982fe9'
+    imageUrl: 'https://images.unsplash.com/21/desert.JPG'
+  },
+  {
+    id: '3',
+    name: 'Cactus Market',
+    category: 'Retail',
+    description: 'Mini market.',
+    address: '123 Wonder Ave',
+    phone: '(760) 555-0124',
+    website: 'https://example.com',
+    imageUrl: 'https://images.unsplash.com/photo-1686641865501-8f7b2ffe063b'
   }
 ];
