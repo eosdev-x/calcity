@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --transition-duration: 200ms;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s var(--transition-timing);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Theme transitions */
+.theme-transition {
+  @apply transition-all duration-200;
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+}
+
+/* Button hover effects */
+.button-hover {
+  @apply transition-all duration-200 hover:scale-105 active:scale-95;
+}
