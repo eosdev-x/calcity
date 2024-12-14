@@ -74,27 +74,6 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white dark:bg-gray-800 transition-colors duration-200">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white fade-in">
-            Contact Us
-          </h2>
-          <div className="max-w-xl mx-auto">
-            <div className="bg-gray-100 dark:bg-gray-700 p-8 rounded-lg transition-colors duration-200">
-              <p className="text-center mb-6 text-gray-800 dark:text-gray-200">
-                Have questions about California City? We're here to help!
-              </p>
-              <div className="space-y-4 text-center text-gray-800 dark:text-gray-200">
-                <p>City Hall: (760) 373-8661</p>
-                <p>21000 Hacienda Blvd</p>
-                <p>California City, CA 93505</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

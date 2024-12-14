@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { Link, useLocation } from 'react-router-dom';
+import { Logo } from './Logo';
 
 const NavLink: React.FC<{ to: string; children: React.ReactNode }> = ({
   to,
@@ -35,8 +36,11 @@ export const Navigation: React.FC = () => {
     <nav className="bg-white dark:bg-gray-800 shadow-lg fixed w-full z-50 transition-colors duration-200">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">California City</Link>
+          <div className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-2">
+              <Logo size={32} className="hover:opacity-90 transition-opacity" />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">calcity.info</span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}

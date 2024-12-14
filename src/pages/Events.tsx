@@ -4,7 +4,7 @@ import { events } from '../data/events';
 
 export const Events: React.FC = () => {
   return (
-    <div className="pt-16">
+    <div>
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center mb-8 text-gray-900 dark:text-white fade-in">
