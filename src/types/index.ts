@@ -25,4 +25,5 @@ export interface Attraction {
   location: string;
   imageUrl: string;
   type: 'nature' | 'aerospace' | 'recreation' | 'historical';
+  website?: string;
 }
