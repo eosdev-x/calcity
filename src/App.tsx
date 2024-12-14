@@ -21,7 +21,7 @@ function App() {
         {/* Footer */}
         <footer className="bg-gray-800 dark:bg-gray-950 text-white py-8 transition-colors duration-200">
           <div className="container mx-auto px-4 text-center">
-            <p>&copy; {new Date().getFullYear()} City of California City. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} calcity.info. All rights reserved.</p>
           </div>
         </footer>
       </div>
