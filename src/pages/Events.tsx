@@ -94,13 +94,17 @@ export function Events() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredEvents.length > 0 ? filteredEvents.map((event) => (
-            <div key={event.id} className="card">
-              <img
-                src={event.image}
-                alt={event.title}
-                className="w-full h-48 object-cover rounded-t-lg mb-4"
-              />
-              <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+            <div key={event.id} className="card hover:shadow-lg transition-shadow duration-300">
+              <Link to={`/events/${event.id}`}>
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="w-full h-48 object-cover rounded-t-lg mb-4 hover:opacity-90 transition-opacity"
+                />
+              </Link>
+              <Link to={`/events/${event.id}`}>
+                <h3 className="text-xl font-semibold mb-2 hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{event.title}</h3>
+              </Link>
               
               <div className="space-y-2 mb-4">
                 <div className="flex items-center space-x-2 text-desert-700 dark:text-desert-300">

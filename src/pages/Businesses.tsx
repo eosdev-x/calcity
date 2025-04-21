@@ -147,14 +147,18 @@ export function Businesses() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredBusinesses.length > 0 ? (
             filteredBusinesses.map((business) => (
-            <div key={business.id} className="card">
-              <img
-                src={business.image}
-                alt={business.name}
-                className="w-full h-48 object-cover rounded-t-lg mb-4"
-              />
+            <div key={business.id} className="card hover:shadow-lg transition-shadow duration-300">
+              <Link to={`/businesses/${business.id}`}>
+                <img
+                  src={business.image}
+                  alt={business.name}
+                  className="w-full h-48 object-cover rounded-t-lg mb-4 hover:opacity-90 transition-opacity"
+                />
+              </Link>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xl font-semibold">{business.name}</h3>
+                <Link to={`/businesses/${business.id}`}>
+                  <h3 className="text-xl font-semibold hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{business.name}</h3>
+                </Link>
                 <div className="flex items-center">
                   <Star className="w-4 h-4 text-desert-400 fill-current" />
                   <span className="ml-1">{business.rating}</span>
