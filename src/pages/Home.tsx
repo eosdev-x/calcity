@@ -1,7 +1,8 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Calendar, Building2, MapPin } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
+import { GlobalSearch } from '../components/GlobalSearch';
 
 export function Home() {
   return (
@@ -15,22 +16,28 @@ export function Home() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-desert-900/70 to-desert-900/50" />
         <div className="container mx-auto px-4 py-12 h-full flex flex-col items-center relative">
-          <div className="bg-desert-900/30 backdrop-blur-sm rounded-lg p-4 mb-8 w-full max-w-md">
+          <div className="self-end mb-8">
             <WeatherWidget />
           </div>
           
-          <div className="max-w-2xl text-center mb-12">
+          <div className="max-w-2xl text-center mb-8">
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
               Welcome to California City
             </h1>
             <p className="text-xl text-desert-100 mb-8">
               Discover the beauty and opportunity of the Mojave Desert's hidden gem
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/businesses" className="btn-primary">
-                Explore Our Community
-              </Link>
-            </div>
+          </div>
+
+          {/* Global Search Component */}
+          <div className="w-full max-w-3xl mb-8">
+            <GlobalSearch />
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link to="/businesses" className="btn-primary">
+              Explore Our Community
+            </Link>
           </div>
         </div>
       </section>

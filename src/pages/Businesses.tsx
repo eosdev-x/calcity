@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MapPin, Phone, Globe, Star, Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Business } from '../types/business';
@@ -6,6 +7,8 @@ import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { useBusinesses } from '../context/BusinessContext';
 
 export function Businesses() {
+  const location = useLocation();
+  
   // State for search, filter, and sort functionality
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -15,6 +18,15 @@ export function Businesses() {
   
   // Get businesses from context instead of using static data
   const { businesses } = useBusinesses();
+  
+  // Parse search parameters from URL when component mounts or URL changes
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const searchParam = params.get('search');
+    if (searchParam) {
+      setSearchTerm(searchParam);
+    }
+  }, [location.search]);
 
   // Extract unique categories for the filter dropdown
   const categories = Array.from(new Set(businesses.map(business => business.category)));
