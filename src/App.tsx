@@ -5,6 +5,7 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Events } from './pages/Events';
 import { EventDetails } from './pages/EventDetails';
+import { EventSubmission } from './pages/EventSubmission';
 import { Businesses } from './pages/Businesses';
 import { BusinessDetails } from './pages/BusinessDetails';
 import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/events/new" element={<EventSubmission />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/businesses" element={<Businesses />} />
             <Route path="/businesses/new" element={<BusinessProfileCreation />} />

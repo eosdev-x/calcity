@@ -106,9 +106,14 @@ export function Events() {
   return (
     <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100 mb-8">
-          Upcoming Events
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100">
+            Upcoming Events
+          </h1>
+          <Link to="/events/new" className="btn-primary">
+            Submit Event
+          </Link>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map((event) => (
