@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { MapPin, Info, Calendar, Compass, Sun, Car } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
 
@@ -45,7 +45,11 @@ export function Guide() {
         <div className="absolute inset-0 bg-gradient-to-r from-desert-900/80 to-desert-900/60" />
         
         {/* Content */}
-        <div className="container mx-auto px-4 h-full flex items-center relative">
+        <div className="container mx-auto px-4 py-12 h-full flex flex-col relative">
+          <div className="self-end mb-8">
+            <WeatherWidget />
+          </div>
+          
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
               Visitor Guide
@@ -57,13 +61,7 @@ export function Guide() {
         </div>
       </section>
 
-      {/* Current Weather */}
-      <section className="py-8 bg-desert-100 dark:bg-night-desert-200">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-center mb-4">Current Weather</h2>
-          <WeatherWidget />
-        </div>
-      </section>
+
 
       {/* Main Content */}
       <section className="py-16">
