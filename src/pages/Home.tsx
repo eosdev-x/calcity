@@ -67,40 +67,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* Quick Links Section */}
-      <section className="py-16 bg-desert-50 dark:bg-night-desert-100">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="card">
-              <Calendar className="w-8 h-8 text-desert-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Upcoming Events</h3>
-              <p className="text-desert-700 dark:text-desert-300 mb-4">
-                Stay updated with local community events and gatherings
-              </p>
-              <Link to="/events" className="btn-secondary">View Events</Link>
-            </div>
-
-            <div className="card">
-              <Building2 className="w-8 h-8 text-desert-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Local Businesses</h3>
-              <p className="text-desert-700 dark:text-desert-300 mb-4">
-                Support and discover local businesses in our community
-              </p>
-              <Link to="/businesses" className="btn-secondary">Browse Directory</Link>
-            </div>
-
-            <div className="card">
-              <MapPin className="w-8 h-8 text-desert-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Visitor Guide</h3>
-              <p className="text-desert-700 dark:text-desert-300 mb-4">
-                Essential information for visitors and newcomers
-              </p>
-              <Link to="/guide" className="btn-secondary">Learn More</Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Upcoming Events Section */}
       <section className="py-16 bg-white dark:bg-night-desert-50">
         <div className="container mx-auto px-4">
