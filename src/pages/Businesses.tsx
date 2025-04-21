@@ -257,9 +257,9 @@ export function Businesses() {
           <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100">
             Local Businesses
           </h1>
-          <button className="btn-primary">
+          <Link to="/businesses/new" className="btn-primary">
             Add Your Business
-          </button>
+          </Link>
         </div>
 
         {/* Search and Filter Section */}

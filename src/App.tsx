@@ -7,6 +7,7 @@ import { Events } from './pages/Events';
 import { EventDetails } from './pages/EventDetails';
 import { Businesses } from './pages/Businesses';
 import { BusinessDetails } from './pages/BusinessDetails';
+import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
 import { Pricing } from './pages/Pricing';
 import { Guide } from './pages/Guide';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -24,6 +25,7 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/businesses" element={<Businesses />} />
+            <Route path="/businesses/new" element={<BusinessProfileCreation />} />
             <Route path="/businesses/:id" element={<BusinessDetails />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/guide" element={<Guide />} />
