@@ -110,9 +110,18 @@ export function Events() {
           <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100">
             Upcoming Events
           </h1>
-          <Link to="/events/new" className="btn-primary">
-            Submit Event
-          </Link>
+          <div className="flex items-center space-x-4">
+            <Link 
+              to="/events/calendar" 
+              className="flex items-center px-3 py-2 rounded-md bg-desert-100 dark:bg-night-desert-300 text-desert-700 dark:text-desert-300 hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Calendar View
+            </Link>
+            <Link to="/events/new" className="btn-primary">
+              Submit Event
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

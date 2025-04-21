@@ -6,6 +6,7 @@ import { Home } from './pages/Home';
 import { Events } from './pages/Events';
 import { EventDetails } from './pages/EventDetails';
 import { EventSubmission } from './pages/EventSubmission';
+import { EventCalendarView } from './pages/EventCalendarView';
 import { Businesses } from './pages/Businesses';
 import { BusinessDetails } from './pages/BusinessDetails';
 import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/events" element={<Events />} />
             <Route path="/events/new" element={<EventSubmission />} />
+            <Route path="/events/calendar" element={<EventCalendarView />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/businesses" element={<Businesses />} />
             <Route path="/businesses/new" element={<BusinessProfileCreation />} />
