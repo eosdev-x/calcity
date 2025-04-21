@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEvents } from '../context/EventContext';
 import { useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
@@ -21,6 +22,7 @@ export function EventSubmission() {
   const categories = getEventCategories();
   const minDate = getCurrentDate();
   const maxDate = getOneYearFromNow();
+  const { addEvent } = useEvents();
   
   // Form state
   const [formData, setFormData] = useState<Omit<Event, 'id'>>({
@@ -141,6 +143,9 @@ export function EventSubmission() {
       // Submit the form data
       const result = await submitEvent(formData);
       console.log('Event created:', result);
+      
+      // Add the new event to the context for optimistic updates
+      addEvent(result);
       
       // Show success message
       setSuccess(true);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useBusinesses } from '../context/BusinessContext';
 import { useNavigate } from 'react-router-dom';
 import { 
   MapPin, 
@@ -17,6 +18,7 @@ import { submitBusiness, getBusinessCategories } from '../api/businesses';
 export function BusinessProfileCreation() {
   const navigate = useNavigate();
   const categories = getBusinessCategories();
+  const { addBusiness } = useBusinesses();
   
   // Form state
   const [formData, setFormData] = useState<Omit<Business, 'id'>>({
@@ -130,6 +132,9 @@ export function BusinessProfileCreation() {
       // Submit the form data
       const result = await submitBusiness(formData);
       console.log('Business created:', result);
+      
+      // Add the new business to the context for optimistic updates
+      addBusiness(result);
       
       // Show success message
       setSuccess(true);
