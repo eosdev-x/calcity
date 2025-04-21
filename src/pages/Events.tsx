@@ -8,7 +8,7 @@ export function Events() {
     {
       id: 1,
       title: "Desert Arts Festival",
-      date: "2024-04-15",
+      date: "2025-04-15",
       time: "10:00 AM - 6:00 PM",
       location: "Central Park",
       description: "Annual arts and crafts festival featuring local artists",
@@ -24,7 +24,7 @@ export function Events() {
     {
       id: 2,
       title: "Community Cleanup Day",
-      date: "2024-04-22",
+      date: "2025-04-22",
       time: "8:00 AM - 12:00 PM",
       location: "City Hall",
       description: "Join us in keeping our desert community beautiful",
@@ -40,7 +40,7 @@ export function Events() {
     {
       id: 3,
       title: "Stargazing Night",
-      date: "2024-05-15",
+      date: "2025-05-15",
       time: "8:00 PM - 11:00 PM",
       location: "Desert Observatory",
       description: "Experience the beauty of the desert night sky with professional astronomers",
@@ -56,7 +56,7 @@ export function Events() {
     {
       id: 4,
       title: "Desert Food Truck Festival",
-      date: "2024-05-01",
+      date: "2025-05-01",
       time: "11:00 AM - 8:00 PM",
       location: "Central Park",
       description: "A gathering of the region's best food trucks featuring local and international cuisine",
@@ -72,7 +72,7 @@ export function Events() {
     {
       id: 5,
       title: "Desert Adventure Race",
-      date: "2024-05-08",
+      date: "2025-05-08",
       time: "6:00 AM - 2:00 PM",
       location: "Galileo Hill Park",
       description: "Challenge yourself in this exciting desert terrain race featuring multiple categories",
@@ -88,7 +88,7 @@ export function Events() {
     {
       id: 6,
       title: "Desert Wildlife Photography Workshop",
-      date: "2024-05-20",
+      date: "2025-05-20",
       time: "9:00 AM - 4:00 PM",
       location: "Desert Tortoise Natural Area",
       description: "Learn wildlife photography techniques while exploring local desert fauna",
