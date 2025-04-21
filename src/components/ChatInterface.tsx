@@ -1,0 +1,135 @@
+import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Send, Loader2 } from 'lucide-react';
+import { clsx } from 'clsx';
+import { Message } from '../api/types';
+import { sendChatMessage } from '../api/chat';
+
+export function ChatInterface() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const lastRequestTime = useRef<number>(0);
+  const MIN_REQUEST_INTERVAL = 1000; // 1 second rate limit
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const now = Date.now();
+    if (now - lastRequestTime.current < MIN_REQUEST_INTERVAL) {
+      setError('Please wait a moment before sending another message.');
+      return;
+    }
+
+    if (!input.trim()) return;
+    
+    const userMessage = input.trim();
+    setInput('');
+    setError(null);
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setIsLoading(true);
+    lastRequestTime.current = now;
+
+    try {
+      const { response } = await sendChatMessage([
+        ...messages,
+        { role: 'user', content: userMessage }
+      ]);
+      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+    } catch (err) {
+      setError('Failed to get response. Please try again.');
+      console.error('Chat error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <div 
+        ref={chatContainerRef}
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+      >
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={clsx(
+              'flex',
+              message.role === 'user' ? 'justify-end' : 'justify-start'
+            )}
+          >
+            <div
+              className={clsx(
+                'max-w-[80%] rounded-lg p-3',
+                message.role === 'user'
+                  ? 'bg-desert-400 text-white'
+                  : 'bg-desert-100 dark:bg-night-desert-400 text-desert-800 dark:text-desert-100'
+              )}
+            >
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                className="prose dark:prose-invert max-w-none"
+              >
+                {message.content}
+              </ReactMarkdown>
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-desert-100 dark:bg-night-desert-400 rounded-lg p-3">
+              <Loader2 className="w-5 h-5 animate-spin text-desert-400" />
+            </div>
+          </div>
+        )}
+        {error && (
+          <div className="text-red-500 text-center text-sm">{error}</div>
+        )}
+      </div>
+      <form 
+        onSubmit={handleSubmit}
+        className="border-t border-desert-200 dark:border-night-desert-300 p-4 bg-white dark:bg-night-desert-200"
+      >
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask about California City..."
+            className="flex-1 px-4 py-2 rounded-lg border border-desert-200 dark:border-night-desert-300 
+                     bg-white dark:bg-night-desert-300 text-desert-800 dark:text-desert-100
+                     focus:outline-none focus:ring-2 focus:ring-desert-400"
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className={clsx(
+              'px-4 py-2 rounded-lg',
+              'bg-desert-400 text-white',
+              'hover:bg-desert-500',
+              'dark:bg-desert-600 dark:hover:bg-desert-700',
+              'transition-colors duration-200',
+              'disabled:opacity-50 disabled:cursor-not-allowed'
+            )}
+          >
+            {isLoading ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Send className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}

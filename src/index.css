@@ -1,50 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --transition-duration: 200ms;
-    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --background: 47 97% 96%;
+    --foreground: 20 33% 12%;
+    --primary: 34 41% 69%;
+    --secondary: 89 15% 61%;
+    --accent: 14 54% 54%;
+    --muted: 34 25% 90%;
+    --muted-foreground: 20 10% 40%;
   }
 
+  .dark {
+    --background: 20 8% 9%;
+    --foreground: 34 25% 90%;
+    --primary: 34 15% 40%;
+    --secondary: 89 10% 30%;
+    --accent: 14 30% 40%;
+    --muted: 20 10% 20%;
+    --muted-foreground: 20 10% 70%;
+  }
+}
+
+@layer base {
   body {
-    @apply transition-colors duration-200;
+    @apply bg-desert-50 text-desert-900 dark:bg-night-desert-50 dark:text-desert-100 transition-colors duration-300;
   }
 }
 
 @layer components {
-  .hover-scale {
-    @apply transition-transform duration-200 hover:scale-105;
+  .btn-primary {
+    @apply bg-desert-400 text-white hover:bg-desert-500 dark:bg-desert-600 dark:hover:bg-desert-700 
+           px-4 py-2 rounded-lg font-medium transition-colors duration-200;
   }
 
-  .fade-in {
-    animation: fadeIn 0.5s var(--transition-timing);
+  .btn-secondary {
+    @apply bg-desert-200 text-desert-800 hover:bg-desert-300 dark:bg-night-desert-400 dark:text-desert-100 
+           dark:hover:bg-night-desert-500 px-4 py-2 rounded-lg font-medium transition-colors duration-200;
   }
-}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  .card {
+    @apply bg-white dark:bg-night-desert-200 rounded-lg shadow-desert p-6 transition-colors duration-200;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .nav-link {
+    @apply text-desert-800 dark:text-desert-200 hover:text-desert-600 dark:hover:text-desert-400 
+           transition-colors duration-200;
   }
-}
-
-/* Theme transitions */
-.theme-transition {
-  @apply transition-all duration-200;
-}
-
-/* Card hover effects */
-.card-hover {
-  @apply transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
-}
-
-/* Button hover effects */
-.button-hover {
-  @apply transition-all duration-200 hover:scale-105 active:scale-95;
 }

@@ -5,24 +5,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          light: '#60a5fa',
-          dark: '#3b82f6',
+        // Light theme colors
+        'desert': {
+          50: '#FAF7F2',
+          100: '#F3EDE3',
+          200: '#E6D9C7',
+          300: '#D2B48C', // Sandy beige
+          400: '#C47451', // Terracotta
+          500: '#9CAF88', // Sage green
+          600: '#8B4513', // Saddle brown
+          700: '#654321', // Deep brown
+          800: '#4A3219',
+          900: '#2D1F10',
+        },
+        // Dark theme specific colors
+        'night-desert': {
+          50: '#1A1614',
+          100: '#251E1B',
+          200: '#312824',
+          300: '#3D322D',
+          400: '#4A3C36',
+          500: '#574640',
+          600: '#635049',
+          700: '#705A53',
+          800: '#7C645C',
+          900: '#896E65',
         }
       },
-      animation: {
-        'fade-in': 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        'overlay-fade-in': 'overlayFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Montserrat', 'system-ui', 'sans-serif'],
       },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        overlayFadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
+      boxShadow: {
+        'desert': '0 4px 6px -1px rgba(100, 67, 33, 0.1), 0 2px 4px -1px rgba(100, 67, 33, 0.06)',
       },
     },
   },
