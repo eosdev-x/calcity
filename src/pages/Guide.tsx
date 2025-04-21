@@ -32,11 +32,19 @@ export function Guide() {
   return (
     <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50">
       {/* Hero Section */}
-      <section className="relative h-[400px] bg-cover bg-center"
-        style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1576437557195-47f5a8bcdf4a?auto=format&fit=crop&q=80")'
-        }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-desert-900/70 to-desert-900/50" />
+      <section className="relative h-[500px] overflow-hidden">
+        {/* Background Image */}
+        <img 
+          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&auto=format&fit=crop&q=80" 
+          alt="" 
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
+        />
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-desert-900/80 to-desert-900/60" />
+        
+        {/* Content */}
         <div className="container mx-auto px-4 h-full flex items-center relative">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
