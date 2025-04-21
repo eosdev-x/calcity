@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Minimize2, Maximize2 } from 'lucide-react';
+import { MessageSquare, X } from 'lucide-react';
 import { ChatInterface } from './ChatInterface';
 import { clsx } from 'clsx';
 
 export function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(true);
 
   // Handle escape key to close chat
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsOpen(false);
-        setIsMinimized(true);
       }
     };
 
@@ -27,17 +25,6 @@ export function FloatingChatWidget() {
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
-    setIsMinimized(!isMinimized);
-  };
-
-  const minimizeChat = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMinimized(true);
-  };
-
-  const maximizeChat = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMinimized(false);
   };
 
   return (
@@ -49,7 +36,7 @@ export function FloatingChatWidget() {
           'flex items-center gap-2 rounded-full bg-desert-400 text-white p-4',
           'hover:bg-desert-500 transition-colors duration-200',
           'shadow-lg hover:shadow-xl',
-          { 'hidden': isOpen && !isMinimized }
+          { 'hidden': isOpen }
         )}
         aria-label="Open chat"
       >
@@ -63,10 +50,7 @@ export function FloatingChatWidget() {
             'bg-white dark:bg-night-desert-200 rounded-lg shadow-2xl',
             'transition-all duration-300 ease-in-out',
             'w-[400px] max-w-[calc(100vw-2rem)]',
-            {
-              'h-[600px] max-h-[calc(100vh-4rem)]': !isMinimized,
-              'h-12': isMinimized
-            }
+            'h-[600px] max-h-[calc(100vh-4rem)]'
           )}
         >
           {/* Header */}
@@ -75,23 +59,6 @@ export function FloatingChatWidget() {
               Chat with CalCityBot
             </h2>
             <div className="flex items-center gap-2">
-              {isMinimized ? (
-                <button
-                  onClick={maximizeChat}
-                  className="p-1 hover:bg-desert-100 dark:hover:bg-night-desert-400 rounded-full transition-colors"
-                  aria-label="Maximize chat"
-                >
-                  <Maximize2 className="w-4 h-4 text-desert-600 dark:text-desert-300" />
-                </button>
-              ) : (
-                <button
-                  onClick={minimizeChat}
-                  className="p-1 hover:bg-desert-100 dark:hover:bg-night-desert-400 rounded-full transition-colors"
-                  aria-label="Minimize chat"
-                >
-                  <Minimize2 className="w-4 h-4 text-desert-600 dark:text-desert-300" />
-                </button>
-              )}
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-1 hover:bg-desert-100 dark:hover:bg-night-desert-400 rounded-full transition-colors"
@@ -103,11 +70,9 @@ export function FloatingChatWidget() {
           </div>
 
           {/* Chat Interface */}
-          {!isMinimized && (
-            <div className="h-[calc(100%-4rem)]">
-              <ChatInterface />
-            </div>
-          )}
+          <div className="h-[calc(100%-4rem)]">
+            <ChatInterface />
+          </div>
         </div>
       )}
     </div>
