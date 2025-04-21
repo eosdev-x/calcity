@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Calendar, Building2, MapPin, Clock, Phone, Globe, Star, Compass, Info, Sun, Car } from 'lucide-react';
+import { Calendar, Building2, MapPin, Clock, Phone, Star, Compass, Info, Sun, Car } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
 import { GlobalSearch } from '../components/GlobalSearch';
 import { useEvents } from '../context/EventContext';
