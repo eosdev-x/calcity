@@ -33,12 +33,6 @@ export function Home() {
           <div className="w-full max-w-3xl mb-8">
             <GlobalSearch />
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/businesses" className="btn-primary">
-              Explore Our Community
-            </Link>
-          </div>
         </div>
       </section>
 

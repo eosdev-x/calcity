@@ -170,6 +170,45 @@ export function GlobalSearch() {
         onSubmit={handleSearchSubmit}
         className="relative"
       >
+        {/* Filter tabs - moved above search field */}
+        <div className="flex justify-center mb-3 space-x-3">
+          <button
+            type="button"
+            onClick={() => setActiveFilter('all')}
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+              activeFilter === 'all' 
+                ? 'bg-desert-600 text-white' 
+                : 'bg-white/80 text-desert-700 hover:bg-white'
+            }`}
+          >
+            All
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('businesses')}
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+              activeFilter === 'businesses' 
+                ? 'bg-desert-600 text-white' 
+                : 'bg-white/80 text-desert-700 hover:bg-white'
+            }`}
+          >
+            <Building2 className="inline-block w-4 h-4 mr-1" />
+            Businesses
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('events')}
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+              activeFilter === 'events' 
+                ? 'bg-desert-600 text-white' 
+                : 'bg-white/80 text-desert-700 hover:bg-white'
+            }`}
+          >
+            <Calendar className="inline-block w-4 h-4 mr-1" />
+            Events
+          </button>
+        </div>
+        
         <div className="relative flex items-center">
           <input
             type="text"
@@ -199,45 +238,6 @@ export function GlobalSearch() {
             className="absolute right-3 bg-desert-600 hover:bg-desert-700 text-white rounded-full p-2 transition-colors"
           >
             <ArrowRight size={20} />
-          </button>
-        </div>
-        
-        {/* Filter tabs */}
-        <div className="flex justify-center mt-2 space-x-2">
-          <button
-            type="button"
-            onClick={() => setActiveFilter('all')}
-            className={`px-4 py-1 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === 'all' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
-            }`}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveFilter('businesses')}
-            className={`px-4 py-1 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === 'businesses' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
-            }`}
-          >
-            <Building2 className="inline-block w-3 h-3 mr-1" />
-            Businesses
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveFilter('events')}
-            className={`px-4 py-1 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === 'events' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
-            }`}
-          >
-            <Calendar className="inline-block w-3 h-3 mr-1" />
-            Events
           </button>
         </div>
       </form>
