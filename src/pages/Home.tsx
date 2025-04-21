@@ -84,19 +84,23 @@ export function Home() {
             {upcomingEvents.length > 0 ? (
               upcomingEvents.map((event) => (
                 <div key={event.id} className="card hover:shadow-lg transition-shadow duration-300">
-                  <div className="relative">
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
-                    />
-                    <div className="absolute top-2 right-2 bg-desert-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      {event.category}
+                  <Link to={`/events/${event.id}`}>
+                    <div className="relative">
+                      <img
+                        src={event.image}
+                        alt={event.title}
+                        className="w-full h-48 object-cover rounded-t-lg"
+                      />
+                      <div className="absolute top-2 right-2 bg-desert-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        {event.category}
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                   
                   <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2 line-clamp-1">{event.title}</h3>
+                    <Link to={`/events/${event.id}`}>
+                      <h3 className="text-xl font-semibold mb-2 line-clamp-1 hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{event.title}</h3>
+                    </Link>
                     
                     <div className="space-y-2 mb-3">
                       <div className="flex items-center space-x-2 text-desert-700 dark:text-desert-300 text-sm">
@@ -149,23 +153,27 @@ export function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {featuredBusinesses.map((business) => (
               <div key={business.id} className="card hover:shadow-lg transition-shadow duration-300">
-                <div className="relative">
-                  <img
-                    src={business.image}
-                    alt={business.name}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  {business.rating >= 4.5 && (
-                    <div className="absolute top-2 right-2 bg-desert-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center">
-                      <Star className="w-3 h-3 mr-1 fill-current" />
-                      Premium
-                    </div>
-                  )}
-                </div>
+                <Link to={`/businesses/${business.id}`}>
+                  <div className="relative">
+                    <img
+                      src={business.image}
+                      alt={business.name}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                    {business.rating >= 4.5 && (
+                      <div className="absolute top-2 right-2 bg-desert-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center">
+                        <Star className="w-3 h-3 mr-1 fill-current" />
+                        Premium
+                      </div>
+                    )}
+                  </div>
+                </Link>
                 
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-semibold line-clamp-1">{business.name}</h3>
+                    <Link to={`/businesses/${business.id}`}>
+                      <h3 className="text-xl font-semibold line-clamp-1 hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{business.name}</h3>
+                    </Link>
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-desert-400 fill-current" />
                       <span className="ml-1">{business.rating}</span>
@@ -242,13 +250,17 @@ export function Home() {
               <div className="space-y-4">
                 {attractions.map((attraction, index) => (
                   <div key={index} className="flex">
-                    <img 
-                      src={attraction.image} 
-                      alt={attraction.name}
-                      className="w-20 h-20 object-cover rounded-md mr-3"
-                    />
+                    <Link to="/guide" className="flex-shrink-0">
+                      <img 
+                        src={attraction.image} 
+                        alt={attraction.name}
+                        className="w-20 h-20 object-cover rounded-md mr-3 hover:opacity-90 transition-opacity"
+                      />
+                    </Link>
                     <div>
-                      <h4 className="font-medium">{attraction.name}</h4>
+                      <Link to="/guide">
+                        <h4 className="font-medium hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{attraction.name}</h4>
+                      </Link>
                       <p className="text-desert-700 dark:text-desert-300 text-sm">
                         {attraction.description}
                       </p>
