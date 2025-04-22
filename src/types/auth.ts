@@ -9,7 +9,14 @@ export interface UserProfile {
   email: string;
   full_name?: string;
   avatar_url?: string;
+  bio?: string;
+  location?: string;
+  phone?: string;
+  website?: string;
+  company?: string;
+  job_title?: string;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface AuthState {
