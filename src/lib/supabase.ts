@@ -10,5 +10,5 @@ if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KE
   console.warn('Missing Supabase credentials. Authentication features will not work properly. Please check your environment variables.');
 }
 
-// Create Supabase client
+// Create Supabase client with credentials
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
