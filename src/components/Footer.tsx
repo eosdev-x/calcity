@@ -1,6 +1,7 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Footer() {
   return (
@@ -86,9 +87,12 @@ export function Footer() {
             <p className="text-desert-700 dark:text-desert-300">
               © 2025 CalCity.info. All rights reserved.
             </p>
-            <div className="flex space-x-4 mt-4 md:mt-0">
+            <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <Link to="/privacy" className="nav-link">Privacy Policy</Link>
               <Link to="/terms" className="nav-link">Terms of Service</Link>
+              <div className="ml-2">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </div>
