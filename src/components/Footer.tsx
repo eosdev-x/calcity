@@ -9,11 +9,11 @@ export function Footer() {
     <footer className="bg-desert-100 dark:bg-night-desert-200 mt-auto">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <Link to="/" className="inline-block mb-4">
-              <img src={logo} alt="CalCity.info" className="h-12 w-auto mb-2" />
+          <div className="flex flex-col">
+            <Link to="/" className="inline-block mb-3">
+              <img src={logo} alt="CalCity.info" className="h-16 w-auto max-w-[90%]" />
             </Link>
-            <p className="text-desert-700 dark:text-desert-300">
+            <p className="text-desert-700 dark:text-desert-300 mt-1">
               Your comprehensive guide to California City, California.
             </p>
           </div>
