@@ -81,59 +81,67 @@ export function Businesses() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-4 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Search Input */}
-            <div className="relative">
+        <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-6 mb-8">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Search Input - Now takes more space on larger screens */}
+            <div className="relative flex-grow md:max-w-xl">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-desert-400" />
               </div>
               <input
                 type="text"
                 placeholder="Search businesses by name..."
-                className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                className="pl-10 w-full h-12 rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
-            {/* Category Filter */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <SlidersHorizontal className="h-5 w-5 text-desert-400" />
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Category Filter */}
+              <div className="relative w-full sm:w-56">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <SlidersHorizontal className="h-5 w-5 text-desert-500" />
+                </div>
+                <select
+                  className="pl-10 w-full h-12 rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500 appearance-none cursor-pointer pr-10"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  aria-label="Filter by category"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg className="h-4 w-4 text-desert-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
               </div>
-              <select
-                className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="">All Categories</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            {/* Sort Options */}
-            <div className="flex items-center space-x-4">
-              <label className="text-desert-700 dark:text-desert-300 text-sm font-medium">Sort by:</label>
-              <select
-                className="rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value as 'name' | 'rating')}
-              >
-                <option value="name">Name</option>
-                <option value="rating">Rating</option>
-              </select>
-              <button 
-                onClick={toggleSortDirection}
-                className="p-2 rounded-md bg-desert-100 dark:bg-night-desert-300 hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
-                aria-label={`Sort ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
-              >
-                <ArrowUpDown className={`h-5 w-5 text-desert-600 dark:text-desert-300 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
-              </button>
+              {/* Sort Options */}
+              <div className="flex items-center space-x-2 h-12">
+                <label className="text-desert-700 dark:text-desert-300 text-sm font-medium whitespace-nowrap">Sort by:</label>
+                <select
+                  className="rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500 h-full"
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value as 'name' | 'rating')}
+                >
+                  <option value="name">Name</option>
+                  <option value="rating">Rating</option>
+                </select>
+                <button 
+                  onClick={toggleSortDirection}
+                  className="p-2 h-full rounded-md bg-desert-100 dark:bg-night-desert-300 hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
+                  aria-label={`Sort ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
+                >
+                  <ArrowUpDown className={`h-5 w-5 text-desert-600 dark:text-desert-300 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
