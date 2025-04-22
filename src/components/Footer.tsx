@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import logo from '../assets/logo.svg';
 
 export function Footer() {
   return (
@@ -9,9 +10,9 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-display font-bold text-xl mb-4 text-desert-800 dark:text-desert-100">
-              CalCity.info
-            </h3>
+            <Link to="/" className="inline-block mb-4">
+              <img src={logo} alt="CalCity.info" className="h-12 w-auto mb-2" />
+            </Link>
             <p className="text-desert-700 dark:text-desert-300">
               Your comprehensive guide to California City, California.
             </p>
