@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileDropdown } from './auth/UserProfileDropdown';
+import logo from '../assets/logo.svg';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,8 +13,8 @@ export function Header() {
     <header className="bg-white dark:bg-night-desert-100 shadow-desert sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-display font-bold text-desert-800 dark:text-desert-100">
-            CalCity.info
+          <Link to="/" className="flex items-center -my-2">
+            <img src={logo} alt="CalCity.info" className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
           </Link>
 
           {/* Desktop Navigation */}
