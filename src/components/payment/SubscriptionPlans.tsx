@@ -121,7 +121,9 @@ export function SubscriptionPlans() {
         }
 
         // Redirect to Stripe Checkout
-        window.location.href = result.url || '';
+        if (result.sessionId) {
+          window.location.href = `https://checkout.stripe.com/pay/${result.sessionId}`;
+        }
       }
     } catch (err: any) {
       console.error('Subscription error:', err);
