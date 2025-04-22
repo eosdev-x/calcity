@@ -1,3 +1,6 @@
+// Import theme initialization first to prevent theme flashing
+import './utils/theme-init';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';

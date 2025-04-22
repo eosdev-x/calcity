@@ -246,6 +246,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         .from('profiles')
         .upsert({ 
           id: user.id,
+          email: user.email || '', // Always include email to satisfy NOT NULL constraint
           ...data,
           updated_at: new Date().toISOString(),
         });
