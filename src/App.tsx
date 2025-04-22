@@ -17,7 +17,11 @@ import { FloatingChatWidget } from './components/FloatingChatWidget';
 import { EventProvider } from './context/EventContext';
 import { BusinessProvider } from './context/BusinessContext';
 import { AuthProvider } from './context/AuthContext';
+import { PaymentProvider } from './context/PaymentContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { Payment } from './pages/Payment';
+import PaymentSuccess from './pages/payment/Success';
+import PaymentCancel from './pages/payment/Cancel';
 
 // Auth pages
 import { Login } from './pages/auth/Login';
@@ -30,8 +34,9 @@ import { Profile } from './pages/auth/Profile';
 function App() {
   return (
     <AuthProvider>
-      <EventProvider>
-        <BusinessProvider>
+      <PaymentProvider>
+        <EventProvider>
+          <BusinessProvider>
           <Router>
             <ScrollToTop />
             <div className="flex flex-col min-h-screen">
@@ -48,6 +53,9 @@ function App() {
                   <Route path="/businesses/new" element={<ProtectedRoute><BusinessProfileCreation /></ProtectedRoute>} />
                   <Route path="/businesses/:id" element={<BusinessDetails />} />
                   <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+                  <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
+                  <Route path="/payment/cancel" element={<PaymentCancel />} />
                   <Route path="/guide" element={<Guide />} />
                   
                   {/* Auth Routes */}
@@ -67,6 +75,7 @@ function App() {
           </Router>
         </BusinessProvider>
       </EventProvider>
+    </PaymentProvider>
     </AuthProvider>
   );
 }
