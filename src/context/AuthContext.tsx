@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Session, AuthError, Provider } from '@supabase/supabase-js';
+import { Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { AuthContextType, AuthUser, UserProfile } from '../types/auth';
 
@@ -47,52 +47,86 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  // Check if Supabase credentials are available
+  const hasSupabaseCredentials = Boolean(
+    import.meta.env.VITE_SUPABASE_URL && 
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
+
   // Initialize auth state
   useEffect(() => {
     // Set loading state
     setIsLoading(true);
     
+    // Track auth subscription
+    let authSubscription: { unsubscribe: () => void } | null = null;
+    
     // Get current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user as AuthUser || null);
-      
-      if (session?.user) {
-        fetchUserProfile(session.user.id).then(profile => {
-          setProfile(profile);
-        });
+    const getInitialSession = async () => {
+      if (!hasSupabaseCredentials) {
+        console.warn('Skipping authentication initialization - Supabase credentials not configured');
+        setIsLoading(false);
+        return;
       }
       
-      setIsLoading(false);
-    });
+      try {
+        const { data } = await supabase.auth.getSession();
+        const currentSession = data.session;
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user as AuthUser || null);
-        
-        if (session?.user) {
-          const profile = await fetchUserProfile(session.user.id);
-          setProfile(profile);
-        } else {
-          setProfile(null);
+        if (currentSession) {
+          setSession(currentSession);
+          setUser(currentSession.user as AuthUser);
+
+          // Fetch user profile
+          const userProfile = await fetchUserProfile(currentSession.user.id);
+          setProfile(userProfile);
         }
-        
+      } catch (error: any) {
+        console.error('Error getting session:', error.message);
+        setError(error.message);
+      } finally {
         setIsLoading(false);
       }
-    );
-
-    // Cleanup subscription
-    return () => {
-      subscription.unsubscribe();
+      
+      // Listen for auth changes
+      if (hasSupabaseCredentials) {
+        const { data } = supabase.auth.onAuthStateChange(
+          async (_event, currentSession) => {
+            setSession(currentSession);
+            setUser(currentSession?.user as AuthUser || null);
+            
+            if (currentSession?.user) {
+              const userProfile = await fetchUserProfile(currentSession.user.id);
+              setProfile(userProfile);
+            } else {
+              setProfile(null);
+            }
+          }
+        );
+        
+        authSubscription = data.subscription;
+      }
     };
-  }, []);
+
+    getInitialSession();
+    
+    // Cleanup subscription on unmount
+    return () => {
+      if (authSubscription) {
+        authSubscription.unsubscribe();
+      }
+    };
+  }, [hasSupabaseCredentials]);
 
   // Sign up with email and password
   async function signUp(email: string, password: string) {
     try {
       setError(null);
+      if (!hasSupabaseCredentials) {
+        setError('Supabase credentials not configured');
+        return { error: new Error('Supabase credentials not configured') };
+      }
+      
       const { error } = await supabase.auth.signUp({ 
         email, 
         password,
