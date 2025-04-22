@@ -28,7 +28,7 @@ export function Home() {
     {
       name: "Central Park",
       description: "26-acre lake with walking trails and picnic areas",
-      image: "https://images.unsplash.com/photo-1576437557195-47f5a8bcdf4a?auto=format&fit=crop&q=80"
+      image: "https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFya3xlbnwwfHwwfHx8MA%3D%3D?auto=format&fit=crop&q=80"
     },
     {
       name: "Desert Observatory",

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, LogIn } from 'lucide-react';
-import { ThemeToggle } from './ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileDropdown } from './auth/UserProfileDropdown';
 
@@ -22,7 +21,6 @@ export function Header() {
             <Link to="/events" className="nav-link">Events</Link>
             <Link to="/businesses" className="nav-link">Businesses</Link>
             <Link to="/pricing" className="nav-link">Pricing</Link>
-            <ThemeToggle />
             
             {/* Authentication */}
             {!isLoading && (
@@ -107,14 +105,13 @@ export function Header() {
                 </>
               )}
               
-              <div className="pt-2 flex items-center justify-between">
-                <ThemeToggle />
-                {!isLoading && user && (
+              {!isLoading && user && (
+                <div className="pt-2 flex items-center justify-end">
                   <div className="pr-2">
                     <UserProfileDropdown />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           )}
       </nav>
