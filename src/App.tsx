@@ -12,6 +12,7 @@ import { BusinessDetails } from './pages/BusinessDetails';
 import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
 import { Pricing } from './pages/Pricing';
 import { Guide } from './pages/Guide';
+import { Terms } from './pages/Terms';
 import { ScrollToTop } from './components/ScrollToTop';
 import { FloatingChatWidget } from './components/FloatingChatWidget';
 import { EventProvider } from './context/EventContext';
@@ -57,6 +58,7 @@ function App() {
                   <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
                   <Route path="/payment/cancel" element={<PaymentCancel />} />
                   <Route path="/guide" element={<Guide />} />
+                  <Route path="/terms" element={<Terms />} />
                   
                   {/* Auth Routes */}
                   <Route path="/auth/login" element={<Login />} />
