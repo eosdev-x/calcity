@@ -25,9 +25,15 @@ export function UserProfileDropdown() {
 
   // Handle sign out
   const handleSignOut = async () => {
-    await signOut();
-    setIsOpen(false);
-    navigate('/');
+    try {
+      console.log('Signing out...');
+      await signOut();
+      console.log('Sign out successful');
+      setIsOpen(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
   };
 
   // Get user initials for avatar

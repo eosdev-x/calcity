@@ -200,12 +200,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   // Sign out
-  async function signOut() {
+  async function signOut(): Promise<void> {
     try {
       setError(null);
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Error signing out:', error.message);
+        setError(error.message);
+        return;
+      }
+      
+      // Explicitly clear user and profile state
+      setUser(null);
+      setProfile(null);
+      setSession(null);
     } catch (error) {
       const authError = error as AuthError;
+      console.error('Exception during sign out:', authError.message);
       setError(authError.message);
     }
   }
