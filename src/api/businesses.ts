@@ -1,19 +1,17 @@
 import { Business } from '../types/business';
 import { supabase } from '../lib/supabase';
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
+import { slugify } from '../utils/slugify';
 
 export async function submitBusiness(business: Omit<Business, 'id'>): Promise<Business> {
+  const sanitizedBusiness = {
+    ...business
+  } as Omit<Business, 'id'> & { status?: Business['status']; approved_at?: string | null };
+  delete sanitizedBusiness.status;
+  delete sanitizedBusiness.approved_at;
   const payload: Omit<Business, 'id'> = {
-    ...business,
-    slug: business.slug || slugify(business.name)
+    ...sanitizedBusiness,
+    slug: sanitizedBusiness.slug || slugify(sanitizedBusiness.name),
+    status: 'pending'
   };
 
   const { data, error } = await supabase

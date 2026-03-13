@@ -14,6 +14,7 @@ import {
 import { Business } from '../types/business';
 import { submitBusiness, getBusinessCategories } from '../api/businesses';
 import { useAuth } from '../context/AuthContext';
+import { slugify } from '../utils/slugify';
 
 type BusinessFormData = {
   name: string;
@@ -25,15 +26,6 @@ type BusinessFormData = {
   description: string;
   hours: Record<string, string>;
   amenities: string[];
-};
-
-const slugify = (value: string): string => {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
 };
 
 export function BusinessProfileCreation() {

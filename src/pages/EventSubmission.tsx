@@ -16,6 +16,7 @@ import { Event } from '../types/event';
 import { submitEvent, getEventCategories, getCurrentDate, getOneYearFromNow } from '../api/events';
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
+import { slugify } from '../utils/slugify';
 
 type EventFormData = {
   title: string;
@@ -29,15 +30,6 @@ type EventFormData = {
   organizer_name: string;
   organizer_email: string;
   organizer_phone: string;
-};
-
-const slugify = (value: string): string => {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
 };
 
 export function EventSubmission() {
