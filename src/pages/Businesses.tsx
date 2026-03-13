@@ -18,6 +18,38 @@ export function Businesses() {
   
   // Get businesses from context instead of using static data
   const { businesses } = useBusinesses();
+
+  const tierPriority: Record<Business['subscription_tier'], number> = {
+    spotlight: 0,
+    premium: 1,
+    basic: 2,
+  };
+
+  const getTierBadge = (tier: Business['subscription_tier']) => {
+    if (tier === 'spotlight') {
+      return {
+        text: '⭐ Spotlight',
+        className: 'bg-tertiary-container text-on-tertiary-container',
+      };
+    }
+    if (tier === 'premium') {
+      return {
+        text: '✨ Premium',
+        className: 'bg-secondary-container text-on-secondary-container',
+      };
+    }
+    return null;
+  };
+
+  const getTierBorder = (tier: Business['subscription_tier']) => {
+    if (tier === 'spotlight') {
+      return 'border border-tertiary/50';
+    }
+    if (tier === 'premium') {
+      return 'border border-primary/30';
+    }
+    return 'border border-transparent';
+  };
   
   // Parse search parameters from URL when component mounts or URL changes
   useEffect(() => {
@@ -49,6 +81,10 @@ export function Businesses() {
     
     // Apply sorting
     results.sort((a, b) => {
+      const tierDiff = tierPriority[a.subscription_tier] - tierPriority[b.subscription_tier];
+      if (tierDiff !== 0) {
+        return tierDiff;
+      }
       if (sortOption === 'name') {
         return sortDirection === 'asc' 
           ? a.name.localeCompare(b.name) 
@@ -154,8 +190,15 @@ export function Businesses() {
         {/* Business Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredBusinesses.length > 0 ? (
-            filteredBusinesses.map((business) => (
-            <div key={business.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
+            filteredBusinesses.map((business) => {
+              const badge = getTierBadge(business.subscription_tier);
+              return (
+            <div
+              key={business.id}
+              className={`card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] ${getTierBorder(
+                business.subscription_tier
+              )}`}
+            >
               <Link to={`/businesses/${business.id}`}>
                 <img
                   src={business.image || ''}
@@ -165,7 +208,21 @@ export function Businesses() {
               </Link>
               <div className="flex items-center justify-between mb-2">
                 <Link to={`/businesses/${business.id}`}>
-                  <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{business.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">
+                      {business.name}
+                    </h3>
+                    {badge && (
+                      <span
+                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${badge.className}`}
+                      >
+                        {badge.text}
+                      </span>
+                    )}
+                    {business.is_featured && (
+                      <Star className="w-4 h-4 text-primary fill-current" aria-label="Featured business" />
+                    )}
+                  </div>
                 </Link>
                 <div className="flex items-center">
                   <Star className="w-4 h-4 text-on-surface-variant fill-current" />
@@ -216,7 +273,8 @@ export function Businesses() {
                 View Details
               </Link>
             </div>
-          ))) : (
+          );
+          })) : (
             <div className="col-span-3 text-center py-12">
               <p className="text-xl text-on-surface-variant">
                 No businesses found matching your search criteria.
