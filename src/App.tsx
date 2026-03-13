@@ -69,7 +69,9 @@ function App() {
                       <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
                     </>
                   )}
-                  <Route path="/pricing" element={<Pricing />} />
+                  {siteConfig.features.businesses && (
+                    <Route path="/pricing" element={<Pricing />} />
+                  )}
                   <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
                   <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
                   <Route path="/payment/cancel" element={<PaymentCancel />} />

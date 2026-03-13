@@ -116,7 +116,7 @@ export function Terms() {
           <ul className="list-disc pl-6 mb-4 space-y-2">
             <li>Any dispute arising from or relating to these Terms or the Service will be resolved through binding arbitration</li>
             <li>The arbitration will be conducted by the American Arbitration Association under its Consumer Arbitration Rules</li>
-            <li>The arbitration will take place in Kern County, California</li>
+            <li>The arbitration will take place in {siteConfig.legal.arbitrationLocation}</li>
             <li>Each party will be responsible for its own costs and fees</li>
             <li>You may opt out of this arbitration agreement by notifying us in writing within 30 days of first accepting these Terms</li>
           </ul>
@@ -202,8 +202,12 @@ export function Terms() {
           <div className="mt-4">
             <p>{siteConfig.name} Legal Department</p>
             <p>Email: <a href={`mailto:legal@${siteConfig.domain}`} className="text-on-surface-variant hover:underline">legal@{siteConfig.domain}</a></p>
-            <p>Phone: (555) 123-4567</p>
-            <p>Address: 123 Main Street, {siteConfig.city}, {siteConfig.state} 93505</p>
+            {siteConfig.contact.phone && (
+              <p>Phone: {siteConfig.contact.phone}</p>
+            )}
+            <p>
+              Address: {siteConfig.legal.address}, {siteConfig.city}, {siteConfig.state} {siteConfig.legal.zipCode}
+            </p>
           </div>
         </section>
       </div>

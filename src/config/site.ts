@@ -40,8 +40,24 @@ export interface SiteConfig {
   // Guide content
   guide: {
     gettingHere: string;
+    bestTimeToVisit: string;
     attractions: string;
+    attractionsList: { name: string; description: string; image: string }[];
     importantLocations: { name: string; detail: string }[];
+    annualEvents: { name: string; month: string }[];
+  };
+
+  // Legal
+  legal: {
+    arbitrationLocation: string;
+    address: string;
+    zipCode: string;
+  };
+
+  // Contact
+  contact: {
+    phone?: string;
+    email?: string;
   };
 
   // Social links
@@ -89,13 +105,44 @@ export const siteConfig: SiteConfig = {
 
   guide: {
     gettingHere: 'California City is easily accessible via Highway 14 and Highway 58. The nearest major airports are Mojave Air & Space Port (30 minutes) and Los Angeles International Airport (LAX, 2 hours).',
+    bestTimeToVisit: 'Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold. Always bring sun protection and plenty of water.',
     attractions: "Don't miss Central Park with its 26-acre lake, the California City Municipal Airport, and the Tierra Del Sol Golf Course. The surrounding desert offers excellent opportunities for off-road adventures and stargazing.",
+    attractionsList: [
+      {
+        name: 'Central Park',
+        description: '26-acre lake with walking trails and picnic areas',
+        image: 'https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFya3xlbnwwfHwwfHx8MA%3D%3D?auto=format&fit=crop&q=80',
+      },
+      {
+        name: 'Desert Observatory',
+        description: 'Experience the beauty of the desert night sky',
+        image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a',
+      },
+    ],
     importantLocations: [
       { name: 'City Hall', detail: '21000 Hacienda Blvd' },
       { name: 'Post Office', detail: '7949 California City Blvd' },
       { name: 'Medical Center', detail: '8001 Cal City Blvd' },
       { name: 'Fire Station', detail: '21000 Hacienda Blvd' },
     ],
+    annualEvents: [
+      { name: 'Spring Desert Festival', month: 'April' },
+      { name: 'Independence Day Celebration', month: 'July' },
+      { name: 'Desert Star-Gazing Night', month: 'August' },
+      { name: 'Fall Arts & Crafts Fair', month: 'October' },
+      { name: 'Winter Holiday Parade', month: 'December' },
+    ],
+  },
+
+  legal: {
+    arbitrationLocation: 'Kern County, California',
+    address: '123 Main Street',
+    zipCode: '93505',
+  },
+
+  contact: {
+    phone: '(555) 123-4567',
+    email: 'info@calcity.info',
   },
 
   social: {},

@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
+import { siteConfig } from '../config/site';
 import { supabase } from '../lib/supabase';
 
-const VIEWED_KEY = 'calcity_viewed_businesses';
+const VIEWED_KEY = `${siteConfig.domain.replace(/\./g, '_')}_viewed_businesses`;
 
 function getViewedIds(): Set<string> {
   try {
