@@ -163,15 +163,15 @@ export function SubscriptionPlans() {
     <div className="w-full max-w-6xl mx-auto">
       {/* Error message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md">
-          <p className="text-red-700 dark:text-red-300">{error}</p>
+        <div className="mb-6 p-4 bg-error-container border border-error rounded-xl">
+          <p className="text-on-error-container">{error}</p>
         </div>
       )}
 
       {/* Success message */}
       {successMessage && (
-        <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-800 rounded-md">
-          <p className="text-green-700 dark:text-green-300">{successMessage}</p>
+        <div className="mb-6 p-4 bg-tertiary-container border border-tertiary rounded-xl">
+          <p className="text-on-tertiary-container">{successMessage}</p>
         </div>
       )}
 
@@ -179,17 +179,17 @@ export function SubscriptionPlans() {
         {subscriptionPlans.map((plan) => (
           <div 
             key={plan.id}
-            className={`rounded-lg overflow-hidden border ${
+            className={`rounded-xl overflow-hidden border ${
               isCurrentPlan(plan.id)
-                ? 'border-desert-500 dark:border-desert-400 shadow-desert'
-                : 'border-desert-200 dark:border-night-desert-700'
+                ? 'border-outline shadow-sm'
+                : 'border-outline-variant'
             }`}
           >
             {/* Plan header */}
             <div className={`p-6 ${
               isCurrentPlan(plan.id)
-                ? 'bg-desert-500 dark:bg-desert-600 text-white'
-                : 'bg-desert-100 dark:bg-night-desert-800 text-desert-800 dark:text-desert-100'
+                ? 'bg-primary text-on-primary'
+                : 'bg-surface-container text-on-surface'
             }`}>
               <h3 className="text-xl font-bold">{plan.name}</h3>
               <div className="mt-2">
@@ -204,53 +204,53 @@ export function SubscriptionPlans() {
             </div>
 
             {/* Plan features */}
-            <div className="p-6 bg-white dark:bg-night-desert-900">
+            <div className="p-6 bg-surface-container-low">
               <ul className="space-y-3">
                 <li className="flex items-start">
                   {plan.features.photoLimit > 0 ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>{plan.features.photoLimit} Photo{plan.features.photoLimit !== 1 ? 's' : ''}</span>
                 </li>
                 <li className="flex items-start">
                   {plan.features.featuredListing ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>Featured Listing</span>
                 </li>
                 <li className="flex items-start">
                   {plan.features.analytics ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>Business Analytics</span>
                 </li>
                 <li className="flex items-start">
                   {plan.features.prioritySupport ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>Priority Support</span>
                 </li>
                 <li className="flex items-start">
                   {plan.features.customBranding ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>Custom Branding</span>
                 </li>
                 <li className="flex items-start">
                   {plan.features.promotedEvents > 0 ? (
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-tertiary mr-2 flex-shrink-0" />
                   ) : (
-                    <X className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                    <X className="w-5 h-5 text-error mr-2 flex-shrink-0" />
                   )}
                   <span>{plan.features.promotedEvents} Promoted Event{plan.features.promotedEvents !== 1 ? 's' : ''}</span>
                 </li>
@@ -263,7 +263,7 @@ export function SubscriptionPlans() {
                     <button
                       onClick={handleCancelSubscription}
                       disabled={isLoading || processingPlanId === 'cancel'}
-                      className="w-full py-2 px-4 rounded bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 text-red-700 dark:text-red-300 transition-colors disabled:opacity-50"
+                      className="w-full py-2 px-4 rounded-full bg-error-container text-on-error-container hover:opacity-90 transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50"
                     >
                       {processingPlanId === 'cancel' ? (
                         <div className="flex items-center justify-center">
@@ -279,11 +279,11 @@ export function SubscriptionPlans() {
                   <button
                     onClick={() => handleSubscribe(plan)}
                     disabled={isLoading || processingPlanId === plan.id}
-                    className={`w-full py-2 px-4 rounded ${
+                    className={`w-full py-2 px-4 rounded-full ${
                       plan.tier === SubscriptionTier.FREE
-                        ? 'bg-desert-100 hover:bg-desert-200 dark:bg-night-desert-700 dark:hover:bg-night-desert-600 text-desert-800 dark:text-desert-100'
-                        : 'bg-desert-500 hover:bg-desert-600 dark:bg-desert-600 dark:hover:bg-desert-700 text-white'
-                    } transition-colors disabled:opacity-50`}
+                        ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
+                        : 'bg-primary text-on-primary hover:bg-primary/90'
+                    } transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50`}
                   >
                     {processingPlanId === plan.id ? (
                       <div className="flex items-center justify-center">

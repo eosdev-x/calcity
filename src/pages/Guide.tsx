@@ -30,7 +30,7 @@ export function Guide() {
   ];
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50">
+    <div className="min-h-screen bg-surface ">
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         {/* Background Image */}
@@ -42,7 +42,7 @@ export function Guide() {
         />
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-desert-900/80 to-desert-900/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-scrim/80 to-scrim/60" />
         
         {/* Content */}
         <div className="container mx-auto px-4 py-12 h-full flex flex-col relative">
@@ -51,10 +51,10 @@ export function Guide() {
           </div>
           
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-inverse-on-surface mb-4">
               Visitor Guide
             </h1>
-            <p className="text-xl text-desert-100">
+            <p className="text-xl text-inverse-on-surface">
               Everything you need to know about visiting California City
             </p>
           </div>
@@ -69,9 +69,9 @@ export function Guide() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {sections.map((section) => (
               <div key={section.title} className="card">
-                <section.icon className="w-8 h-8 text-desert-400 mb-4" />
+                <section.icon className="w-8 h-8 text-on-surface-variant mb-4" />
                 <h3 className="text-xl font-semibold mb-4">{section.title}</h3>
-                <p className="text-desert-700 dark:text-desert-300">
+                <p className="text-on-surface-variant">
                   {section.content}
                 </p>
               </div>
@@ -82,16 +82,16 @@ export function Guide() {
           <div className="card">
             <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-6 flex items-center">
-                <Info className="w-6 h-6 text-desert-400 mr-2" />
+                <Info className="w-6 h-6 text-on-surface-variant mr-2" />
                 Essential Tips for Visitors
               </h2>
               <ul className="space-y-4">
                 {tips.map((tip, index) => (
                   <li key={index} className="flex items-start">
-                    <span className="inline-block w-6 h-6 rounded-full bg-desert-400 text-white flex items-center justify-center mr-3 mt-0.5">
+                    <span className="inline-block w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center mr-3 mt-0.5">
                       {index + 1}
                     </span>
-                    <span className="text-desert-700 dark:text-desert-300">{tip}</span>
+                    <span className="text-on-surface-variant">{tip}</span>
                   </li>
                 ))}
               </ul>
@@ -102,10 +102,10 @@ export function Guide() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
             <div className="card">
               <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <MapPin className="w-6 h-6 text-desert-400 mr-2" />
+                <MapPin className="w-6 h-6 text-on-surface-variant mr-2" />
                 Important Locations
               </h3>
-              <ul className="space-y-3 text-desert-700 dark:text-desert-300">
+              <ul className="space-y-3 text-on-surface-variant">
                 <li>Police Department: 21130 Hacienda Blvd</li>
                 <li>Fire Station: 20890 Hacienda Blvd</li>
                 <li>Medical Center: 8001 Cal City Blvd</li>
@@ -116,10 +116,10 @@ export function Guide() {
 
             <div className="card">
               <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Calendar className="w-6 h-6 text-desert-400 mr-2" />
+                <Calendar className="w-6 h-6 text-on-surface-variant mr-2" />
                 Annual Events
               </h3>
-              <ul className="space-y-3 text-desert-700 dark:text-desert-300">
+              <ul className="space-y-3 text-on-surface-variant">
                 <li>Spring Desert Festival (April)</li>
                 <li>Independence Day Celebration (July)</li>
                 <li>Desert Star-Gazing Night (August)</li>

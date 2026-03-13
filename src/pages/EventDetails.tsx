@@ -159,12 +159,12 @@ export function EventDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button
           onClick={() => navigate('/events')}
-          className="flex items-center text-desert-600 dark:text-desert-400 hover:text-desert-800 dark:hover:text-desert-200 mb-6 transition-colors"
+          className="flex items-center text-on-surface-variant hover:text-primary mb-6 transition-colors duration-[var(--md-sys-motion-duration-short3)]"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Events
@@ -177,26 +177,26 @@ export function EventDetails() {
             alt={event.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-desert-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-scrim/70 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="flex items-center justify-between">
-              <h1 className="text-4xl font-display font-bold text-white mb-2">
+              <h1 className="text-4xl font-display font-bold text-inverse-on-surface mb-2">
                 {event.title}
               </h1>
               <div className="flex gap-4">
                 <button
                   onClick={handleShare}
-                  className="p-2 rounded-full bg-desert-100/20 hover:bg-desert-100/30 text-white transition-colors"
+                  className="p-2 rounded-full bg-scrim/20 hover:bg-scrim/30 text-inverse-on-surface transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   aria-label="Share event"
                 >
                   <Share2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleBookmark}
-                  className={`p-2 rounded-full transition-colors ${
+                  className={`p-2 rounded-full transition-colors duration-[var(--md-sys-motion-duration-short3)] ${
                     isBookmarked 
-                      ? 'bg-desert-400 text-white' 
-                      : 'bg-desert-100/20 hover:bg-desert-100/30 text-white'
+                      ? 'bg-primary text-on-primary' 
+                      : 'bg-scrim/20 hover:bg-scrim/30 text-inverse-on-surface'
                   }`}
                   aria-label="Bookmark event"
                 >
@@ -212,7 +212,7 @@ export function EventDetails() {
           <div className="lg:col-span-2">
             <div className="card mb-8">
               <h2 className="text-2xl font-semibold mb-4">About This Event</h2>
-              <p className="text-desert-700 dark:text-desert-300 whitespace-pre-line">
+              <p className="text-on-surface-variant whitespace-pre-line">
                 {event.description}
               </p>
             </div>
@@ -221,10 +221,10 @@ export function EventDetails() {
               <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <Calendar className="w-5 h-5 text-desert-400 mr-3 mt-1" />
+                  <Calendar className="w-5 h-5 text-on-surface-variant mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Date</h3>
-                    <p className="text-desert-700 dark:text-desert-300">
+                    <p className="text-on-surface-variant">
                       {new Date(event.date).toLocaleDateString('en-US', {
                         weekday: 'long',
                         year: 'numeric',
@@ -235,30 +235,29 @@ export function EventDetails() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Clock className="w-5 h-5 text-desert-400 mr-3 mt-1" />
+                  <Clock className="w-5 h-5 text-on-surface-variant mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Time</h3>
-                    <p className="text-desert-700 dark:text-desert-300">{event.time}</p>
+                    <p className="text-on-surface-variant">{event.time}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <MapPin className="w-5 h-5 text-desert-400 mr-3 mt-1" />
+                  <MapPin className="w-5 h-5 text-on-surface-variant mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Location</h3>
-                    <p className="text-desert-700 dark:text-desert-300">{event.location}</p>
+                    <p className="text-on-surface-variant">{event.location}</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Tag className="w-5 h-5 text-desert-400 mr-3 mt-1" />
+                  <Tag className="w-5 h-5 text-on-surface-variant mr-3 mt-1" />
                   <div>
                     <h3 className="font-semibold">Category & Tags</h3>
-                    <p className="text-desert-700 dark:text-desert-300 mb-2">{event.category}</p>
+                    <p className="text-on-surface-variant mb-2">{event.category}</p>
                     <div className="flex flex-wrap gap-2">
                       {event.tags.map(tag => (
                         <span 
                           key={tag}
-                          className="px-3 py-1 bg-desert-100 dark:bg-night-desert-400 
-                                   text-desert-700 dark:text-desert-300 rounded-full text-sm"
+                          className="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-lg text-sm"
                         >
                           {tag}
                         </span>
@@ -276,15 +275,15 @@ export function EventDetails() {
             <div className="card">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
-                  <Users className="w-5 h-5 text-desert-400 mr-2" />
-                  <span className="text-desert-700 dark:text-desert-300">
+                  <Users className="w-5 h-5 text-on-surface-variant mr-2" />
+                  <span className="text-on-surface-variant">
                     {event.registeredCount} / {event.capacity} registered
                   </span>
                 </div>
               </div>
-              <div className="w-full bg-desert-100 dark:bg-night-desert-400 rounded-full h-2 mb-6">
+              <div className="w-full bg-surface-container rounded-full h-2 mb-6">
                 <div 
-                  className="bg-desert-400 h-2 rounded-full"
+                  className="bg-primary h-2 rounded-full"
                   style={{ width: `${(event.registeredCount! / event.capacity!) * 100}%` }}
                 />
               </div>
@@ -299,20 +298,20 @@ export function EventDetails() {
             {/* Organizer Card */}
             <div className="card">
               <h3 className="text-xl font-semibold mb-4">Event Organizer</h3>
-              <p className="text-desert-800 dark:text-desert-100 font-medium mb-4">
+              <p className="text-on-surface font-medium mb-4">
                 {event.organizer.name}
               </p>
               <div className="space-y-3">
                 <a 
                   href={`mailto:${event.organizer.email}`}
-                  className="flex items-center text-desert-700 dark:text-desert-300 hover:text-desert-500"
+                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <Mail className="w-5 h-5 mr-2" />
                   {event.organizer.email}
                 </a>
                 <a 
                   href={`tel:${event.organizer.phone}`}
-                  className="flex items-center text-desert-700 dark:text-desert-300 hover:text-desert-500"
+                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <Phone className="w-5 h-5 mr-2" />
                   {event.organizer.phone}

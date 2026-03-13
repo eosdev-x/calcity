@@ -33,9 +33,8 @@ export function FloatingChatWidget() {
       <button
         onClick={toggleChat}
         className={clsx(
-          'flex items-center gap-2 rounded-full bg-desert-400 text-white p-4',
-          'hover:bg-desert-500 transition-colors duration-200',
-          'shadow-lg hover:shadow-xl',
+          'flex items-center gap-2 rounded-full bg-primary text-on-primary p-4 elevation-2',
+          'hover:bg-primary/90 transition-colors duration-[var(--md-sys-motion-duration-short3)]',
           { 'hidden': isOpen }
         )}
         aria-label="Open chat"
@@ -47,24 +46,24 @@ export function FloatingChatWidget() {
       {isOpen && (
         <div
           className={clsx(
-            'bg-white dark:bg-night-desert-200 rounded-lg shadow-2xl',
-            'transition-all duration-300 ease-in-out',
+            'bg-surface-container-highest rounded-[28px] elevation-4',
+            'transition-all duration-[var(--md-sys-motion-duration-medium2)] ease-[var(--md-sys-motion-easing-standard)]',
             'w-[400px] max-w-[calc(100vw-2rem)]',
             'h-[600px] max-h-[calc(100vh-4rem)]'
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-desert-200 dark:border-night-desert-300">
-            <h2 className="font-semibold text-desert-800 dark:text-desert-100">
+          <div className="flex items-center justify-between p-4 border-b border-outline-variant">
+            <h2 className="font-semibold text-on-surface">
               Chat with CalCityBot
             </h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-desert-100 dark:hover:bg-night-desert-400 rounded-full transition-colors"
+                className="p-1 hover:bg-surface-container-high rounded-full transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 aria-label="Close chat"
               >
-                <X className="w-4 h-4 text-desert-600 dark:text-desert-300" />
+                <X className="w-4 h-4 text-on-surface-variant" />
               </button>
             </div>
           </div>

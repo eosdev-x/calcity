@@ -22,7 +22,7 @@ export function Payment() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-desert-800 dark:text-desert-100 mb-8">
+      <h1 className="text-3xl font-bold text-on-surface mb-8">
         Payment Management
       </h1>
 

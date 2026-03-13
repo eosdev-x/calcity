@@ -6,20 +6,20 @@ import logo from '../assets/logo.svg';
 
 export function Footer() {
   return (
-    <footer className="bg-desert-100 dark:bg-night-desert-200 mt-auto">
+    <footer className="bg-surface-container mt-auto">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col">
             <Link to="/" className="inline-block mb-3">
               <img src={logo} alt="CalCity.info" className="h-16 w-auto max-w-[90%]" />
             </Link>
-            <p className="text-desert-700 dark:text-desert-300 mt-1">
+            <p className="text-on-surface-variant mt-1">
               Your comprehensive guide to California City, California.
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-on-surface">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link to="/events" className="nav-link">Events</Link></li>
               <li><Link to="/businesses" className="nav-link">Businesses</Link></li>
@@ -29,7 +29,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Contact</h4>
+            <h4 className="font-semibold mb-4 text-on-surface">Contact</h4>
             <ul className="space-y-2">
               <li>
                 <a 
@@ -53,7 +53,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Follow Us</h4>
+            <h4 className="font-semibold mb-4 text-on-surface">Follow Us</h4>
             <div className="flex space-x-4">
               <a 
                 href="https://facebook.com/calcityinfo" 
@@ -83,9 +83,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-desert-200 dark:border-night-desert-300">
+        <div className="mt-8 pt-8 border-t border-outline-variant">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-desert-700 dark:text-desert-300">
+            <p className="text-on-surface-variant">
               © 2025 CalCity.info. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">

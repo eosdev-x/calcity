@@ -365,12 +365,12 @@ export function BusinessDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button
           onClick={() => navigate('/businesses')}
-          className="flex items-center text-desert-600 dark:text-desert-400 hover:text-desert-800 dark:hover:text-desert-200 mb-6 transition-colors"
+          className="flex items-center text-on-surface-variant hover:text-primary mb-6 transition-colors duration-[var(--md-sys-motion-duration-short3)]"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Businesses
@@ -383,17 +383,17 @@ export function BusinessDetails() {
             alt={business.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-desert-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-scrim/70 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-display font-bold text-white mb-2">
+                <h1 className="text-4xl font-display font-bold text-inverse-on-surface mb-2">
                   {business.name}
                 </h1>
-                <div className="flex items-center text-white">
-                  <Star className="w-5 h-5 text-desert-400 fill-current mr-1" />
+                <div className="flex items-center text-inverse-on-surface">
+                  <Star className="w-5 h-5 text-inverse-on-surface fill-current mr-1" />
                   <span className="mr-2">{business.rating}</span>
-                  <span className="text-desert-200">• {business.category}</span>
+                  <span className="text-inverse-on-surface">• {business.category}</span>
                 </div>
               </div>
               <BusinessHoursStatus hours={business.hours} />
@@ -406,7 +406,7 @@ export function BusinessDetails() {
           <div className="lg:col-span-2">
             <div className="card mb-8">
               <h2 className="text-2xl font-semibold mb-4">About</h2>
-              <p className="text-desert-700 dark:text-desert-300">
+              <p className="text-on-surface-variant">
                 {business.description}
               </p>
             </div>
@@ -417,9 +417,9 @@ export function BusinessDetails() {
                 {business.amenities.map((amenity) => (
                   <div 
                     key={amenity}
-                    className="flex items-center text-desert-700 dark:text-desert-300"
+                    className="flex items-center text-on-surface-variant"
                   >
-                    <Check className="w-5 h-5 text-desert-400 mr-2" />
+                    <Check className="w-5 h-5 text-on-surface-variant mr-2" />
                     {amenity}
                   </div>
                 ))}
@@ -444,31 +444,31 @@ export function BusinessDetails() {
                   href={`https://maps.google.com/?q=${encodeURIComponent(business.address)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
-                  <MapPin className="w-5 h-5 text-desert-400 mr-2" />
+                  <MapPin className="w-5 h-5 text-on-surface-variant mr-2" />
                   <span className="hover:underline">{business.address}</span>
                 </a>
                 <a
                   href={`tel:${business.phone.replace(/[^\d]/g, '')}`}
-                  className="flex items-center text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
-                  <Phone className="w-5 h-5 text-desert-400 mr-2" />
+                  <Phone className="w-5 h-5 text-on-surface-variant mr-2" />
                   <span className="hover:underline">{business.phone}</span>
                 </a>
                 <a
                   href={`https://${business.website}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
-                  <Globe className="w-5 h-5 text-desert-400 mr-2" />
+                  <Globe className="w-5 h-5 text-on-surface-variant mr-2" />
                   <span className="hover:underline">{business.website}</span>
                 </a>
               </div>
 
               {business.socialMedia && (
-                <div className="mt-6 pt-6 border-t border-desert-200 dark:border-night-desert-300">
+                <div className="mt-6 pt-6 border-t border-outline-variant">
                   <h4 className="font-semibold mb-4">Social Media</h4>
                   <div className="flex space-x-4">
                     {business.socialMedia.facebook && (
@@ -476,7 +476,7 @@ export function BusinessDetails() {
                         href={business.socialMedia.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-desert-700 dark:text-desert-300 hover:text-desert-500"
+                        className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                       >
                         <Facebook className="w-6 h-6" />
                       </a>
@@ -486,7 +486,7 @@ export function BusinessDetails() {
                         href={business.socialMedia.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-desert-700 dark:text-desert-300 hover:text-desert-500"
+                        className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                       >
                         <Twitter className="w-6 h-6" />
                       </a>
@@ -496,7 +496,7 @@ export function BusinessDetails() {
                         href={business.socialMedia.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-desert-700 dark:text-desert-300 hover:text-desert-500"
+                        className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                       >
                         <Instagram className="w-6 h-6" />
                       </a>
@@ -509,14 +509,14 @@ export function BusinessDetails() {
             {/* Business Hours */}
             <div className="card">
               <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Clock className="w-5 h-5 text-desert-400 mr-2" />
+                <Clock className="w-5 h-5 text-on-surface-variant mr-2" />
                 Business Hours
               </h3>
               <div className="space-y-2">
                 {Object.entries(business.hours).map(([day, hours]) => (
                   <div
                     key={day}
-                    className="flex justify-between text-desert-700 dark:text-desert-300"
+                    className="flex justify-between text-on-surface-variant"
                   >
                     <span>{day}</span>
                     <span>{hours}</span>

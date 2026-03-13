@@ -146,15 +146,15 @@ export function EventCalendar({ events }: EventCalendarProps) {
 
     if (eventsInMonth.length === 0) {
       return (
-        <div className="text-center py-8 text-desert-600 dark:text-desert-400">
+        <div className="text-center py-8 text-on-surface-variant">
           No events scheduled for {monthNames[currentMonth.getMonth()]} {currentYear}
         </div>
       );
     }
 
     return (
-      <div className="mt-8 bg-white dark:bg-night-desert-800 rounded-lg shadow-md p-4">
-        <h3 className="text-xl font-semibold text-desert-800 dark:text-desert-200 mb-4">
+      <div className="mt-8 bg-surface-container-low rounded-xl shadow-sm p-4 border border-outline-variant">
+        <h3 className="text-xl font-semibold text-on-surface mb-4">
           Events in {monthNames[currentMonth.getMonth()]} {currentYear}
         </h3>
         <div className="space-y-4">
@@ -165,19 +165,19 @@ export function EventCalendar({ events }: EventCalendarProps) {
             const formattedDate = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
             
             return (
-              <div key={event.id} className="border-b border-desert-100 dark:border-night-desert-700 pb-4 last:border-0">
+              <div key={event.id} className="border-b border-outline-variant pb-4 last:border-0">
                 <Link 
                   to={`/events/${event.id}`}
-                  className="block hover:bg-desert-50 dark:hover:bg-night-desert-700 rounded-md p-2 -mx-2 transition-colors"
+                  className="block hover:bg-surface-container rounded-xl p-2 -mx-2 transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
-                  <h4 className="text-lg font-medium text-desert-700 dark:text-desert-300">{event.title}</h4>
-                  <div className="flex items-center text-desert-600 dark:text-desert-400 text-sm mt-1">
+                  <h4 className="text-lg font-medium text-on-surface-variant">{event.title}</h4>
+                  <div className="flex items-center text-on-surface-variant text-sm mt-1">
                     <Calendar className="w-4 h-4 mr-1" />
                     <span>{formattedDate}</span>
                     <span className="mx-2">•</span>
                     <span>{event.time}</span>
                   </div>
-                  <p className="text-sm text-desert-500 dark:text-desert-500 mt-1 line-clamp-2">{event.description}</p>
+                  <p className="text-sm text-on-surface-variant mt-1 line-clamp-2">{event.description}</p>
                 </Link>
               </div>
             );
@@ -192,13 +192,13 @@ export function EventCalendar({ events }: EventCalendarProps) {
       {/* Calendar Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold flex items-center">
-          <Calendar className="w-6 h-6 text-desert-400 mr-2" />
+          <Calendar className="w-6 h-6 text-on-surface-variant mr-2" />
           Event Calendar
         </h2>
         <div className="flex items-center space-x-2">
           <button
             onClick={goToCurrentMonth}
-            className="px-3 py-1 text-sm bg-desert-100 dark:bg-night-desert-300 text-desert-700 dark:text-desert-300 rounded-md hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
+            className="px-3 py-1 text-sm bg-surface-container text-on-surface-variant rounded-xl hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           >
             Today
           </button>
@@ -209,22 +209,22 @@ export function EventCalendar({ events }: EventCalendarProps) {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={goToPreviousMonth}
-          className="p-2 rounded-full hover:bg-desert-100 dark:hover:bg-night-desert-300 transition-colors"
+          className="p-2 rounded-full hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           aria-label="Previous month"
         >
-          <ChevronLeft className="w-5 h-5 text-desert-600 dark:text-desert-400" />
+          <ChevronLeft className="w-5 h-5 text-on-surface-variant" />
         </button>
         
-        <h3 className="text-xl font-medium text-desert-800 dark:text-desert-200">
+        <h3 className="text-xl font-medium text-on-surface">
           {monthNames[currentMonth.getMonth()]} {currentYear}
         </h3>
         
         <button
           onClick={goToNextMonth}
-          className="p-2 rounded-full hover:bg-desert-100 dark:hover:bg-night-desert-300 transition-colors"
+          className="p-2 rounded-full hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           aria-label="Next month"
         >
-          <ChevronRight className="w-5 h-5 text-desert-600 dark:text-desert-400" />
+          <ChevronRight className="w-5 h-5 text-on-surface-variant" />
         </button>
       </div>
       
@@ -236,7 +236,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
             {dayNames.map(day => (
               <div
                 key={day}
-                className="text-center font-medium text-desert-600 dark:text-desert-400 py-2"
+                className="text-center font-medium text-on-surface-variant py-2"
               >
                 {day}
               </div>
@@ -255,17 +255,17 @@ export function EventCalendar({ events }: EventCalendarProps) {
                 <div
                   key={index}
                   className={clsx(
-                    "min-h-[100px] p-1 border rounded-md transition-colors",
+                    "min-h-[100px] p-1 border rounded-xl transition-colors duration-[var(--md-sys-motion-duration-short3)]",
                     day.isCurrentMonth
-                      ? "border-desert-200 dark:border-night-desert-400"
-                      : "border-desert-100 dark:border-night-desert-500 bg-desert-50 dark:bg-night-desert-600",
-                    day.isToday && "ring-2 ring-desert-400 dark:ring-desert-500",
+                      ? "border-outline-variant"
+                      : "border-outline-variant bg-surface",
+                    day.isToday && "ring-2 ring-primary",
                     day.isPast && !day.isToday && "opacity-70"
                   )}
                 >
                   <div className="h-full min-h-[80px] p-1">
                     {/* Day number */}
-                    <div className={`text-sm font-medium ${isToday ? 'bg-desert-500 text-white rounded-full w-6 h-6 flex items-center justify-center' : isPast ? 'text-desert-400 dark:text-desert-600' : 'text-desert-800 dark:text-desert-200'}`}>
+                    <div className={`text-sm font-medium ${isToday ? 'bg-primary text-on-primary rounded-full w-6 h-6 flex items-center justify-center' : isPast ? 'text-on-surface-variant' : 'text-on-surface'}`}>
                       {day.day}
                     </div>
                     
@@ -276,7 +276,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
                           <Link 
                             key={event.id}
                             to={`/events/${event.id}`}
-                            className="block text-xs p-1 rounded bg-desert-100 dark:bg-night-desert-700 text-desert-700 dark:text-desert-300 truncate hover:bg-desert-200 dark:hover:bg-night-desert-600"
+                            className="block text-xs p-1 rounded bg-surface-container text-on-surface-variant truncate hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                           >
                             {event.title}
                           </Link>

@@ -48,14 +48,14 @@ export function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 flex items-center justify-center">
-      <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-8 max-w-md w-full">
+    <div className="min-h-screen bg-surface flex items-center justify-center">
+      <div className="bg-surface-container-low rounded-xl shadow-sm p-8 max-w-md w-full border border-outline-variant">
         {error ? (
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-desert-800 dark:text-desert-100 mb-4">
+            <h2 className="text-2xl font-bold text-on-surface mb-4">
               Authentication Error
             </h2>
-            <p className="text-desert-700 dark:text-desert-300 mb-6">
+            <p className="text-on-surface-variant mb-6">
               {error}
             </p>
             <button
@@ -67,11 +67,11 @@ export function AuthCallback() {
           </div>
         ) : (
           <div className="text-center">
-            <Loader2 className="w-12 h-12 text-desert-500 animate-spin mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-desert-800 dark:text-desert-100 mb-2">
+            <Loader2 className="w-12 h-12 text-on-surface-variant animate-spin mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-on-surface mb-2">
               Completing Authentication
             </h2>
-            <p className="text-desert-700 dark:text-desert-300">
+            <p className="text-on-surface-variant">
               Please wait while we complete the authentication process...
             </p>
           </div>

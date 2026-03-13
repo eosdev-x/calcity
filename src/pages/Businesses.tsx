@@ -69,10 +69,10 @@ export function Businesses() {
   };
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100">
+          <h1 className="text-4xl font-display font-bold text-on-surface">
             Local Businesses
           </h1>
           <Link to="/businesses/new" className="btn-primary">
@@ -81,17 +81,17 @@ export function Businesses() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-6 mb-8">
+        <div className="bg-surface-container-low rounded-xl shadow-sm p-6 mb-8 border border-outline-variant">
           <div className="flex flex-col md:flex-row gap-6">
             {/* Search Input - Now takes more space on larger screens */}
             <div className="relative flex-grow md:max-w-xl">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-desert-400" />
+                <Search className="h-5 w-5 text-on-surface-variant" />
               </div>
               <input
                 type="text"
                 placeholder="Search businesses by name..."
-                className="pl-10 w-full h-12 rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                className="pl-10 w-full h-12 rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -101,10 +101,10 @@ export function Businesses() {
               {/* Category Filter */}
               <div className="relative w-full sm:w-56">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <SlidersHorizontal className="h-5 w-5 text-desert-500" />
+                  <SlidersHorizontal className="h-5 w-5 text-on-surface-variant" />
                 </div>
                 <select
-                  className="pl-10 w-full h-12 rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500 appearance-none cursor-pointer pr-10"
+                  className="pl-10 w-full h-12 rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary appearance-none cursor-pointer pr-10"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   aria-label="Filter by category"
@@ -117,7 +117,7 @@ export function Businesses() {
                   ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <svg className="h-4 w-4 text-desert-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-4 w-4 text-on-surface-variant" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </div>
@@ -125,9 +125,9 @@ export function Businesses() {
 
               {/* Sort Options */}
               <div className="flex items-center space-x-2 h-12">
-                <label className="text-desert-700 dark:text-desert-300 text-sm font-medium whitespace-nowrap">Sort by:</label>
+                <label className="text-on-surface-variant text-sm font-medium whitespace-nowrap">Sort by:</label>
                 <select
-                  className="rounded-md border-desert-300 dark:border-night-desert-300 bg-white dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500 h-full"
+                  className="rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary h-full"
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value as 'name' | 'rating')}
                 >
@@ -136,10 +136,10 @@ export function Businesses() {
                 </select>
                 <button 
                   onClick={toggleSortDirection}
-                  className="p-2 h-full rounded-md bg-desert-100 dark:bg-night-desert-300 hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
+                  className="p-2 h-full rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   aria-label={`Sort ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
                 >
-                  <ArrowUpDown className={`h-5 w-5 text-desert-600 dark:text-desert-300 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
+                  <ArrowUpDown className={`h-5 w-5 text-on-surface-variant ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
                 </button>
               </div>
             </div>
@@ -147,7 +147,7 @@ export function Businesses() {
         </div>
 
         {/* Results Count */}
-        <div className="mb-4 text-desert-700 dark:text-desert-300">
+        <div className="mb-4 text-on-surface-variant">
           Found {filteredBusinesses.length} business{filteredBusinesses.length !== 1 ? 'es' : ''}
         </div>
 
@@ -155,25 +155,25 @@ export function Businesses() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredBusinesses.length > 0 ? (
             filteredBusinesses.map((business) => (
-            <div key={business.id} className="card hover:shadow-lg transition-shadow duration-300">
+            <div key={business.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
               <Link to={`/businesses/${business.id}`}>
                 <img
                   src={business.image}
                   alt={business.name}
-                  className="w-full h-48 object-cover rounded-t-lg mb-4 hover:opacity-90 transition-opacity"
+                  className="w-full h-48 object-cover rounded-t-xl mb-4 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
                 />
               </Link>
               <div className="flex items-center justify-between mb-2">
                 <Link to={`/businesses/${business.id}`}>
-                  <h3 className="text-xl font-semibold hover:text-desert-600 dark:hover:text-desert-400 transition-colors">{business.name}</h3>
+                  <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{business.name}</h3>
                 </Link>
                 <div className="flex items-center">
-                  <Star className="w-4 h-4 text-desert-400 fill-current" />
+                  <Star className="w-4 h-4 text-on-surface-variant fill-current" />
                   <span className="ml-1">{business.rating}</span>
                 </div>
               </div>
               
-              <p className="text-desert-600 dark:text-desert-400 mb-2">
+              <p className="text-on-surface-variant mb-2">
                 {business.category}
               </p>
 
@@ -184,14 +184,14 @@ export function Businesses() {
                   href={`https://maps.google.com/?q=${encodeURIComponent(business.address)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <MapPin className="w-4 h-4 flex-shrink-0" />
                   <span className="hover:underline">{business.address}</span>
                 </a>
                 <a
                   href={`tel:${business.phone.replace(/[^\d]/g, '')}`}
-                  className="flex items-center space-x-2 text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <Phone className="w-4 h-4 flex-shrink-0" />
                   <span className="hover:underline">{business.phone}</span>
@@ -200,7 +200,7 @@ export function Businesses() {
                   href={`https://${business.website}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-desert-700 dark:text-desert-300 hover:text-desert-500 dark:hover:text-desert-400 transition-colors"
+                  className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <Globe className="w-4 h-4 flex-shrink-0" />
                   <span className="hover:underline">{business.website}</span>
@@ -216,7 +216,7 @@ export function Businesses() {
             </div>
           ))) : (
             <div className="col-span-3 text-center py-12">
-              <p className="text-xl text-desert-600 dark:text-desert-400">
+              <p className="text-xl text-on-surface-variant">
                 No businesses found matching your search criteria.
               </p>
               <button 

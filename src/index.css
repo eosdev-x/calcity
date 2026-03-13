@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,49 +6,155 @@
 
 @layer base {
   :root {
-    --background: 47 97% 96%;
-    --foreground: 20 33% 12%;
-    --primary: 34 41% 69%;
-    --secondary: 89 15% 61%;
-    --accent: 14 54% 54%;
-    --muted: 34 25% 90%;
-    --muted-foreground: 20 10% 40%;
+    --md-sys-color-primary: #9C4323;
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #FFDBD0;
+    --md-sys-color-on-primary-container: #3A0A00;
+    --md-sys-color-secondary: #77574D;
+    --md-sys-color-on-secondary: #FFFFFF;
+    --md-sys-color-secondary-container: #FFDBD0;
+    --md-sys-color-on-secondary-container: #2C150F;
+    --md-sys-color-tertiary: #6C5D2F;
+    --md-sys-color-on-tertiary: #FFFFFF;
+    --md-sys-color-tertiary-container: #F6E1A7;
+    --md-sys-color-on-tertiary-container: #231B00;
+    --md-sys-color-error: #BA1A1A;
+    --md-sys-color-on-error: #FFFFFF;
+    --md-sys-color-error-container: #FFDAD6;
+    --md-sys-color-on-error-container: #410002;
+    --md-sys-color-background: #FFFBFF;
+    --md-sys-color-on-background: #201A18;
+    --md-sys-color-surface: #FFFBFF;
+    --md-sys-color-on-surface: #201A18;
+    --md-sys-color-surface-variant: #F5DED6;
+    --md-sys-color-on-surface-variant: #53433E;
+    --md-sys-color-surface-container-lowest: #FFFFFF;
+    --md-sys-color-surface-container-low: #FEF1EC;
+    --md-sys-color-surface-container: #F8EBE6;
+    --md-sys-color-surface-container-high: #F2E5E0;
+    --md-sys-color-surface-container-highest: #EDE0DA;
+    --md-sys-color-outline: #85736D;
+    --md-sys-color-outline-variant: #D8C2BA;
+    --md-sys-color-inverse-surface: #362F2C;
+    --md-sys-color-inverse-on-surface: #FBEEE9;
+    --md-sys-color-inverse-primary: #FFB5A0;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-surface-tint: #9C4323;
+
+    --md-sys-shape-corner-none: 0px;
+    --md-sys-shape-corner-extra-small: 4px;
+    --md-sys-shape-corner-small: 8px;
+    --md-sys-shape-corner-medium: 12px;
+    --md-sys-shape-corner-large: 16px;
+    --md-sys-shape-corner-extra-large: 28px;
+    --md-sys-shape-corner-full: 9999px;
+
+    --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --md-sys-motion-duration-short3: 150ms;
+    --md-sys-motion-duration-medium2: 300ms;
+    --md-sys-motion-duration-medium4: 400ms;
+
+    --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+      0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3),
+      0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3),
+      0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3),
+      0px 8px 12px 6px rgba(0, 0, 0, 0.15);
   }
 
   .dark {
-    --background: 20 8% 9%;
-    --foreground: 34 25% 90%;
-    --primary: 34 15% 40%;
-    --secondary: 89 10% 30%;
-    --accent: 14 30% 40%;
-    --muted: 20 10% 20%;
-    --muted-foreground: 20 10% 70%;
+    --md-sys-color-primary: #FFB5A0;
+    --md-sys-color-on-primary: #5C1A05;
+    --md-sys-color-primary-container: #7C2F14;
+    --md-sys-color-on-primary-container: #FFDBD0;
+    --md-sys-color-secondary: #E7BDB1;
+    --md-sys-color-on-secondary: #442A22;
+    --md-sys-color-secondary-container: #5D4037;
+    --md-sys-color-on-secondary-container: #FFDBD0;
+    --md-sys-color-tertiary: #D9C58D;
+    --md-sys-color-on-tertiary: #3B2F05;
+    --md-sys-color-tertiary-container: #534519;
+    --md-sys-color-on-tertiary-container: #F6E1A7;
+    --md-sys-color-error: #FFB4AB;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000A;
+    --md-sys-color-on-error-container: #FFDAD6;
+    --md-sys-color-background: #201A18;
+    --md-sys-color-on-background: #EDE0DA;
+    --md-sys-color-surface: #201A18;
+    --md-sys-color-on-surface: #EDE0DA;
+    --md-sys-color-surface-variant: #53433E;
+    --md-sys-color-on-surface-variant: #D8C2BA;
+    --md-sys-color-surface-container-lowest: #1A1412;
+    --md-sys-color-surface-container-low: #291E1B;
+    --md-sys-color-surface-container: #2D221F;
+    --md-sys-color-surface-container-high: #382C29;
+    --md-sys-color-surface-container-highest: #433634;
+    --md-sys-color-outline: #A08D86;
+    --md-sys-color-outline-variant: #53433E;
+    --md-sys-color-inverse-surface: #EDE0DA;
+    --md-sys-color-inverse-on-surface: #362F2C;
+    --md-sys-color-inverse-primary: #9C4323;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-surface-tint: #FFB5A0;
   }
 }
 
 @layer base {
   body {
-    @apply bg-desert-50 text-desert-900 dark:bg-night-desert-50 dark:text-desert-100 transition-colors duration-300;
+    @apply bg-surface text-on-surface transition-colors duration-[var(--md-sys-motion-duration-medium2)] ease-[var(--md-sys-motion-easing-standard)];
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-desert-400 text-white hover:bg-desert-500 dark:bg-desert-600 dark:hover:bg-desert-700 
-           px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply bg-primary text-on-primary hover:opacity-90 px-4 py-2 rounded-full font-medium transition-colors duration-[var(--md-sys-motion-duration-short3)] ease-[var(--md-sys-motion-easing-standard)];
   }
 
   .btn-secondary {
-    @apply bg-desert-200 text-desert-800 hover:bg-desert-300 dark:bg-night-desert-400 dark:text-desert-100 
-           dark:hover:bg-night-desert-500 px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply bg-secondary-container text-on-secondary-container hover:opacity-90 px-4 py-2 rounded-full font-medium transition-colors duration-[var(--md-sys-motion-duration-short3)] ease-[var(--md-sys-motion-easing-standard)];
   }
 
   .card {
-    @apply bg-white dark:bg-night-desert-200 rounded-lg shadow-desert p-6 transition-colors duration-200;
+    @apply bg-surface-container-low rounded-xl border border-outline-variant p-6 transition-colors duration-[var(--md-sys-motion-duration-medium2)] ease-[var(--md-sys-motion-easing-standard)] shadow-sm;
   }
 
   .nav-link {
-    @apply text-desert-800 dark:text-desert-200 hover:text-desert-600 dark:hover:text-desert-400 
-           transition-colors duration-200;
+    @apply text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)] ease-[var(--md-sys-motion-easing-standard)];
+  }
+}
+
+@layer utilities {
+  .elevation-1 {
+    box-shadow: var(--md-sys-elevation-level1);
+  }
+
+  .elevation-2 {
+    box-shadow: var(--md-sys-elevation-level2);
+  }
+
+  .elevation-3 {
+    box-shadow: var(--md-sys-elevation-level3);
+  }
+
+  .elevation-4 {
+    box-shadow: var(--md-sys-elevation-level4);
+  }
+
+  .elevation-5 {
+    box-shadow: var(--md-sys-elevation-level5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
   }
 }

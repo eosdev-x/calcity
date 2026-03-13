@@ -175,10 +175,10 @@ export function GlobalSearch() {
           <button
             type="button"
             onClick={() => setActiveFilter('all')}
-            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors duration-[var(--md-sys-motion-duration-short3)] ${
               activeFilter === 'all' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
+                ? 'bg-primary text-on-primary' 
+                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
             }`}
           >
             All
@@ -186,10 +186,10 @@ export function GlobalSearch() {
           <button
             type="button"
             onClick={() => setActiveFilter('businesses')}
-            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors duration-[var(--md-sys-motion-duration-short3)] ${
               activeFilter === 'businesses' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
+                ? 'bg-primary text-on-primary' 
+                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
             }`}
           >
             <Building2 className="inline-block w-4 h-4 mr-1" />
@@ -198,10 +198,10 @@ export function GlobalSearch() {
           <button
             type="button"
             onClick={() => setActiveFilter('events')}
-            className={`px-5 py-2 rounded-full text-base font-medium transition-colors ${
+            className={`px-5 py-2 rounded-full text-base font-medium transition-colors duration-[var(--md-sys-motion-duration-short3)] ${
               activeFilter === 'events' 
-                ? 'bg-desert-600 text-white' 
-                : 'bg-white/80 text-desert-700 hover:bg-white'
+                ? 'bg-primary text-on-primary' 
+                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
             }`}
           >
             <Calendar className="inline-block w-4 h-4 mr-1" />
@@ -219,23 +219,23 @@ export function GlobalSearch() {
             }}
             onFocus={() => setShowResults(true)}
             placeholder="Search businesses, events, and more..."
-            className="w-full h-14 pl-12 pr-12 rounded-full border-2 border-desert-300 bg-white/90 backdrop-blur-sm 
-                      text-desert-800 placeholder-desert-500 shadow-lg focus:outline-none focus:ring-2 
-                      focus:ring-desert-500 focus:border-transparent text-lg"
+            className="w-full h-14 pl-12 pr-12 rounded-full border border-outline bg-surface-container-high 
+                      text-on-surface placeholder-on-surface-variant shadow-sm focus:outline-none focus:ring-2 
+                      focus:ring-primary focus:border-primary text-lg"
           />
-          <Search className="absolute left-4 w-6 h-6 text-desert-500" />
+          <Search className="absolute left-4 w-6 h-6 text-on-surface-variant" />
           {searchTerm && (
             <button
               type="button"
               onClick={clearSearch}
-              className="absolute right-14 w-6 h-6 text-desert-500 hover:text-desert-700"
+            className="absolute right-14 w-6 h-6 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
             >
               <X size={20} />
             </button>
           )}
           <button
             type="submit"
-            className="absolute right-3 bg-desert-600 hover:bg-desert-700 text-white rounded-full p-2 transition-colors"
+            className="absolute right-3 bg-primary hover:bg-primary/90 text-on-primary rounded-full p-2 transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           >
             <ArrowRight size={20} />
           </button>
@@ -244,30 +244,30 @@ export function GlobalSearch() {
       
       {/* Search results dropdown */}
       {showResults && (searchTerm || searchHistory.length > 0) && (
-        <div className="absolute w-full mt-2 bg-white rounded-lg shadow-xl border border-desert-200 max-h-96 overflow-y-auto">
+        <div className="absolute w-full mt-2 bg-surface-container-high rounded-xl elevation-2 border border-outline-variant max-h-96 overflow-y-auto">
           {isSearching ? (
-            <div className="p-4 text-center text-desert-600">
+            <div className="p-4 text-center text-on-surface-variant">
               <div className="animate-pulse">Searching...</div>
             </div>
           ) : (
             <>
               {searchTerm && results.length === 0 ? (
-                <div className="p-4 text-center text-desert-600">
+                <div className="p-4 text-center text-on-surface-variant">
                   No results found for "{searchTerm}"
                 </div>
               ) : (
                 <>
                   {/* Search results */}
                   {results.length > 0 && (
-                    <div className="divide-y divide-desert-100">
+                    <div className="divide-y divide-outline-variant">
                       {results.map((result) => (
                         <Link
                           key={`${result.type}-${result.id}`}
                           to={result.type === 'business' ? `/businesses/${result.id}` : `/events/${result.id}`}
-                          className="flex items-center p-3 hover:bg-desert-50 transition-colors"
+                          className="flex items-center p-3 hover:bg-surface-container transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                           onClick={() => setShowResults(false)}
                         >
-                          <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
+                          <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                             <img 
                               src={result.image} 
                               alt={result.title} 
@@ -276,20 +276,20 @@ export function GlobalSearch() {
                           </div>
                           <div className="ml-3 flex-grow">
                             <div className="flex items-center">
-                              <h4 className="font-medium text-desert-800">{result.title}</h4>
+                              <h4 className="font-medium text-on-surface">{result.title}</h4>
                               {result.isPremium && (
-                                <span className="ml-2 px-1.5 py-0.5 bg-desert-100 text-desert-600 text-xs rounded-sm">
+                                <span className="ml-2 px-2 py-0.5 bg-secondary-container text-on-secondary-container text-xs rounded-lg">
                                   Premium
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm text-desert-500">{result.subtitle}</p>
+                            <p className="text-sm text-on-surface-variant">{result.subtitle}</p>
                           </div>
                           <div className="ml-2 flex-shrink-0">
                             {result.type === 'business' ? (
-                              <Building2 className="w-4 h-4 text-desert-400" />
+                              <Building2 className="w-4 h-4 text-on-surface-variant" />
                             ) : (
-                              <Calendar className="w-4 h-4 text-desert-400" />
+                              <Calendar className="w-4 h-4 text-on-surface-variant" />
                             )}
                           </div>
                         </Link>
@@ -300,20 +300,20 @@ export function GlobalSearch() {
                   {/* Search history (show only if no current results or search term) */}
                   {(!searchTerm || results.length === 0) && searchHistory.length > 0 && (
                     <div className="p-2">
-                      <h4 className="text-xs uppercase text-desert-500 font-semibold px-2 py-1">
+                      <h4 className="text-xs uppercase text-on-surface-variant font-semibold px-2 py-1">
                         Recent Searches
                       </h4>
-                      <div className="divide-y divide-desert-100">
+                      <div className="divide-y divide-outline-variant">
                         {searchHistory.map((term, index) => (
                           <button
                             key={index}
-                            className="w-full text-left px-3 py-2 hover:bg-desert-50 transition-colors text-desert-700"
+                            className="w-full text-left px-3 py-2 hover:bg-surface-container transition-colors duration-[var(--md-sys-motion-duration-short3)] text-on-surface-variant"
                             onClick={() => {
                               setSearchTerm(term);
                               // Don't hide results to show the search results for this term
                             }}
                           >
-                            <Search className="inline-block w-3 h-3 mr-2 text-desert-400" />
+                            <Search className="inline-block w-3 h-3 mr-2 text-on-surface-variant" />
                             {term}
                           </button>
                         ))}

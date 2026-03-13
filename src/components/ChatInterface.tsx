@@ -69,15 +69,15 @@ export function ChatInterface() {
           >
             <div
               className={clsx(
-                'max-w-[80%] rounded-lg p-3',
+                'max-w-[80%] rounded-xl p-3',
                 message.role === 'user'
-                  ? 'bg-desert-400 text-white'
-                  : 'bg-desert-100 dark:bg-night-desert-400 text-desert-800 dark:text-desert-100'
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-surface-container text-on-surface'
               )}
             >
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
-                className="prose dark:prose-invert max-w-none"
+                className="prose max-w-none"
               >
                 {message.content}
               </ReactMarkdown>
@@ -86,18 +86,18 @@ export function ChatInterface() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-desert-100 dark:bg-night-desert-400 rounded-lg p-3">
-              <Loader2 className="w-5 h-5 animate-spin text-desert-400" />
+            <div className="bg-surface-container rounded-xl p-3">
+              <Loader2 className="w-5 h-5 animate-spin text-on-surface-variant" />
             </div>
           </div>
         )}
         {error && (
-          <div className="text-red-500 text-center text-sm">{error}</div>
+          <div className="text-error text-center text-sm">{error}</div>
         )}
       </div>
       <form 
         onSubmit={handleSubmit}
-        className="border-t border-desert-200 dark:border-night-desert-300 p-4 bg-white dark:bg-night-desert-200"
+        className="border-t border-outline-variant p-4 bg-surface-container"
       >
         <div className="flex space-x-2">
           <input
@@ -105,20 +105,18 @@ export function ChatInterface() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about California City..."
-            className="flex-1 px-4 py-2 rounded-lg border border-desert-200 dark:border-night-desert-300 
-                     bg-white dark:bg-night-desert-300 text-desert-800 dark:text-desert-100
-                     focus:outline-none focus:ring-2 focus:ring-desert-400"
+            className="flex-1 px-4 py-2 rounded-xl border border-outline bg-surface-container-high text-on-surface 
+                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             disabled={isLoading}
           />
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
             className={clsx(
-              'px-4 py-2 rounded-lg',
-              'bg-desert-400 text-white',
-              'hover:bg-desert-500',
-              'dark:bg-desert-600 dark:hover:bg-desert-700',
-              'transition-colors duration-200',
+              'px-4 py-2 rounded-xl',
+              'bg-primary text-on-primary',
+              'hover:bg-primary/90',
+              'transition-colors duration-[var(--md-sys-motion-duration-short3)]',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
