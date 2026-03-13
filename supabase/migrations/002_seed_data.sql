@@ -4,8 +4,8 @@
 
 -- We need a placeholder user for seed data ownership
 -- After creating your admin account, update these records:
--- UPDATE businesses SET owner_id = '<your-admin-uuid>' WHERE owner_id = '00000000-0000-0000-0000-000000000000';
--- UPDATE events SET organizer_id = '<your-admin-uuid>' WHERE organizer_id = '00000000-0000-0000-0000-000000000000';
+-- UPDATE businesses SET owner_id = '<your-admin-uuid>' WHERE owner_id = '7ca0e870-e015-4f7b-8f68-deaf3c896ee2';
+-- UPDATE events SET organizer_id = '<your-admin-uuid>' WHERE organizer_id = '7ca0e870-e015-4f7b-8f68-deaf3c896ee2';
 
 -- ============================================
 -- Seed Businesses
@@ -13,7 +13,7 @@
 INSERT INTO public.businesses (owner_id, name, slug, category, address, phone, website, image, description, hours, amenities, social_media, rating, status, approved_at, subscription_tier)
 VALUES
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Oasis Cafe',
     'desert-oasis-cafe',
     'Restaurant',
@@ -31,7 +31,7 @@ VALUES
     'premium'
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Mojave Motors',
     'mojave-motors',
     'Automotive',
@@ -49,7 +49,7 @@ VALUES
     'basic'
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert View Inn',
     'desert-view-inn',
     'Lodging',
@@ -67,7 +67,7 @@ VALUES
     'spotlight'
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Trails Outfitters',
     'desert-trails-outfitters',
     'Outdoor Recreation',
@@ -85,7 +85,7 @@ VALUES
     'premium'
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Bloom Market',
     'desert-bloom-market',
     'Grocery',
@@ -103,7 +103,7 @@ VALUES
     'basic'
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Tech Solutions',
     'desert-tech-solutions',
     'Technology',
@@ -132,7 +132,7 @@ UPDATE public.businesses SET is_spotlight = true WHERE subscription_tier = 'spot
 INSERT INTO public.events (organizer_id, title, slug, description, category, tags, date, time, location, image, organizer_name, organizer_email, organizer_phone, status, approved_at)
 VALUES
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Arts Festival',
     'desert-arts-festival-2025',
     'Annual arts and crafts festival featuring local artists',
@@ -149,7 +149,7 @@ VALUES
     now()
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Community Cleanup Day',
     'community-cleanup-day-2025',
     'Join us in keeping our desert community beautiful',
@@ -166,7 +166,7 @@ VALUES
     now()
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Stargazing Night',
     'stargazing-night-2025',
     'Experience the beauty of the desert night sky with professional astronomers',
@@ -183,7 +183,7 @@ VALUES
     now()
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Food Truck Festival',
     'desert-food-truck-festival-2025',
     'A gathering of the region''s best food trucks featuring local and international cuisine',
@@ -200,7 +200,7 @@ VALUES
     now()
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Adventure Race',
     'desert-adventure-race-2025',
     'Challenge yourself in this exciting desert terrain race featuring multiple categories',
@@ -217,7 +217,7 @@ VALUES
     now()
   ),
   (
-    '00000000-0000-0000-0000-000000000000',
+    '7ca0e870-e015-4f7b-8f68-deaf3c896ee2',
     'Desert Wildlife Photography Workshop',
     'desert-wildlife-photography-workshop-2025',
     'Learn wildlife photography techniques while exploring local desert fauna',
