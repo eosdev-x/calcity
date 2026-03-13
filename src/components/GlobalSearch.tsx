@@ -9,7 +9,7 @@ import { Event } from '../types/event';
 type SearchResultType = 'business' | 'event';
 
 interface SearchResult {
-  id: number;
+  id: string;
   title: string;
   type: SearchResultType;
   subtitle: string;
@@ -79,7 +79,7 @@ export function GlobalSearch() {
         ? businesses
             .filter(business => 
               business.name.toLowerCase().includes(query) || 
-              business.description.toLowerCase().includes(query) ||
+              (business.description || '').toLowerCase().includes(query) ||
               business.category.toLowerCase().includes(query)
             )
             .slice(0, 5)
@@ -117,7 +117,7 @@ export function GlobalSearch() {
     title: business.name,
     type: 'business',
     subtitle: business.category,
-    image: business.image,
+    image: business.image || '',
     isPremium: false // In a real app, this would be determined by the business tier
   });
 
@@ -127,7 +127,7 @@ export function GlobalSearch() {
     title: event.title,
     type: 'event',
     subtitle: `${event.date} • ${event.category}`,
-    image: event.image
+    image: event.image || ''
   });
 
   // Handle search submission

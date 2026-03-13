@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useEvents } from '../context/EventContext';
 import { useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
@@ -16,16 +15,40 @@ import {
 import { Event } from '../types/event';
 import { submitEvent, getEventCategories, getCurrentDate, getOneYearFromNow } from '../api/events';
 import { clsx } from 'clsx';
+import { useAuth } from '../context/AuthContext';
+
+type EventFormData = {
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  image: string;
+  category: string;
+  tags: string[];
+  organizer_name: string;
+  organizer_email: string;
+  organizer_phone: string;
+};
+
+const slugify = (value: string): string => {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+};
 
 export function EventSubmission() {
   const navigate = useNavigate();
   const categories = getEventCategories();
   const minDate = getCurrentDate();
   const maxDate = getOneYearFromNow();
-  const { addEvent } = useEvents();
+  const { user } = useAuth();
   
   // Form state
-  const [formData, setFormData] = useState<Omit<Event, 'id'>>({
+  const [formData, setFormData] = useState<EventFormData>({
     title: '',
     date: minDate,
     time: '',
@@ -34,11 +57,9 @@ export function EventSubmission() {
     image: '',
     category: '',
     tags: [],
-    organizer: {
-      name: '',
-      email: '',
-      phone: ''
-    }
+    organizer_name: '',
+    organizer_email: '',
+    organizer_phone: ''
   });
   
   // Form submission state
@@ -56,22 +77,10 @@ export function EventSubmission() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    // Handle nested organizer fields
-    if (name.startsWith('organizer.')) {
-      const field = name.split('.')[1];
-      setFormData(prev => ({
-        ...prev,
-        organizer: {
-          ...prev.organizer,
-          [field]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
   
   // Handle image upload
@@ -131,21 +140,49 @@ export function EventSubmission() {
       }
       
       // Validate organizer information
-      const requiredOrganizerFields = ['name', 'email', 'phone'];
+      const requiredOrganizerFields = ['organizer_name', 'organizer_email', 'organizer_phone'];
       const missingOrganizerFields = requiredOrganizerFields.filter(
-        field => !formData.organizer[field as keyof typeof formData.organizer]
+        field => !formData[field as keyof typeof formData]
       );
       
       if (missingOrganizerFields.length > 0) {
         throw new Error(`Please fill in the following organizer fields: ${missingOrganizerFields.join(', ')}`);
       }
       
-      // Submit the form data
-      const result = await submitEvent(formData);
-      console.log('Event created:', result);
-      
-      // Add the new event to the context for optimistic updates
-      addEvent(result);
+      if (!user) {
+        throw new Error('You must be signed in to submit an event');
+      }
+
+      const now = new Date().toISOString();
+      const payload: Omit<Event, 'id'> = {
+        organizer_id: user.id,
+        business_id: null,
+        title: formData.title,
+        slug: slugify(formData.title),
+        description: formData.description,
+        category: formData.category,
+        tags: formData.tags,
+        date: formData.date,
+        end_date: null,
+        time: formData.time,
+        end_time: null,
+        location: formData.location,
+        address: null,
+        image: formData.image || null,
+        ticket_url: null,
+        price: null,
+        is_promoted: false,
+        is_featured: false,
+        organizer_name: formData.organizer_name,
+        organizer_email: formData.organizer_email,
+        organizer_phone: formData.organizer_phone || null,
+        status: 'pending',
+        view_count: 0,
+        created_at: now,
+        updated_at: now
+      };
+
+      const result = await submitEvent(payload);
       
       // Show success message
       setSuccess(true);
@@ -455,14 +492,14 @@ export function EventSubmission() {
                   <div className="space-y-4">
                     {/* Organizer Name */}
                     <div>
-                      <label htmlFor="organizer.name" className="block text-sm font-medium text-on-surface-variant mb-1">
+                      <label htmlFor="organizer_name" className="block text-sm font-medium text-on-surface-variant mb-1">
                         Organizer Name *
                       </label>
                       <input
                         type="text"
-                        id="organizer.name"
-                        name="organizer.name"
-                        value={formData.organizer.name}
+                        id="organizer_name"
+                        name="organizer_name"
+                        value={formData.organizer_name}
                         onChange={handleChange}
                         className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         required
@@ -471,15 +508,15 @@ export function EventSubmission() {
                     
                     {/* Organizer Email */}
                     <div>
-                      <label htmlFor="organizer.email" className="block text-sm font-medium text-on-surface-variant mb-1">
+                      <label htmlFor="organizer_email" className="block text-sm font-medium text-on-surface-variant mb-1">
                         <Mail className="w-4 h-4 inline mr-1" />
                         Email *
                       </label>
                       <input
                         type="email"
-                        id="organizer.email"
-                        name="organizer.email"
-                        value={formData.organizer.email}
+                        id="organizer_email"
+                        name="organizer_email"
+                        value={formData.organizer_email}
                         onChange={handleChange}
                         className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         required
@@ -488,15 +525,15 @@ export function EventSubmission() {
                     
                     {/* Organizer Phone */}
                     <div>
-                      <label htmlFor="organizer.phone" className="block text-sm font-medium text-on-surface-variant mb-1">
+                      <label htmlFor="organizer_phone" className="block text-sm font-medium text-on-surface-variant mb-1">
                         <Phone className="w-4 h-4 inline mr-1" />
                         Phone *
                       </label>
                       <input
                         type="tel"
-                        id="organizer.phone"
-                        name="organizer.phone"
-                        value={formData.organizer.phone}
+                        id="organizer_phone"
+                        name="organizer_phone"
+                        value={formData.organizer_phone}
                         onChange={handleChange}
                         placeholder="(555) 123-4567"
                         className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"

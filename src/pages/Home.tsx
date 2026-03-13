@@ -87,7 +87,7 @@ export function Home() {
                   <Link to={`/events/${event.id}`}>
                     <div className="relative">
                       <img
-                        src={event.image}
+                        src={event.image || ''}
                         alt={event.title}
                         className="w-full h-48 object-cover rounded-t-xl"
                       />
@@ -156,7 +156,7 @@ export function Home() {
                 <Link to={`/businesses/${business.id}`}>
                   <div className="relative">
                     <img
-                      src={business.image}
+                      src={business.image || ''}
                       alt={business.name}
                       className="w-full h-48 object-cover rounded-t-xl"
                     />

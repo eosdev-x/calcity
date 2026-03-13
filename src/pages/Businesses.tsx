@@ -158,7 +158,7 @@ export function Businesses() {
             <div key={business.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
               <Link to={`/businesses/${business.id}`}>
                 <img
-                  src={business.image}
+                  src={business.image || ''}
                   alt={business.name}
                   className="w-full h-48 object-cover rounded-t-xl mb-4 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
                 />
@@ -196,15 +196,17 @@ export function Businesses() {
                   <Phone className="w-4 h-4 flex-shrink-0" />
                   <span className="hover:underline">{business.phone}</span>
                 </a>
-                <a
-                  href={`https://${business.website}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
-                >
-                  <Globe className="w-4 h-4 flex-shrink-0" />
-                  <span className="hover:underline">{business.website}</span>
-                </a>
+                {business.website && (
+                  <a
+                    href={`https://${business.website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+                  >
+                    <Globe className="w-4 h-4 flex-shrink-0" />
+                    <span className="hover:underline">{business.website}</span>
+                  </a>
+                )}
               </div>
 
               <Link 
