@@ -1,6 +1,32 @@
 import { useEffect, useState } from 'react';
-import { CloudRain, Loader2 } from 'lucide-react';
+import {
+  Cloud,
+  CloudDrizzle,
+  CloudFog,
+  CloudHail,
+  CloudLightning,
+  CloudRain,
+  CloudSnow,
+  CloudSun,
+  Loader2,
+  Snowflake,
+  Sun,
+  type LucideIcon
+} from 'lucide-react';
 import { getWeather, WeatherData } from '../api/weather';
+
+const iconMap: Record<string, LucideIcon> = {
+  Sun,
+  CloudSun,
+  Cloud,
+  CloudFog,
+  CloudDrizzle,
+  CloudRain,
+  CloudHail,
+  CloudSnow,
+  Snowflake,
+  CloudLightning
+};
 
 export function WeatherWidget() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -44,13 +70,11 @@ export function WeatherWidget() {
     );
   }
 
+  const WeatherIcon = weather?.icon ? iconMap[weather.icon] ?? CloudRain : CloudRain;
+
   return (
     <div className="flex items-center justify-center space-x-4 py-4">
-      <img
-        src={`https://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
-        alt={weather?.description}
-        className="w-10 h-10"
-      />
+      <WeatherIcon className="w-10 h-10 text-amber-500" />
       <div className="text-on-surface-variant">
         <span className="font-semibold">{weather?.temp}°F</span>
         <span className="mx-2">|</span>
