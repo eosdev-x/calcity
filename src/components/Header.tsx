@@ -4,6 +4,7 @@ import { Menu, X, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileDropdown } from './auth/UserProfileDropdown';
 import logo from '../assets/logo.svg';
+import { siteConfig } from '../config/site';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,13 +15,17 @@ export function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center -my-2">
-            <img src={logo} alt="CalCity.info" className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
+            <img src={logo} alt={siteConfig.name} className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/events" className="nav-link">Events</Link>
-            <Link to="/businesses" className="nav-link">Businesses</Link>
+            {siteConfig.features.events && (
+              <Link to="/events" className="nav-link">Events</Link>
+            )}
+            {siteConfig.features.businesses && (
+              <Link to="/businesses" className="nav-link">Businesses</Link>
+            )}
             <Link to="/pricing" className="nav-link">Pricing</Link>
             {!isLoading && user && (
               <Link to="/dashboard" className="nav-link">Dashboard</Link>
@@ -70,20 +75,24 @@ export function Header() {
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden mt-4 space-y-4 pb-4">
-              <Link
-                to="/events"
-                className="block nav-link py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Events
-              </Link>
-              <Link
-                to="/businesses"
-                className="block nav-link py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Businesses
-              </Link>
+              {siteConfig.features.events && (
+                <Link
+                  to="/events"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Events
+                </Link>
+              )}
+              {siteConfig.features.businesses && (
+                <Link
+                  to="/businesses"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Businesses
+                </Link>
+              )}
               <Link
                 to="/pricing"
                 className="block nav-link py-2"

@@ -15,6 +15,7 @@ import { Business } from '../types/business';
 import { submitBusiness, getBusinessCategories } from '../api/businesses';
 import { useAuth } from '../context/AuthContext';
 import { slugify } from '../utils/slugify';
+import { siteConfig } from '../config/site';
 
 type BusinessFormData = {
   name: string;
@@ -152,8 +153,8 @@ export function BusinessProfileCreation() {
         slug: slugify(formData.name),
         category: formData.category,
         address: formData.address,
-        city: 'California City',
-        state: 'CA',
+        city: siteConfig.defaults.city,
+        state: siteConfig.defaults.state,
         zip: null,
         phone: formData.phone,
         email: null,
@@ -211,7 +212,7 @@ export function BusinessProfileCreation() {
             Add Your Business
           </h1>
           <p className="text-on-surface-variant max-w-2xl mx-auto">
-            Join the California City business directory and connect with local residents and visitors. 
+            Join the {siteConfig.city} business directory and connect with local residents and visitors. 
             Complete the form below to create your free business listing.
           </p>
         </div>

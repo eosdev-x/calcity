@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { List, ArrowLeft } from 'lucide-react';
 import { EventCalendar } from '../components/EventCalendar';
 import { useEvents } from '../context/EventContext';
+import { siteConfig } from '../config/site';
 
 export function EventCalendarView() {
   const { events, loading } = useEvents();
@@ -47,7 +48,7 @@ export function EventCalendarView() {
             Event Calendar
           </h1>
           <p className="text-on-surface-variant">
-            Browse upcoming events in California City by date
+            Browse upcoming events in {siteConfig.city} by date
           </p>
         </div>
         

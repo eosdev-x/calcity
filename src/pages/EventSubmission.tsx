@@ -17,6 +17,7 @@ import { submitEvent, getEventCategories, getCurrentDate, getOneYearFromNow } fr
 import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
 import { slugify } from '../utils/slugify';
+import { siteConfig } from '../config/site';
 
 type EventFormData = {
   title: string;
@@ -209,7 +210,7 @@ export function EventSubmission() {
             Submit an Event
           </h1>
           <p className="text-on-surface-variant max-w-2xl mx-auto">
-            Share your event with the California City community. Complete the form below to submit your event for approval.
+            Share your event with the {siteConfig.city} community. Complete the form below to submit your event for approval.
           </p>
         </div>
         
@@ -468,7 +469,7 @@ export function EventSubmission() {
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
-                    placeholder="e.g., Central Park, California City"
+                    placeholder={`e.g., Central Park, ${siteConfig.city}`}
                     className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   />

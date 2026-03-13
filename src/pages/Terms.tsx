@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { siteConfig } from '../config/site';
 
 export function Terms() {
   return (
@@ -13,7 +14,7 @@ export function Terms() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">1. Introduction</h2>
           <p>
-            Welcome to CalCity.info. These Terms of Service ("Terms") govern your access to and use of the CalCity.info website
+            Welcome to {siteConfig.name}. These Terms of Service ("Terms") govern your access to and use of the {siteConfig.name} website
             and all related services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms.
             If you do not agree to these Terms, please do not use the Service.
           </p>
@@ -22,7 +23,7 @@ export function Terms() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">2. User Rights and Responsibilities</h2>
           <p>
-            When using our Service, you have the right to access information about California City and its businesses and events.
+            When using our Service, you have the right to access information about {siteConfig.city} and its businesses and events.
             In return, you are responsible for:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
@@ -40,7 +41,7 @@ export function Terms() {
             To ensure a positive experience for all users, we ask that you:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>Use the Service for its intended purpose of finding information about California City</li>
+            <li>Use the Service for its intended purpose of finding information about {siteConfig.city}</li>
             <li>Do not attempt to disrupt or interfere with the Service's operation</li>
             <li>Do not use automated systems or software to extract data from the Service (scraping) without our prior written consent</li>
             <li>Do not bypass any measures we may use to prevent or restrict access to the Service</li>
@@ -141,10 +142,10 @@ export function Terms() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">10. Intellectual Property Rights</h2>
           <p>
-            The Service and its original content, features, and functionality are owned by CalCity.info and are protected by copyright, trademark, and other intellectual property laws:
+            The Service and its original content, features, and functionality are owned by {siteConfig.name} and are protected by copyright, trademark, and other intellectual property laws:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>The CalCity.info name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of CalCity.info or its affiliates</li>
+            <li>The {siteConfig.name} name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of {siteConfig.name} or its affiliates</li>
             <li>You may not use these marks without our prior written permission</li>
             <li>You retain ownership of content you submit, but grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, translate, and distribute it</li>
             <li>You represent that you have all necessary rights to grant us this license</li>
@@ -189,7 +190,7 @@ export function Terms() {
             These Terms and your use of the Service shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions.
           </p>
           <p>
-            Any legal action or proceeding arising out of or relating to these Terms or the Service shall be brought exclusively in the federal or state courts located in Kern County, California, and you consent to the personal jurisdiction of such courts.
+            Any legal action or proceeding arising out of or relating to these Terms or the Service shall be brought exclusively in the federal or state courts located in {siteConfig.city}, {siteConfig.state}, and you consent to the personal jurisdiction of such courts.
           </p>
         </section>
 
@@ -199,10 +200,10 @@ export function Terms() {
             If you have any questions about these Terms, please contact us at:
           </p>
           <div className="mt-4">
-            <p>CalCity.info Legal Department</p>
-            <p>Email: <a href="mailto:legal@calcity.info" className="text-on-surface-variant hover:underline">legal@calcity.info</a></p>
+            <p>{siteConfig.name} Legal Department</p>
+            <p>Email: <a href={`mailto:legal@${siteConfig.domain}`} className="text-on-surface-variant hover:underline">legal@{siteConfig.domain}</a></p>
             <p>Phone: (555) 123-4567</p>
-            <p>Address: 123 Main Street, California City, CA 93505</p>
+            <p>Address: 123 Main Street, {siteConfig.city}, {siteConfig.state} 93505</p>
           </div>
         </section>
       </div>

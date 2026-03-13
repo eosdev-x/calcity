@@ -7,6 +7,7 @@ import { useEvents } from '../context/EventContext';
 import { useBusinesses } from '../context/BusinessContext';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { getTierBadge } from '../hooks/useBusinessPermissions';
+import { siteConfig } from '../config/site';
 
 export function Home() {
   // Get events and businesses from context
@@ -54,16 +55,18 @@ export function Home() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-scrim/70 to-scrim/50" />
         <div className="container mx-auto px-4 py-12 h-full flex flex-col items-center relative">
-          <div className="self-end mb-8">
-            <WeatherWidget />
-          </div>
+          {siteConfig.features.weather && (
+            <div className="self-end mb-8">
+              <WeatherWidget />
+            </div>
+          )}
           
           <div className="max-w-2xl text-center mb-8">
             <h1 className="text-4xl md:text-6xl font-display font-bold text-inverse-on-surface mb-6">
-              Welcome to California City
+              Welcome to {siteConfig.city}
             </h1>
             <p className="text-xl text-inverse-on-surface mb-8">
-              Discover the beauty and opportunity of the Mojave Desert's hidden gem
+              {siteConfig.tagline}
             </p>
           </div>
 
@@ -74,77 +77,78 @@ export function Home() {
         </div>
       </section>
 
-      {/* Upcoming Events Section */}
-      <section className="py-16 bg-surface">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-display font-bold">
-              Upcoming Events
-            </h2>
-            <Link to="/events" className="btn-secondary flex items-center">
-              View All Events
-              <Calendar className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {upcomingEvents.length > 0 ? (
-              upcomingEvents.map((event) => (
-                <div key={event.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
-                  <Link to={`/events/${event.id}`}>
-                    <div className="relative">
-                      <img
-                        src={event.image || ''}
-                        alt={event.title}
-                        className="w-full h-48 object-cover rounded-t-xl"
-                      />
-                      <div className="absolute top-2 right-2 bg-primary text-on-primary text-xs font-bold px-2 py-1 rounded">
-                        {event.category}
-                      </div>
-                    </div>
-                  </Link>
-                  
-                  <div className="p-4">
+      {siteConfig.features.events && (
+        <section className="py-16 bg-surface">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-display font-bold">
+                Upcoming Events
+              </h2>
+              <Link to="/events" className="btn-secondary flex items-center">
+                View All Events
+                <Calendar className="ml-2 w-4 h-4" />
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {upcomingEvents.length > 0 ? (
+                upcomingEvents.map((event) => (
+                  <div key={event.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
                     <Link to={`/events/${event.id}`}>
-                      <h3 className="text-xl font-semibold mb-2 line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{event.title}</h3>
+                      <div className="relative">
+                        <img
+                          src={event.image || ''}
+                          alt={event.title}
+                          className="w-full h-48 object-cover rounded-t-xl"
+                        />
+                        <div className="absolute top-2 right-2 bg-primary text-on-primary text-xs font-bold px-2 py-1 rounded">
+                          {event.category}
+                        </div>
+                      </div>
                     </Link>
                     
-                    <div className="space-y-2 mb-3">
-                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
-                        <Calendar className="w-4 h-4 flex-shrink-0" />
-                        <span>{new Date(event.date).toLocaleDateString()}</span>
+                    <div className="p-4">
+                      <Link to={`/events/${event.id}`}>
+                        <h3 className="text-xl font-semibold mb-2 line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{event.title}</h3>
+                      </Link>
+                      
+                      <div className="space-y-2 mb-3">
+                        <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                          <Calendar className="w-4 h-4 flex-shrink-0" />
+                          <span>{new Date(event.date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                          <Clock className="w-4 h-4 flex-shrink-0" />
+                          <span>{event.time}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                          <MapPin className="w-4 h-4 flex-shrink-0" />
+                          <span className="line-clamp-1">{event.location}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
-                        <Clock className="w-4 h-4 flex-shrink-0" />
-                        <span>{event.time}</span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
-                        <MapPin className="w-4 h-4 flex-shrink-0" />
-                        <span className="line-clamp-1">{event.location}</span>
-                      </div>
-                    </div>
 
-                    <Link 
-                      to={`/events/${event.id}`}
-                      className="btn-primary w-full block text-center text-sm"
-                    >
-                      Learn More
-                    </Link>
+                      <Link 
+                        to={`/events/${event.id}`}
+                        className="btn-primary w-full block text-center text-sm"
+                      >
+                        Learn More
+                      </Link>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-12">
+                  <p className="text-xl text-on-surface-variant">
+                    No upcoming events at this time.
+                  </p>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12">
-                <p className="text-xl text-on-surface-variant">
-                  No upcoming events at this time.
-                </p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       
-      {spotlightBusinesses.length > 0 && (
+      {siteConfig.features.businesses && spotlightBusinesses.length > 0 && (
         <section className="py-16 bg-surface">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center mb-8">
@@ -226,7 +230,7 @@ export function Home() {
       )}
 
       {/* Local Businesses Section */}
-      {featuredBusinesses.length > 0 && (
+      {siteConfig.features.businesses && featuredBusinesses.length > 0 && (
         <section className="py-16 bg-surface ">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center mb-8">
@@ -300,132 +304,135 @@ export function Home() {
         </section>
       )}
       
-      {/* Visitor Guide Preview Section */}
-      <section className="py-16 bg-surface">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-display font-bold">
-              Plan Your Visit
-            </h2>
-            <Link to="/guide" className="btn-secondary flex items-center">
-              View Full Guide
-              <MapPin className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Weather Widget */}
-            <div className="card">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Sun className="w-5 h-5 text-on-surface-variant mr-2" />
-                Current Weather
-              </h3>
-              <WeatherWidget />
-              
-              <div className="mt-4 pt-4 border-t border-outline-variant">
-                <h4 className="font-medium mb-2">Best Time to Visit</h4>
-                <p className="text-on-surface-variant text-sm">
-                  Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold.
-                </p>
-              </div>
-            </div>
-            
-            {/* Top Attractions */}
-            <div className="card">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Compass className="w-5 h-5 text-on-surface-variant mr-2" />
-                Top Attractions
-              </h3>
-              
-              <div className="space-y-4">
-                {attractions.map((attraction, index) => (
-                  <div key={index} className="flex">
-                    <Link to="/guide" className="flex-shrink-0">
-                      <img 
-                        src={attraction.image} 
-                        alt={attraction.name}
-                        className="w-20 h-20 object-cover rounded-xl mr-3 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
-                      />
-                    </Link>
-                    <div>
-                      <Link to="/guide">
-                        <h4 className="font-medium hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{attraction.name}</h4>
-                      </Link>
-                      <p className="text-on-surface-variant text-sm">
-                        {attraction.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-4 pt-4 border-t border-outline-variant">
-                <h4 className="font-medium mb-2">Must-See Attractions</h4>
-                <p className="text-on-surface-variant text-sm">
-                  Don't miss Central Park with its 26-acre lake, the California City Municipal Airport, and the Tierra Del Sol Golf Course.
-                </p>
-              </div>
-            </div>
-            
-            {/* Essential Information */}
-            <div className="card">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <Info className="w-5 h-5 text-on-surface-variant mr-2" />
-                Essential Information
-              </h3>
-              
-              <div className="space-y-3">
-                <div>
-                  <h4 className="font-medium flex items-center">
-                    <Car className="w-4 h-4 text-on-surface-variant mr-2" />
-                    Getting Here
-                  </h4>
-                  <p className="text-on-surface-variant text-sm ml-6">
-                    Accessible via Highway 14 and Highway 58. Nearest airports: Mojave (30 min) and LAX (2 hours).
-                  </p>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium flex items-center">
-                    <MapPin className="w-4 h-4 text-on-surface-variant mr-2" />
-                    Important Locations
-                  </h4>
-                  <ul className="text-on-surface-variant text-sm ml-6 space-y-1">
-                    <li>Police: 21130 Hacienda Blvd</li>
-                    <li>Medical Center: 8001 Cal City Blvd</li>
-                    <li>Visitor Center: 13200 Central Park</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium flex items-center">
-                    <Calendar className="w-4 h-4 text-on-surface-variant mr-2" />
-                    Annual Events
-                  </h4>
-                  <ul className="text-on-surface-variant text-sm ml-6 space-y-1">
-                    <li>Spring Desert Festival (April)</li>
-                    <li>Desert Star-Gazing Night (August)</li>
-                    <li>Fall Arts & Crafts Fair (October)</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <Link 
-                to="/guide"
-                className="btn-primary w-full block text-center text-sm mt-4"
-              >
+      {siteConfig.features.guide && (
+        <section className="py-16 bg-surface">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-display font-bold">
                 Plan Your Visit
+              </h2>
+              <Link to="/guide" className="btn-secondary flex items-center">
+                View Full Guide
+                <MapPin className="ml-2 w-4 h-4" />
               </Link>
             </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Weather Widget */}
+              {siteConfig.features.weather && (
+                <div className="card">
+                  <h3 className="text-xl font-semibold mb-4 flex items-center">
+                    <Sun className="w-5 h-5 text-on-surface-variant mr-2" />
+                    Current Weather
+                  </h3>
+                  <WeatherWidget />
+                  
+                  <div className="mt-4 pt-4 border-t border-outline-variant">
+                    <h4 className="font-medium mb-2">Best Time to Visit</h4>
+                    <p className="text-on-surface-variant text-sm">
+                      Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {/* Top Attractions */}
+              <div className="card">
+                <h3 className="text-xl font-semibold mb-4 flex items-center">
+                  <Compass className="w-5 h-5 text-on-surface-variant mr-2" />
+                  Top Attractions
+                </h3>
+                
+                <div className="space-y-4">
+                  {attractions.map((attraction, index) => (
+                    <div key={index} className="flex">
+                      <Link to="/guide" className="flex-shrink-0">
+                        <img 
+                          src={attraction.image} 
+                          alt={attraction.name}
+                          className="w-20 h-20 object-cover rounded-xl mr-3 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
+                        />
+                      </Link>
+                      <div>
+                        <Link to="/guide">
+                          <h4 className="font-medium hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{attraction.name}</h4>
+                        </Link>
+                        <p className="text-on-surface-variant text-sm">
+                          {attraction.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 pt-4 border-t border-outline-variant">
+                  <h4 className="font-medium mb-2">Must-See Attractions</h4>
+                  <p className="text-on-surface-variant text-sm">
+                    {siteConfig.guide.attractions}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Essential Information */}
+              <div className="card">
+                <h3 className="text-xl font-semibold mb-4 flex items-center">
+                  <Info className="w-5 h-5 text-on-surface-variant mr-2" />
+                  Essential Information
+                </h3>
+                
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-medium flex items-center">
+                      <Car className="w-4 h-4 text-on-surface-variant mr-2" />
+                      Getting Here
+                    </h4>
+                    <p className="text-on-surface-variant text-sm ml-6">
+                      {siteConfig.guide.gettingHere}
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium flex items-center">
+                      <MapPin className="w-4 h-4 text-on-surface-variant mr-2" />
+                      Important Locations
+                    </h4>
+                    <ul className="text-on-surface-variant text-sm ml-6 space-y-1">
+                      {siteConfig.guide.importantLocations.map((location) => (
+                        <li key={location.name}>{location.name}: {location.detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium flex items-center">
+                      <Calendar className="w-4 h-4 text-on-surface-variant mr-2" />
+                      Annual Events
+                    </h4>
+                    <ul className="text-on-surface-variant text-sm ml-6 space-y-1">
+                      <li>Spring Desert Festival (April)</li>
+                      <li>Desert Star-Gazing Night (August)</li>
+                      <li>Fall Arts & Crafts Fair (October)</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <Link 
+                  to="/guide"
+                  className="btn-primary w-full block text-center text-sm mt-4"
+                >
+                  Plan Your Visit
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       
-      {/* Why Choose California City Section */}
+      {/* Why Choose Section */}
       <section className="py-16 bg-surface ">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-display font-bold text-center mb-12">
-            Why Choose California City?
+            Why Choose {siteConfig.city}?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
@@ -436,7 +443,7 @@ export function Home() {
               />
               <h3 className="text-xl font-semibold mb-2">Natural Beauty</h3>
               <p className="text-on-surface-variant ">
-                Experience the stunning Mojave Desert landscape and breathtaking sunsets
+                Experience the stunning landscapes and breathtaking sunsets around {siteConfig.city}
               </p>
             </div>
             <div>

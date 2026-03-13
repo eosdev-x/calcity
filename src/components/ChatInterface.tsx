@@ -5,6 +5,7 @@ import { Send, Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Message } from '../api/types';
 import { sendChatMessage } from '../api/chat';
+import { siteConfig } from '../config/site';
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -104,7 +105,7 @@ export function ChatInterface() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about California City..."
+            placeholder={`Ask about ${siteConfig.city}...`}
             className="flex-1 px-4 py-2 rounded-xl border border-outline bg-surface-container-high text-on-surface 
                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             disabled={isLoading}

@@ -9,6 +9,7 @@ import {
   SubscriptionStatus
 } from '../../types/payment';
 import { getPrimaryBusinessIdForOwner } from '../../utils/business';
+import { siteConfig } from '../../config/site';
 
 // Define subscription plans with features
 const subscriptionPlans: SubscriptionPlan[] = [
@@ -17,7 +18,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Basic',
     tier: SubscriptionTier.BASIC,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
-    stripePriceId: 'price_1TASQfRpRbHjjRj8mXv5x9rB',
+    stripePriceId: siteConfig.stripe.basicPriceId,
     features: {
       photoLimit: 1,
       featuredListing: false,
@@ -32,7 +33,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Premium',
     tier: SubscriptionTier.PREMIUM,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
-    stripePriceId: 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
+    stripePriceId: siteConfig.stripe.premiumPriceId,
     features: {
       photoLimit: 10,
       featuredListing: true,
@@ -47,7 +48,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Spotlight',
     tier: SubscriptionTier.SPOTLIGHT,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
-    stripePriceId: 'price_1TASSRRpRbHjjRj8nfJz5gSc',
+    stripePriceId: siteConfig.stripe.spotlightPriceId,
     features: {
       photoLimit: 30,
       featuredListing: true,

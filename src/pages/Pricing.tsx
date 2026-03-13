@@ -5,6 +5,7 @@ import { usePayment } from '../context/PaymentContext';
 import { useAuth } from '../context/AuthContext';
 import { SubscriptionTier, SUBSCRIPTION_PRICES, SubscriptionFeatures } from '../types/payment';
 import { getPrimaryBusinessIdForOwner } from '../utils/business';
+import { siteConfig } from '../config/site';
 
 export function Pricing() {
   const { user } = useAuth();
@@ -21,7 +22,7 @@ export function Pricing() {
       tier: SubscriptionTier.BASIC,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
       priceDisplay: "$9.99/month",
-      stripePriceId: 'price_1TASQfRpRbHjjRj8mXv5x9rB',
+      stripePriceId: siteConfig.stripe.basicPriceId,
       features: [
         "Business name, address & phone",
         "Business hours display",
@@ -44,7 +45,7 @@ export function Pricing() {
       tier: SubscriptionTier.PREMIUM,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
       priceDisplay: "$24.99/month",
-      stripePriceId: 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
+      stripePriceId: siteConfig.stripe.premiumPriceId,
       features: [
         "Everything in Basic",
         "Photo gallery (up to 10)",
@@ -68,7 +69,7 @@ export function Pricing() {
       tier: SubscriptionTier.SPOTLIGHT,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
       priceDisplay: "$49.99/month",
-      stripePriceId: 'price_1TASSRRpRbHjjRj8nfJz5gSc',
+      stripePriceId: siteConfig.stripe.spotlightPriceId,
       features: [
         "Everything in Premium",
         "Top of search results",
@@ -155,7 +156,7 @@ export function Pricing() {
             Choose Your Plan
           </h1>
           <p className="text-on-surface-variant max-w-2xl mx-auto">
-            Select the perfect plan for your business and start reaching more customers in California City
+            Select the perfect plan for your business and start reaching more customers in {siteConfig.city}
           </p>
         </div>
 
