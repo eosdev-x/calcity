@@ -69,9 +69,10 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 | SUPABASE_URL | Pages | Same as VITE_SUPABASE_URL |
 | SUPABASE_SERVICE_ROLE_KEY | Pages (encrypted) | Supabase service role |
 | RESEND_API_KEY | Pages (encrypted) | For contact form |
-| VITE_OPENWEATHER_API_KEY | Pages | OpenWeatherMap API key |
 | TURNSTILE_SECRET | Pages (encrypted) | Cloudflare Turnstile |
 | VENICE_API_KEY | Pages (encrypted) | AI chat (optional) |
+
+Weather data uses Open-Meteo and does not require an API key.
 
 ## Step 6: Launch
 1. Sign up on your site
