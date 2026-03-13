@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Business } from '../types/business';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { useBusinesses } from '../context/BusinessContext';
+import { getTierBadge } from '../hooks/useBusinessPermissions';
 
 export function Businesses() {
   const location = useLocation();
@@ -25,29 +26,9 @@ export function Businesses() {
     basic: 2,
   };
 
-  const getTierBadge = (tier: Business['subscription_tier']) => {
-    if (tier === 'spotlight') {
-      return {
-        text: '⭐ Spotlight',
-        className: 'bg-tertiary-container text-on-tertiary-container',
-      };
-    }
-    if (tier === 'premium') {
-      return {
-        text: '✨ Premium',
-        className: 'bg-secondary-container text-on-secondary-container',
-      };
-    }
-    return null;
-  };
-
   const getTierBorder = (tier: Business['subscription_tier']) => {
-    if (tier === 'spotlight') {
-      return 'border border-tertiary/50';
-    }
-    if (tier === 'premium') {
-      return 'border border-primary/30';
-    }
+    if (tier === 'spotlight') return 'border border-tertiary/50';
+    if (tier === 'premium') return 'border border-primary/30';
     return 'border border-transparent';
   };
   
