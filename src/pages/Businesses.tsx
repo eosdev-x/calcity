@@ -6,6 +6,8 @@ import { Business } from '../types/business';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { useBusinesses } from '../context/BusinessContext';
 import { getTierBadge } from '../hooks/useBusinessPermissions';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 export function Businesses() {
   const location = useLocation();
@@ -87,6 +89,12 @@ export function Businesses() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.businessesTitle}
+        description={siteConfig.seo.pages.businessesDescription}
+        path="/businesses"
+        type="website"
+      />
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-display font-bold text-on-surface">

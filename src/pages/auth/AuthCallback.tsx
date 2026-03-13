@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { SEO } from '../../components/SEO';
+import { siteConfig } from '../../config/site';
 
 export function AuthCallback() {
   const navigate = useNavigate();
@@ -49,6 +51,11 @@ export function AuthCallback() {
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center">
+      <SEO
+        title={siteConfig.seo.pages.authCallbackTitle}
+        path="/auth/callback"
+        noindex
+      />
       <div className="bg-surface-container-low rounded-xl shadow-sm p-8 max-w-md w-full border border-outline-variant">
         {error ? (
           <div className="text-center">

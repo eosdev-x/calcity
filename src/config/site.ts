@@ -6,6 +6,40 @@ export interface SiteConfig {
   tagline: string;
   domain: string;
 
+  // SEO
+  seo: {
+    defaultDescription: string;
+    defaultImage?: string;
+    twitterHandle?: string;
+    pages: {
+      homeTitle: string;
+      homeDescription: string;
+      eventsTitle: string;
+      eventsDescription: string;
+      businessesTitle: string;
+      businessesDescription: string;
+      guideTitle: string;
+      guideDescription: string;
+      pricingTitle: string;
+      pricingDescription: string;
+      termsTitle: string;
+      loginTitle: string;
+      signupTitle: string;
+      forgotPasswordTitle: string;
+      resetPasswordTitle: string;
+      authCallbackTitle: string;
+      dashboardTitle: string;
+      adminTitle: string;
+      profileTitle: string;
+      eventSubmissionTitle: string;
+      eventCalendarTitle: string;
+      businessCreationTitle: string;
+      paymentTitle: string;
+      paymentSuccessTitle: string;
+      paymentCancelTitle: string;
+    };
+  };
+
   // Theme
   seedColor: string;
 
@@ -80,6 +114,39 @@ export const siteConfig: SiteConfig = {
   state: 'CA',
   tagline: "Discover the beauty and opportunity of the Mojave Desert's hidden gem",
   domain: 'calcity.info',
+
+  seo: {
+    defaultDescription: 'Discover California City, CA — local businesses, events, visitor guide, and community info for the Mojave Desert\'s hidden gem.',
+    defaultImage: '',
+    twitterHandle: '',
+    pages: {
+      homeTitle: 'Home',
+      homeDescription: 'Discover California City, CA — local businesses, events, visitor guide, and community info for the Mojave Desert\'s hidden gem.',
+      eventsTitle: 'Events',
+      eventsDescription: 'Find upcoming events, festivals, and community gatherings in California City, CA.',
+      businessesTitle: 'Local Businesses',
+      businessesDescription: 'Explore local businesses, services, and restaurants in California City, CA.',
+      guideTitle: 'Visitor Guide',
+      guideDescription: 'Plan your trip with a visitor guide to California City, CA, including attractions, tips, and travel info.',
+      pricingTitle: 'Pricing',
+      pricingDescription: 'Compare listing plans and promotion options for California City businesses.',
+      termsTitle: 'Terms of Service',
+      loginTitle: 'Log In',
+      signupTitle: 'Sign Up',
+      forgotPasswordTitle: 'Forgot Password',
+      resetPasswordTitle: 'Reset Password',
+      authCallbackTitle: 'Authentication',
+      dashboardTitle: 'Dashboard',
+      adminTitle: 'Admin',
+      profileTitle: 'Profile',
+      eventSubmissionTitle: 'Submit Event',
+      eventCalendarTitle: 'Event Calendar',
+      businessCreationTitle: 'Create Business Profile',
+      paymentTitle: 'Payment',
+      paymentSuccessTitle: 'Payment Success',
+      paymentCancelTitle: 'Payment Cancelled',
+    },
+  },
 
   seedColor: '#C47451',
 

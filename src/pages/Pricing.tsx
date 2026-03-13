@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { SubscriptionTier, SUBSCRIPTION_PRICES, SubscriptionFeatures } from '../types/payment';
 import { getPrimaryBusinessIdForOwner } from '../utils/business';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 export function Pricing() {
   const { user } = useAuth();
@@ -150,6 +151,12 @@ export function Pricing() {
 
   return (
     <div className="min-h-screen bg-surface  py-12">
+      <SEO
+        title={siteConfig.seo.pages.pricingTitle}
+        description={siteConfig.seo.pages.pricingDescription}
+        path="/pricing"
+        type="product"
+      />
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-display font-bold text-on-surface mb-4">

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Loader2, Search } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { UserProfile } from '../../types/auth';
+import { SEO } from '../../components/SEO';
+import { siteConfig } from '../../config/site';
 
 export function UserManagement() {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
@@ -73,6 +75,11 @@ export function UserManagement() {
   if (loading) {
     return (
       <div className="min-h-screen bg-surface py-12">
+        <SEO
+          title={siteConfig.seo.pages.adminTitle}
+          path="/admin/users"
+          noindex
+        />
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Loader2 className="w-10 h-10 text-on-surface-variant animate-spin mx-auto mb-4" />
@@ -85,6 +92,11 @@ export function UserManagement() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.adminTitle}
+        path="/admin/users"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
           <div>

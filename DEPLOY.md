@@ -49,6 +49,12 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 4. Add environment variables (see below)
 5. Add custom domain
 
+## SEO
+- Update `public/robots.txt` with your domain for the sitemap URL.
+- Set `siteConfig.seo.defaultDescription` and `siteConfig.seo.defaultImage` in `src/config/site.ts`.
+- Generate a sitemap (future improvement: build it dynamically from Supabase business/event data).
+- Submit your sitemap in Google Search Console after launch.
+
 ## Environment Variables
 | Variable | Where | Notes |
 |----------|-------|-------|
@@ -63,9 +69,10 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 | SUPABASE_URL | Pages | Same as VITE_SUPABASE_URL |
 | SUPABASE_SERVICE_ROLE_KEY | Pages (encrypted) | Supabase service role |
 | RESEND_API_KEY | Pages (encrypted) | For contact form |
-| VITE_OPENWEATHER_API_KEY | Pages | OpenWeatherMap API key |
 | TURNSTILE_SECRET | Pages (encrypted) | Cloudflare Turnstile |
 | VENICE_API_KEY | Pages (encrypted) | AI chat (optional) |
+
+Weather data uses Open-Meteo and does not require an API key.
 
 ## Step 6: Launch
 1. Sign up on your site

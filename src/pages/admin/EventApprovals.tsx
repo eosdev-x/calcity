@@ -4,6 +4,8 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { Event } from '../../types/event';
 import { getAccessToken } from '../../utils/auth';
+import { SEO } from '../../components/SEO';
+import { siteConfig } from '../../config/site';
 
 interface EventOrganizer {
   email: string | null;
@@ -127,6 +129,11 @@ export function EventApprovals() {
   if (loading) {
     return (
       <div className="min-h-screen bg-surface py-12">
+        <SEO
+          title={siteConfig.seo.pages.adminTitle}
+          path="/admin/events"
+          noindex
+        />
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Loader2 className="w-10 h-10 text-on-surface-variant animate-spin mx-auto mb-4" />
@@ -139,6 +146,11 @@ export function EventApprovals() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.adminTitle}
+        path="/admin/events"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>

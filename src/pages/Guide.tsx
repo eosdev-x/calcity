@@ -2,6 +2,9 @@
 import { MapPin, Info, Calendar, Compass, Sun, Car } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
+import { buildBreadcrumbListJsonLd, buildTouristDestinationJsonLd } from '../utils/jsonLd';
 
 export function Guide() {
   const sections = [
@@ -30,8 +33,31 @@ export function Guide() {
     "Support local businesses during your visit"
   ];
 
+  const touristJsonLd = buildTouristDestinationJsonLd(siteConfig);
+  const breadcrumbsJsonLd = buildBreadcrumbListJsonLd(
+    [
+      { name: siteConfig.seo.pages.homeTitle, path: '/' },
+      { name: siteConfig.seo.pages.guideTitle, path: '/guide' },
+    ],
+    siteConfig
+  );
+
   return (
     <div className="min-h-screen bg-surface ">
+      <SEO
+        title={siteConfig.seo.pages.guideTitle}
+        description={siteConfig.seo.pages.guideDescription}
+        path="/guide"
+        type="website"
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(touristJsonLd)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbsJsonLd)}
+        </script>
+      </Helmet>
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         {/* Background Image */}
