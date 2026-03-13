@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 export function Terms() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <SEO
+        title={siteConfig.seo.pages.termsTitle}
+        path="/terms"
+        noindex
+      />
       <h1 className="text-3xl font-bold mb-8 text-on-surface">Terms of Service</h1>
       
       <div className="prose max-w-none prose-headings:text-on-surface prose-p:text-on-surface-variant prose-li:text-on-surface-variant prose-strong:text-on-surface">

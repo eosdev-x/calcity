@@ -18,6 +18,11 @@ import { useBusinesses } from '../context/BusinessContext';
 import { useAuth } from '../context/AuthContext';
 import { useBusinessPermissions } from '../hooks/useBusinessPermissions';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
+import { buildBreadcrumbListJsonLd, buildLocalBusinessJsonLd } from '../utils/jsonLd';
+import { truncateText } from '../utils/seo';
 
 function UpgradeCard({ label }: { label: string }) {
   return (
@@ -59,8 +64,34 @@ export function BusinessDetails() {
     return null;
   }
 
+  const description = truncateText(business.description || siteConfig.seo.defaultDescription, 160);
+  const businessJsonLd = buildLocalBusinessJsonLd(business, siteConfig);
+  const breadcrumbsJsonLd = buildBreadcrumbListJsonLd(
+    [
+      { name: siteConfig.seo.pages.homeTitle, path: '/' },
+      { name: siteConfig.seo.pages.businessesTitle, path: '/businesses' },
+      { name: business.name, path: `/businesses/${business.id}` },
+    ],
+    siteConfig
+  );
+
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={business.name}
+        description={description}
+        path={`/businesses/${business.id}`}
+        type="website"
+        image={business.image || undefined}
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(businessJsonLd)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbsJsonLd)}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button

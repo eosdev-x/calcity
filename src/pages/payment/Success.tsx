@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
+import { siteConfig } from '../../config/site';
+import { SEO } from '../../components/SEO';
 
 export function PaymentSuccess() {
   const navigate = useNavigate();
@@ -28,6 +30,11 @@ export function PaymentSuccess() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.paymentSuccessTitle}
+        path="/payment/success"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-surface-container-low rounded-xl shadow-sm p-8 text-center border border-outline-variant">
           <div className="flex justify-center mb-6">

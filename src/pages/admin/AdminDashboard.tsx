@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Building2, CalendarDays, Clock, Users, ClipboardCheck } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { siteConfig } from '../../config/site';
+import { SEO } from '../../components/SEO';
 
 interface AdminStats {
   totalBusinesses: number;
@@ -160,6 +161,11 @@ export function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.adminTitle}
+        path="/admin"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { User, Mail, Save, Loader2, AlertCircle, MapPin, Phone, Globe, Briefcase, FileText } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { SEO } from '../../components/SEO';
+import { siteConfig } from '../../config/site';
 
 export function Profile() {
   const { user, profile, updateProfile, error: authError } = useAuth();
@@ -48,6 +50,11 @@ export function Profile() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.profileTitle}
+        path="/profile"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-bold text-on-surface mb-8">
