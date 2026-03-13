@@ -21,9 +21,14 @@ import { BusinessProvider } from './context/BusinessContext';
 import { AuthProvider } from './context/AuthContext';
 import { PaymentProvider } from './context/PaymentContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { AdminRoute } from './components/auth/AdminRoute';
 import { Payment } from './pages/Payment';
 import PaymentSuccess from './pages/payment/Success';
 import PaymentCancel from './pages/payment/Cancel';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { BusinessApprovals } from './pages/admin/BusinessApprovals';
+import { EventApprovals } from './pages/admin/EventApprovals';
+import { UserManagement } from './pages/admin/UserManagement';
 
 // Auth pages
 import { Login } from './pages/auth/Login';
@@ -71,6 +76,12 @@ function App() {
                   
                   {/* Protected Profile Routes */}
                   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                  <Route path="/admin/businesses" element={<AdminRoute><BusinessApprovals /></AdminRoute>} />
+                  <Route path="/admin/events" element={<AdminRoute><EventApprovals /></AdminRoute>} />
+                  <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
                 </Routes>
               </main>
               <Footer />

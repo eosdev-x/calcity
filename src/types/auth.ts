@@ -7,6 +7,7 @@ export interface AuthUser extends User {
 export interface UserProfile {
   id: string;
   email: string;
+  role: 'user' | 'business_owner' | 'admin';
   full_name?: string;
   avatar_url?: string;
   bio?: string;
