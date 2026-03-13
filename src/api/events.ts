@@ -1,19 +1,17 @@
 import { Event } from '../types/event';
 import { supabase } from '../lib/supabase';
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
+import { slugify } from '../utils/slugify';
 
 export async function submitEvent(event: Omit<Event, 'id'>): Promise<Event> {
+  const sanitizedEvent = {
+    ...event
+  } as Omit<Event, 'id'> & { status?: Event['status']; approved_at?: string | null };
+  delete sanitizedEvent.status;
+  delete sanitizedEvent.approved_at;
   const payload: Omit<Event, 'id'> = {
-    ...event,
-    slug: event.slug || slugify(event.title)
+    ...sanitizedEvent,
+    slug: sanitizedEvent.slug || slugify(sanitizedEvent.title),
+    status: 'pending'
   };
 
   const { data, error } = await supabase
