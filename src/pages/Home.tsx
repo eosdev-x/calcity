@@ -19,7 +19,12 @@ export function Home() {
     .slice(0, 3);
   
   // Get featured businesses (could be based on rating or premium status)
+  const spotlightBusinesses = [...businesses]
+    .filter(business => business.is_spotlight && business.status === 'active')
+    .sort((a, b) => b.rating - a.rating);
+
   const featuredBusinesses = [...businesses]
+    .filter(business => business.is_featured && business.status === 'active')
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3);
     
@@ -137,6 +142,80 @@ export function Home() {
         </div>
       </section>
       
+      {spotlightBusinesses.length > 0 && (
+        <section className="py-16 bg-surface">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-display font-bold">
+                Spotlight Businesses
+              </h2>
+              <Link to="/businesses" className="btn-secondary flex items-center">
+                Explore All Businesses
+                <Building2 className="ml-2 w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {spotlightBusinesses.map((business) => (
+                <div
+                  key={business.id}
+                  className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] border border-tertiary/50"
+                >
+                  <Link to={`/businesses/${business.id}`}>
+                    <div className="relative">
+                      <img
+                        src={business.image || ''}
+                        alt={business.name}
+                        className="w-full h-64 object-cover rounded-t-xl"
+                      />
+                      <div className="absolute top-2 right-2 bg-tertiary-container text-on-tertiary-container text-xs font-semibold px-3 py-1 rounded-full flex items-center">
+                        ⭐ Spotlight
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Link to={`/businesses/${business.id}`}>
+                        <h3 className="text-2xl font-semibold line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">
+                          {business.name}
+                        </h3>
+                      </Link>
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-on-surface-variant fill-current" />
+                        <span className="ml-1">{business.rating}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-on-surface-variant mb-4">
+                      {business.category}
+                    </p>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" />
+                        <span className="line-clamp-1">{business.address}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                        <Phone className="w-4 h-4 flex-shrink-0" />
+                        <span>{business.phone}</span>
+                      </div>
+                    </div>
+
+                    <Link 
+                      to={`/businesses/${business.id}`}
+                      className="btn-secondary w-full block text-center text-sm"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Local Businesses Section */}
       <section className="py-16 bg-surface ">
         <div className="container mx-auto px-4">

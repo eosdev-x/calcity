@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   MapPin, 
@@ -15,14 +15,40 @@ import {
 import { BusinessGallery } from '../components/BusinessGallery';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { useBusinesses } from '../context/BusinessContext';
+import { useAuth } from '../context/AuthContext';
+import { useBusinessPermissions } from '../hooks/useBusinessPermissions';
+import { useAnalytics } from '../hooks/useAnalytics';
 
+function UpgradeCard({ label }: { label: string }) {
+  return (
+    <div className="rounded-xl border border-outline-variant bg-surface-container-low p-6 text-on-surface-variant">
+      <p className="text-sm font-medium text-on-surface mb-1">{label}</p>
+      <p className="text-sm">Upgrade to Premium to unlock.</p>
+    </div>
+  );
+}
 
 export function BusinessDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { businesses, loading } = useBusinesses();
+  const { user } = useAuth();
+  const { trackView } = useAnalytics();
 
   const business = businesses.find(b => b.id === id);
+  const permissions = useBusinessPermissions(business?.subscription_tier ?? 'basic');
+  const isOwner = user?.id === business?.owner_id;
+  const hasSocialLinks = Boolean(
+    business?.social_media?.facebook ||
+      business?.social_media?.twitter ||
+      business?.social_media?.instagram
+  );
+
+  useEffect(() => {
+    if (business?.status === 'active') {
+      void trackView(business.id);
+    }
+  }, [business?.id, business?.status, trackView]);
 
   if (loading) {
     return null;
@@ -56,9 +82,18 @@ export function BusinessDetails() {
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-display font-bold text-inverse-on-surface mb-2">
-                  {business.name}
-                </h1>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <h1 className="text-4xl font-display font-bold text-inverse-on-surface">
+                    {business.name}
+                  </h1>
+                  {permissions.hasBadge && (
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${permissions.badgeClass}`}
+                    >
+                      {permissions.badgeText}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center text-inverse-on-surface">
                   <Star className="w-5 h-5 text-inverse-on-surface fill-current mr-1" />
                   <span className="mr-2">{business.rating}</span>
@@ -73,33 +108,80 @@ export function BusinessDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="card mb-8">
-              <h2 className="text-2xl font-semibold mb-4">About</h2>
-              <p className="text-on-surface-variant">
-                {business.description || ''}
-              </p>
-            </div>
+            {permissions.canShowDescription ? (
+              <div className="card mb-8">
+                <h2 className="text-2xl font-semibold mb-4">About</h2>
+                <p className="text-on-surface-variant">
+                  {business.description || ''}
+                </p>
+              </div>
+            ) : (
+              isOwner && (
+                <div className="mb-8">
+                  <UpgradeCard label="About" />
+                </div>
+              )
+            )}
 
-            <div className="card mb-8">
-              <h2 className="text-2xl font-semibold mb-6">Amenities</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {business.amenities.map((amenity) => (
-                  <div 
-                    key={amenity}
-                    className="flex items-center text-on-surface-variant"
-                  >
-                    <Check className="w-5 h-5 text-on-surface-variant mr-2" />
-                    {amenity}
+            {permissions.canShowAmenities ? (
+              business.amenities.length > 0 && (
+                <div className="card mb-8">
+                  <h2 className="text-2xl font-semibold mb-6">Amenities</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {business.amenities.map((amenity) => (
+                      <div 
+                        key={amenity}
+                        className="flex items-center text-on-surface-variant"
+                      >
+                        <Check className="w-5 h-5 text-on-surface-variant mr-2" />
+                        {amenity}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              )
+            ) : (
+              isOwner && (
+                <div className="mb-8">
+                  <UpgradeCard label="Amenities" />
+                </div>
+              )
+            )}
 
-            {business.gallery && business.gallery.length > 0 && (
-              <div className="card">
-                <h2 className="text-2xl font-semibold mb-6">Gallery</h2>
-                <BusinessGallery images={business.gallery} />
-              </div>
+            {permissions.canShowServices ? (
+              business.services.length > 0 && (
+                <div className="card mb-8">
+                  <h2 className="text-2xl font-semibold mb-6">Services</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {business.services.map((service) => (
+                      <div 
+                        key={service}
+                        className="flex items-center text-on-surface-variant"
+                      >
+                        <Check className="w-5 h-5 text-on-surface-variant mr-2" />
+                        {service}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            ) : (
+              isOwner && (
+                <div className="mb-8">
+                  <UpgradeCard label="Services" />
+                </div>
+              )
+            )}
+
+            {permissions.canShowGallery ? (
+              business.gallery && business.gallery.length > 0 && (
+                <div className="card">
+                  <h2 className="text-2xl font-semibold mb-6">Gallery</h2>
+                  <BusinessGallery images={business.gallery.slice(0, permissions.maxPhotos)} />
+                </div>
+              )
+            ) : (
+              isOwner && <UpgradeCard label="Gallery" />
             )}
           </div>
 
@@ -125,7 +207,7 @@ export function BusinessDetails() {
                   <Phone className="w-5 h-5 text-on-surface-variant mr-2" />
                   <span className="hover:underline">{business.phone}</span>
                 </a>
-                {business.website && (
+                {permissions.canShowWebsite && business.website && (
                   <a
                     href={`https://${business.website}`}
                     target="_blank"
@@ -136,9 +218,12 @@ export function BusinessDetails() {
                     <span className="hover:underline">{business.website}</span>
                   </a>
                 )}
+                {!permissions.canShowWebsite && isOwner && (
+                  <UpgradeCard label="Website link" />
+                )}
               </div>
 
-              {business.social_media && (
+              {permissions.canShowSocial && hasSocialLinks && (
                 <div className="mt-6 pt-6 border-t border-outline-variant">
                   <h4 className="font-semibold mb-4">Social Media</h4>
                   <div className="flex space-x-4">
@@ -173,6 +258,11 @@ export function BusinessDetails() {
                       </a>
                     )}
                   </div>
+                </div>
+              )}
+              {!permissions.canShowSocial && isOwner && (
+                <div className="mt-6 pt-6 border-t border-outline-variant">
+                  <UpgradeCard label="Social media links" />
                 </div>
               )}
             </div>
