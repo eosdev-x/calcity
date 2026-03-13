@@ -6,6 +6,7 @@ import { GlobalSearch } from '../components/GlobalSearch';
 import { useEvents } from '../context/EventContext';
 import { useBusinesses } from '../context/BusinessContext';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
+import { getTierBadge } from '../hooks/useBusinessPermissions';
 
 export function Home() {
   // Get events and businesses from context
@@ -21,7 +22,8 @@ export function Home() {
   // Get featured businesses (could be based on rating or premium status)
   const spotlightBusinesses = [...businesses]
     .filter(business => business.is_spotlight && business.status === 'active')
-    .sort((a, b) => b.rating - a.rating);
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 6);
 
   const featuredBusinesses = [...businesses]
     .filter(business => business.is_featured && business.status === 'active')
@@ -156,23 +158,29 @@ export function Home() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {spotlightBusinesses.map((business) => (
-                <div
-                  key={business.id}
-                  className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] border border-tertiary/50"
-                >
-                  <Link to={`/businesses/${business.id}`}>
-                    <div className="relative">
-                      <img
-                        src={business.image || ''}
-                        alt={business.name}
-                        className="w-full h-64 object-cover rounded-t-xl"
-                      />
-                      <div className="absolute top-2 right-2 bg-tertiary-container text-on-tertiary-container text-xs font-semibold px-3 py-1 rounded-full flex items-center">
-                        ⭐ Spotlight
+              {spotlightBusinesses.map((business) => {
+                const badge = getTierBadge(business.subscription_tier);
+                return (
+                  <div
+                    key={business.id}
+                    className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] border border-tertiary/50"
+                  >
+                    <Link to={`/businesses/${business.id}`}>
+                      <div className="relative">
+                        <img
+                          src={business.image || ''}
+                          alt={business.name}
+                          className="w-full h-64 object-cover rounded-t-xl"
+                        />
+                        {badge && (
+                          <div
+                            className={`absolute top-2 right-2 text-xs font-semibold px-3 py-1 rounded-full flex items-center ${badge.className}`}
+                          >
+                            {badge.text}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
 
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
@@ -209,85 +217,88 @@ export function Home() {
                       View Details
                     </Link>
                   </div>
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
       {/* Local Businesses Section */}
-      <section className="py-16 bg-surface ">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-display font-bold">
-              Local Businesses
-            </h2>
-            <Link to="/businesses" className="btn-secondary flex items-center">
-              Explore All Businesses
-              <Building2 className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredBusinesses.map((business) => (
-              <div key={business.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
-                <Link to={`/businesses/${business.id}`}>
-                  <div className="relative">
-                    <img
-                      src={business.image || ''}
-                      alt={business.name}
-                      className="w-full h-48 object-cover rounded-t-xl"
-                    />
-                    {business.rating >= 4.5 && (
-                      <div className="absolute top-2 right-2 bg-primary text-on-primary text-xs font-bold px-2 py-1 rounded flex items-center">
-                        <Star className="w-3 h-3 mr-1 fill-current" />
-                        Premium
-                      </div>
-                    )}
-                  </div>
-                </Link>
-                
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <Link to={`/businesses/${business.id}`}>
-                      <h3 className="text-xl font-semibold line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{business.name}</h3>
-                    </Link>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-on-surface-variant fill-current" />
-                      <span className="ml-1">{business.rating}</span>
+      {featuredBusinesses.length > 0 && (
+        <section className="py-16 bg-surface ">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-display font-bold">
+                Local Businesses
+              </h2>
+              <Link to="/businesses" className="btn-secondary flex items-center">
+                Explore All Businesses
+                <Building2 className="ml-2 w-4 h-4" />
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {featuredBusinesses.map((business) => (
+                <div key={business.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
+                  <Link to={`/businesses/${business.id}`}>
+                    <div className="relative">
+                      <img
+                        src={business.image || ''}
+                        alt={business.name}
+                        className="w-full h-48 object-cover rounded-t-xl"
+                      />
+                      {business.rating >= 4.5 && (
+                        <div className="absolute top-2 right-2 bg-primary text-on-primary text-xs font-bold px-2 py-1 rounded flex items-center">
+                          <Star className="w-3 h-3 mr-1 fill-current" />
+                          Premium
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  
-                  <p className="text-on-surface-variant mb-2">
-                    {business.category}
-                  </p>
-
-                  <BusinessHoursStatus hours={business.hours} className="mb-3" />
-                  
-                  <div className="space-y-2 mb-3">
-                    <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
-                      <MapPin className="w-4 h-4 flex-shrink-0" />
-                      <span className="line-clamp-1">{business.address}</span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
-                      <Phone className="w-4 h-4 flex-shrink-0" />
-                      <span>{business.phone}</span>
-                    </div>
-                  </div>
-
-                  <Link 
-                    to={`/businesses/${business.id}`}
-                    className="btn-secondary w-full block text-center text-sm"
-                  >
-                    View Details
                   </Link>
+                  
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <Link to={`/businesses/${business.id}`}>
+                        <h3 className="text-xl font-semibold line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{business.name}</h3>
+                      </Link>
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-on-surface-variant fill-current" />
+                        <span className="ml-1">{business.rating}</span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-on-surface-variant mb-2">
+                      {business.category}
+                    </p>
+
+                    <BusinessHoursStatus hours={business.hours} className="mb-3" />
+                    
+                    <div className="space-y-2 mb-3">
+                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" />
+                        <span className="line-clamp-1">{business.address}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-on-surface-variant text-sm">
+                        <Phone className="w-4 h-4 flex-shrink-0" />
+                        <span>{business.phone}</span>
+                      </div>
+                    </div>
+
+                    <Link 
+                      to={`/businesses/${business.id}`}
+                      className="btn-secondary w-full block text-center text-sm"
+                    >
+                      View Details
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       
       {/* Visitor Guide Preview Section */}
       <section className="py-16 bg-surface">
