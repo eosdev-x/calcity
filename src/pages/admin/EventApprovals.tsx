@@ -3,6 +3,7 @@ import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { Event } from '../../types/event';
+import { getAccessToken } from '../../utils/auth';
 
 interface EventOrganizer {
   email: string | null;
@@ -19,12 +20,6 @@ export function EventApprovals() {
   const [actionErrors, setActionErrors] = useState<Record<string, string>>({});
   const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
   const [rejectionReasons, setRejectionReasons] = useState<Record<string, string>>({});
-
-  const getAccessToken = async () => {
-    if (session?.access_token) return session.access_token;
-    const { data } = await supabase.auth.getSession();
-    return data.session?.access_token || null;
-  };
 
   useEffect(() => {
     let isMounted = true;
@@ -75,7 +70,7 @@ export function EventApprovals() {
     setEvents(prev => prev.filter(event => event.id !== eventId));
 
     try {
-      const token = await getAccessToken();
+      const token = await getAccessToken(session?.access_token);
       if (!token) {
         throw new Error('User not authenticated');
       }

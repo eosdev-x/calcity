@@ -1,4 +1,4 @@
-import { getBearerToken, getSupabaseAdmin, jsonResponse, StripeEnv } from '../stripe/_shared';
+import { jsonResponse, StripeEnv, verifyAdmin } from './_shared';
 
 type ApproveAction = 'approve' | 'reject';
 
@@ -10,32 +10,10 @@ interface ApproveEventBody {
 
 export async function onRequestPost(context: { request: Request; env: StripeEnv }) {
   const { request, env } = context;
-  const supabase = getSupabaseAdmin(env);
 
   try {
-    const token = getBearerToken(request);
-    if (!token) {
-      return jsonResponse({ error: 'Unauthorized' }, 401);
-    }
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser(token);
-
-    if (userError || !user) {
-      return jsonResponse({ error: 'Unauthorized' }, 401);
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle();
-
-    if (profileError || profile?.role !== 'admin') {
-      return jsonResponse({ error: 'Forbidden' }, 403);
-    }
+    const { error: authError, supabase } = await verifyAdmin(request, env);
+    if (authError) return authError;
 
     const body = (await request.json().catch(() => ({}))) as ApproveEventBody;
     const eventId = typeof body.eventId === 'string' ? body.eventId : null;
@@ -52,13 +30,20 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
 
     const updatePayload: Record<string, string | null> = {
       status: action === 'approve' ? 'approved' : 'rejected',
+      approved_at: action === 'approve' ? new Date().toISOString() : null,
       rejection_reason: action === 'reject' ? reason : null,
     };
 
-    const { error: updateError } = await supabase
+    const { data: updated, error: updateError } = await supabase
       .from('events')
       .update(updatePayload)
-      .eq('id', eventId);
+      .eq('id', eventId)
+      .eq('status', 'pending')
+      .select('id');
+
+    if (!updateError && (!updated || updated.length === 0)) {
+      return jsonResponse({ error: 'Event is not in pending status' }, 409);
+    }
 
     if (updateError) {
       console.error('Failed to update event:', updateError);

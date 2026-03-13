@@ -28,7 +28,8 @@ export interface Business {
   rating: number;
   review_count: number;
   view_count: number;
-  status: "pending" | "active" | "suspended" | "archived";
+  status: "pending" | "active" | "rejected" | "suspended" | "archived";
+  rejection_reason: string | null;
   created_at: string;
   updated_at: string;
 }
