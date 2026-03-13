@@ -4,6 +4,7 @@ import { ImagePlus, Trash2, UploadCloud } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Business } from '../../types/business';
 import { useBusinessPermissions } from '../../hooks/useBusinessPermissions';
+import { useAuth } from '../../context/AuthContext';
 
 type PhotoManagerProps = {
   business: Business;
@@ -20,7 +21,12 @@ function getStoragePathFromUrl(url: string) {
   return url.slice(index + marker.length);
 }
 
+function sanitizeFilename(name: string): string {
+  return name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 100);
+}
+
 export function PhotoManager({ business, onUpdated }: PhotoManagerProps) {
+  const { user } = useAuth();
   const permissions = useBusinessPermissions(business.subscription_tier);
   const inputRef = useRef<HTMLInputElement>(null);
   const [gallery, setGallery] = useState(business.gallery || []);
@@ -95,7 +101,8 @@ export function PhotoManager({ business, onUpdated }: PhotoManagerProps) {
     setError(null);
 
     try {
-      const path = `${business.id}/${Date.now()}-${selectedFile.name}`;
+      const safeName = sanitizeFilename(selectedFile.name);
+      const path = `${business.id}/${Date.now()}-${safeName}`;
       const { error: uploadError } = await supabase.storage
         .from('business-photos')
         .upload(path, selectedFile, { contentType: selectedFile.type });
@@ -107,11 +114,12 @@ export function PhotoManager({ business, onUpdated }: PhotoManagerProps) {
       const { data } = supabase.storage.from('business-photos').getPublicUrl(path);
       const url = data.publicUrl;
 
-      const updatedGallery = [...gallery, { url, alt: selectedFile.name }];
+      const updatedGallery = [...gallery, { url, alt: selectedFile.name, storagePath: path }];
       const { data: updatedBusiness, error: updateError } = await supabase
         .from('businesses')
         .update({ gallery: updatedGallery, updated_at: new Date().toISOString() })
         .eq('id', business.id)
+        .eq('owner_id', user!.id)
         .select('*')
         .single();
 
@@ -135,9 +143,15 @@ export function PhotoManager({ business, onUpdated }: PhotoManagerProps) {
     setError(null);
 
     try {
-      const path = getStoragePathFromUrl(url);
-      if (path) {
-        await supabase.storage.from('business-photos').remove([path]);
+      const photo = gallery.find(item => item.url === url);
+      const storagePath = photo?.storagePath || getStoragePathFromUrl(url);
+      if (storagePath) {
+        const { error: removeError } = await supabase.storage
+          .from('business-photos')
+          .remove([storagePath]);
+        if (removeError) {
+          throw new Error(`Failed to delete photo from storage: ${removeError.message}`);
+        }
       }
 
       const updatedGallery = gallery.filter(photo => photo.url !== url);
@@ -145,6 +159,7 @@ export function PhotoManager({ business, onUpdated }: PhotoManagerProps) {
         .from('businesses')
         .update({ gallery: updatedGallery, updated_at: new Date().toISOString() })
         .eq('id', business.id)
+        .eq('owner_id', user!.id)
         .select('*')
         .single();
 

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 type AnalyticsDashboardProps = {
   business: Business;
+  totalViewCount: number;
 };
 
 type RangeOption = '7d' | '30d' | '90d';
@@ -23,17 +24,13 @@ const rangeOptions: { id: RangeOption; label: string; days: number }[] = [
 ];
 
 function dateKey(date: Date) {
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getDate()}`.padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return date.toISOString().slice(0, 10);
 }
 
-export function AnalyticsDashboard({ business }: AnalyticsDashboardProps) {
+export function AnalyticsDashboard({ business, totalViewCount }: AnalyticsDashboardProps) {
   const permissions = useBusinessPermissions(business.subscription_tier);
   const [activeRange, setActiveRange] = useState<RangeOption>('30d');
   const [events, setEvents] = useState<AnalyticsEvent[]>([]);
-  const [totalViews, setTotalViews] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const rangeDays = useMemo(() => {
@@ -42,35 +39,13 @@ export function AnalyticsDashboard({ business }: AnalyticsDashboardProps) {
 
   useEffect(() => {
     if (!permissions.isSpotlight) return;
-    let isMounted = true;
-
-    const fetchTotals = async () => {
-      const { count } = await supabase
-        .from('analytics_events')
-        .select('id', { count: 'exact', head: true })
-        .eq('business_id', business.id)
-        .eq('event_type', 'view');
-
-      if (isMounted) {
-        setTotalViews(count ?? 0);
-      }
-    };
-
-    void fetchTotals();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [business.id, permissions.isSpotlight]);
-
-  useEffect(() => {
-    if (!permissions.isSpotlight) return;
 
     let isMounted = true;
     const fetchEvents = async () => {
       setIsLoading(true);
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() - (rangeDays - 1));
+      startDate.setUTCHours(0, 0, 0, 0);
+      startDate.setUTCDate(startDate.getUTCDate() - (rangeDays - 1));
 
       const { data, error } = await supabase
         .from('analytics_events')
@@ -97,10 +72,10 @@ export function AnalyticsDashboard({ business }: AnalyticsDashboardProps) {
   }, [business.id, permissions.isSpotlight, rangeDays]);
 
   const chartData = useMemo(() => {
-    const today = new Date();
     const dates = Array.from({ length: rangeDays }, (_, index) => {
       const date = new Date();
-      date.setDate(today.getDate() - (rangeDays - 1 - index));
+      date.setUTCHours(0, 0, 0, 0);
+      date.setUTCDate(date.getUTCDate() - (rangeDays - 1 - index));
       return date;
     });
 
@@ -114,7 +89,7 @@ export function AnalyticsDashboard({ business }: AnalyticsDashboardProps) {
     return dates.map(date => {
       const key = dateKey(date);
       return {
-        label: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+        label: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' }),
         count: counts.get(key) || 0,
       };
     });
@@ -168,7 +143,7 @@ export function AnalyticsDashboard({ business }: AnalyticsDashboardProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="card">
           <p className="text-sm text-on-surface-variant">Total Views</p>
-          <p className="text-3xl font-semibold text-on-surface mt-2">{totalViews}</p>
+          <p className="text-3xl font-semibold text-on-surface mt-2">{totalViewCount}</p>
         </div>
         <div className="card">
           <p className="text-sm text-on-surface-variant">This Period Views</p>

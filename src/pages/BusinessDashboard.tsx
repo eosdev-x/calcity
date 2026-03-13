@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { BarChart3, CreditCard, Edit3, Image, LayoutDashboard } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -26,10 +26,14 @@ export function BusinessDashboard() {
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [viewCount, setViewCount] = useState(0);
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState<string | null>(null);
+
+  const tabParam = searchParams.get('tab');
+  const activeTab: TabId = tabs.some(tab => tab.id === tabParam) ? (tabParam as TabId) : 'overview';
+  const setActiveTab = (tab: TabId) => setSearchParams({ tab });
 
   const permissions = useBusinessPermissions(business?.subscription_tier ?? 'basic');
 
@@ -43,6 +47,8 @@ export function BusinessDashboard() {
         .from('businesses')
         .select('*')
         .eq('owner_id', user.id)
+        .order('created_at', { ascending: true })
+        .limit(1)
         .maybeSingle();
 
       if (!isMounted) return;
@@ -114,7 +120,25 @@ export function BusinessDashboard() {
   }, [business?.subscription_tier]);
 
   if (loading) {
-    return null;
+    return (
+      <div className="min-h-screen bg-surface py-12">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 w-64 bg-surface-container-high rounded-xl" />
+            <div className="h-4 w-48 bg-surface-container-high rounded-lg" />
+            <div className="flex gap-2 border-b border-outline-variant pb-2">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-8 w-24 bg-surface-container-high rounded-lg" />
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 h-48 bg-surface-container-high rounded-xl" />
+              <div className="h-48 bg-surface-container-high rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!business) {
@@ -257,7 +281,7 @@ export function BusinessDashboard() {
         )}
 
         {activeTab === 'analytics' && (
-          <AnalyticsDashboard business={business} />
+          <AnalyticsDashboard business={business} totalViewCount={viewCount} />
         )}
 
         {activeTab === 'subscription' && (
