@@ -7,6 +7,7 @@ import {
   SubscriptionPlan, 
   SUBSCRIPTION_PRICES 
 } from '../../types/payment';
+import { getPrimaryBusinessIdForOwner } from '../../utils/business';
 
 // Define subscription plans with features
 const subscriptionPlans: SubscriptionPlan[] = [
@@ -15,6 +16,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Basic',
     tier: SubscriptionTier.BASIC,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
+    stripePriceId: 'price_1TASQfRpRbHjjRj8mXv5x9rB',
     features: {
       photoLimit: 1,
       featuredListing: false,
@@ -29,7 +31,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Premium',
     tier: SubscriptionTier.PREMIUM,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
-    stripePriceId: 'price_premium_monthly',
+    stripePriceId: 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
     features: {
       photoLimit: 10,
       featuredListing: true,
@@ -44,7 +46,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Spotlight',
     tier: SubscriptionTier.SPOTLIGHT,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
-    stripePriceId: 'price_spotlight_monthly',
+    stripePriceId: 'price_1TASSRRpRbHjjRj8nfJz5gSc',
     features: {
       photoLimit: 30,
       featuredListing: true,
@@ -61,16 +63,16 @@ export function SubscriptionPlans() {
   const { 
     currentSubscription, 
     createCheckoutSession, 
-    updateSubscription, 
     cancelSubscription,
     isLoading,
     error
   } = usePayment();
   const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   // Get current plan
-  const currentPlanId = currentSubscription?.planId || 'basic-plan';
+  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
   
   // Handle subscription checkout
   const handleSubscribe = async (plan: SubscriptionPlan) => {
@@ -80,53 +82,38 @@ export function SubscriptionPlans() {
       return;
     }
 
-    if (plan.tier === SubscriptionTier.BASIC) {
-      // Handle downgrade to basic plan
-      if (currentSubscription) {
-        handleCancelSubscription();
-      }
-      return;
-    }
-
     setProcessingPlanId(plan.id);
     setSuccessMessage(null);
+    setLocalError(null);
 
     try {
       if (!plan.stripePriceId) {
         throw new Error('Invalid plan selected');
       }
 
-      if (currentSubscription) {
-        // Update existing subscription
-        const result = await updateSubscription(
-          currentSubscription.id,
-          plan.stripePriceId
-        );
+      const businessId = await getPrimaryBusinessIdForOwner(user.id);
 
-        if ('error' in result) {
-          throw new Error(result.error.message || 'Failed to update subscription');
-        }
+      if (!businessId) {
+        setLocalError('Create a business profile before selecting a subscription plan.');
+        return;
+      }
 
-        setSuccessMessage(`Successfully updated to ${plan.name} plan!`);
-      } else {
-        // Create new subscription
-        const result = await createCheckoutSession({
-          priceId: plan.stripePriceId,
-          successUrl: `${window.location.origin}/payment/success?plan=${plan.tier}`,
-          cancelUrl: `${window.location.origin}/payment/cancel`,
-        });
+      const result = await createCheckoutSession({
+        priceId: plan.stripePriceId,
+        businessId,
+      });
 
-        if ('error' in result) {
-          throw new Error(result.error.message || 'Failed to create checkout session');
-        }
+      if ('error' in result) {
+        const message = typeof result.error === 'string' ? result.error : result.error.message;
+        throw new Error(message || 'Failed to create checkout session');
+      }
 
-        // Redirect to Stripe Checkout
-        if (result.sessionId) {
-          window.location.href = `https://checkout.stripe.com/pay/${result.sessionId}`;
-        }
+      if (result.url) {
+        window.location.href = result.url;
       }
     } catch (err: any) {
       console.error('Subscription error:', err);
+      setLocalError(err.message || 'Failed to start checkout');
     } finally {
       setProcessingPlanId(null);
     }
@@ -155,16 +142,16 @@ export function SubscriptionPlans() {
   };
 
   // Check if a plan is the current active plan
-  const isCurrentPlan = (planId: string) => {
-    return currentPlanId === planId;
+  const isCurrentPlan = (tier: SubscriptionTier) => {
+    return currentTier === tier;
   };
 
   return (
     <div className="w-full max-w-6xl mx-auto">
       {/* Error message */}
-      {error && (
+      {(localError || error) && (
         <div className="mb-6 p-4 bg-error-container border border-error rounded-xl">
-          <p className="text-on-error-container">{error}</p>
+          <p className="text-on-error-container">{localError || error}</p>
         </div>
       )}
 
@@ -180,14 +167,14 @@ export function SubscriptionPlans() {
           <div 
             key={plan.id}
             className={`rounded-xl overflow-hidden border ${
-              isCurrentPlan(plan.id)
+              isCurrentPlan(plan.tier)
                 ? 'border-outline shadow-sm'
                 : 'border-outline-variant'
             }`}
           >
             {/* Plan header */}
             <div className={`p-6 ${
-              isCurrentPlan(plan.id)
+              isCurrentPlan(plan.tier)
                 ? 'bg-primary text-on-primary'
                 : 'bg-surface-container text-on-surface'
             }`}>
@@ -196,7 +183,7 @@ export function SubscriptionPlans() {
                 <span className="text-3xl font-bold">${plan.price}</span>
                 {plan.price > 0 && <span className="text-sm">/month</span>}
               </div>
-              {isCurrentPlan(plan.id) && (
+              {isCurrentPlan(plan.tier) && (
                 <div className="mt-2 text-sm font-medium">
                   Current Plan
                 </div>
@@ -258,8 +245,8 @@ export function SubscriptionPlans() {
 
               {/* Action button */}
               <div className="mt-6">
-                {isCurrentPlan(plan.id) ? (
-                  plan.tier !== SubscriptionTier.BASIC && (
+                {isCurrentPlan(plan.tier) ? (
+                  !currentSubscription?.cancelAtPeriodEnd && (
                     <button
                       onClick={handleCancelSubscription}
                       disabled={isLoading || processingPlanId === 'cancel'}
@@ -278,7 +265,7 @@ export function SubscriptionPlans() {
                 ) : (
                   <button
                     onClick={() => handleSubscribe(plan)}
-                    disabled={isLoading || processingPlanId === plan.id}
+                    disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
                     className={`w-full py-2 px-4 rounded-full ${
                       plan.tier === SubscriptionTier.BASIC
                         ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
@@ -291,11 +278,9 @@ export function SubscriptionPlans() {
                         Processing...
                       </div>
                     ) : (
-                      plan.tier === SubscriptionTier.BASIC
-                        ? 'Select Free Plan'
-                        : isCurrentPlan('basic-plan')
-                          ? `Upgrade to ${plan.name}`
-                          : `Switch to ${plan.name}`
+                      isCurrentPlan(SubscriptionTier.BASIC)
+                        ? `Upgrade to ${plan.name}`
+                        : `Switch to ${plan.name}`
                     )}
                   </button>
                 )}
