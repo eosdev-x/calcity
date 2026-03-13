@@ -299,55 +299,6 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     }
   };
 
-  // Update subscription
-  const updateSubscription = async (subscriptionId: string, newPriceId: string) => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/update-subscription`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          subscriptionId,
-          newPriceId
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
-      }
-
-      // Update the subscription in state with optimistic UI update
-      const updatedSubscription = {
-        ...currentSubscription!,
-        planId: newPriceId
-      };
-      
-      setCurrentSubscription(updatedSubscription);
-      
-      return { subscription: updatedSubscription };
-    } catch (err: any) {
-      console.error('Error updating subscription:', err);
-      setError(err.message || 'Failed to update subscription');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Cancel subscription
   const cancelSubscription = async (subscriptionId: string) => {
     if (!user) {
@@ -620,7 +571,6 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     paymentHistory,
     createCheckoutSession,
     createPaymentIntent,
-    updateSubscription,
     cancelSubscription,
     getCustomerPortalUrl,
     addPaymentMethod,

@@ -5,7 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 import { 
   SubscriptionTier, 
   SubscriptionPlan, 
-  SUBSCRIPTION_PRICES 
+  SUBSCRIPTION_PRICES,
+  SubscriptionStatus
 } from '../../types/payment';
 import { getPrimaryBusinessIdForOwner } from '../../utils/business';
 
@@ -64,6 +65,7 @@ export function SubscriptionPlans() {
     currentSubscription, 
     createCheckoutSession, 
     cancelSubscription,
+    getCustomerPortalUrl,
     isLoading,
     error
   } = usePayment();
@@ -73,6 +75,11 @@ export function SubscriptionPlans() {
 
   // Get current plan
   const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
+  const hasActiveSubscription = Boolean(
+    currentSubscription &&
+    currentSubscription.status !== SubscriptionStatus.CANCELED &&
+    currentSubscription.status !== SubscriptionStatus.INCOMPLETE_EXPIRED
+  );
   
   // Handle subscription checkout
   const handleSubscribe = async (plan: SubscriptionPlan) => {
@@ -130,12 +137,38 @@ export function SubscriptionPlans() {
       const result = await cancelSubscription(currentSubscription.id);
 
       if ('error' in result) {
-        throw new Error(result.error.message || 'Failed to cancel subscription');
+        const message = typeof result.error === 'string' ? result.error : result.error?.message;
+        throw new Error(message || 'Failed to cancel subscription');
       }
 
       setSuccessMessage('Subscription canceled. You will have access until the end of your billing period.');
     } catch (err: any) {
       console.error('Cancellation error:', err);
+      setLocalError(err.message || 'Failed to cancel subscription');
+    } finally {
+      setProcessingPlanId(null);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    setProcessingPlanId('portal');
+    setSuccessMessage(null);
+    setLocalError(null);
+
+    try {
+      const result = await getCustomerPortalUrl();
+
+      if ('error' in result) {
+        const message = typeof result.error === 'string' ? result.error : result.error?.message;
+        throw new Error(message || 'Failed to open billing portal');
+      }
+
+      if (result.url) {
+        window.location.href = result.url;
+      }
+    } catch (err: any) {
+      console.error('Billing portal error:', err);
+      setLocalError(err.message || 'Failed to open billing portal');
     } finally {
       setProcessingPlanId(null);
     }
@@ -143,7 +176,7 @@ export function SubscriptionPlans() {
 
   // Check if a plan is the current active plan
   const isCurrentPlan = (tier: SubscriptionTier) => {
-    return currentTier === tier;
+    return currentSubscription !== null && currentTier === tier;
   };
 
   return (
@@ -246,7 +279,7 @@ export function SubscriptionPlans() {
               {/* Action button */}
               <div className="mt-6">
                 {isCurrentPlan(plan.tier) ? (
-                  !currentSubscription?.cancelAtPeriodEnd && (
+                  currentSubscription && !currentSubscription.cancelAtPeriodEnd && (
                     <button
                       onClick={handleCancelSubscription}
                       disabled={isLoading || processingPlanId === 'cancel'}
@@ -263,26 +296,41 @@ export function SubscriptionPlans() {
                     </button>
                   )
                 ) : (
-                  <button
-                    onClick={() => handleSubscribe(plan)}
-                    disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
-                    className={`w-full py-2 px-4 rounded-full ${
-                      plan.tier === SubscriptionTier.BASIC
-                        ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
-                        : 'bg-primary text-on-primary hover:bg-primary/90'
-                    } transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50`}
-                  >
-                    {processingPlanId === plan.id ? (
-                      <div className="flex items-center justify-center">
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Processing...
-                      </div>
-                    ) : (
-                      isCurrentPlan(SubscriptionTier.BASIC)
-                        ? `Upgrade to ${plan.name}`
-                        : `Switch to ${plan.name}`
-                    )}
-                  </button>
+                  hasActiveSubscription ? (
+                    <button
+                      onClick={handleManageSubscription}
+                      disabled={isLoading || processingPlanId === 'portal'}
+                      className="w-full py-2 px-4 rounded-full bg-secondary-container text-on-secondary-container hover:opacity-90 transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50"
+                    >
+                      {processingPlanId === 'portal' ? (
+                        <div className="flex items-center justify-center">
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Processing...
+                        </div>
+                      ) : (
+                        'Manage via Portal'
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleSubscribe(plan)}
+                      disabled={isLoading || processingPlanId === plan.id}
+                      className={`w-full py-2 px-4 rounded-full ${
+                        plan.tier === SubscriptionTier.BASIC
+                          ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
+                          : 'bg-primary text-on-primary hover:bg-primary/90'
+                      } transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50`}
+                    >
+                      {processingPlanId === plan.id ? (
+                        <div className="flex items-center justify-center">
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Processing...
+                        </div>
+                      ) : (
+                        `Subscribe to ${plan.name}`
+                      )}
+                    </button>
+                  )
                 )}
               </div>
             </div>
