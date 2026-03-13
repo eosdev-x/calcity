@@ -51,15 +51,15 @@ export function BusinessGallery({ images, className }: BusinessGalleryProps) {
           <button
             key={index}
             onClick={() => openModal(index)}
-            className="relative aspect-square overflow-hidden rounded-lg group"
+            className="relative aspect-square overflow-hidden rounded-xl group"
           >
             <img
               src={image.url}
               alt={image.alt}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-[var(--md-sys-motion-duration-medium2)] group-hover:scale-110"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-scrim/30 opacity-0 group-hover:opacity-100 transition-opacity duration-[var(--md-sys-motion-duration-medium2)]" />
           </button>
         ))}
       </div>
@@ -67,7 +67,7 @@ export function BusinessGallery({ images, className }: BusinessGalleryProps) {
       {/* Modal */}
       {selectedImage !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/90"
           onClick={closeModal}
           onKeyDown={handleKeyDown}
           tabIndex={0}
@@ -84,8 +84,8 @@ export function BusinessGallery({ images, className }: BusinessGalleryProps) {
               onClick={closeModal}
               className={clsx(
                 "absolute top-4 right-4 p-2 rounded-full",
-                "bg-white/10 hover:bg-white/20 transition-colors",
-                "text-white"
+                "bg-scrim/20 hover:bg-scrim/30 transition-colors duration-[var(--md-sys-motion-duration-short3)]",
+                "text-inverse-on-surface"
               )}
             >
               <X className="w-6 h-6" />
@@ -99,8 +99,8 @@ export function BusinessGallery({ images, className }: BusinessGalleryProps) {
                 }}
                 className={clsx(
                   "p-2 rounded-full",
-                  "bg-white/10 hover:bg-white/20 transition-colors",
-                  "text-white"
+                  "bg-scrim/20 hover:bg-scrim/30 transition-colors duration-[var(--md-sys-motion-duration-short3)]",
+                  "text-inverse-on-surface"
                 )}
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -115,15 +115,15 @@ export function BusinessGallery({ images, className }: BusinessGalleryProps) {
                 }}
                 className={clsx(
                   "p-2 rounded-full",
-                  "bg-white/10 hover:bg-white/20 transition-colors",
-                  "text-white"
+                  "bg-scrim/20 hover:bg-scrim/30 transition-colors duration-[var(--md-sys-motion-duration-short3)]",
+                  "text-inverse-on-surface"
                 )}
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-inverse-on-surface text-sm">
               {selectedImage + 1} / {images.length}
             </div>
           </div>

@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom';
+import { siteConfig } from '../config/site';
 
 export function Terms() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8 text-desert-800 dark:text-desert-100">Terms of Service</h1>
+      <h1 className="text-3xl font-bold mb-8 text-on-surface">Terms of Service</h1>
       
-      <div className="prose prose-desert dark:prose-invert max-w-none">
+      <div className="prose max-w-none prose-headings:text-on-surface prose-p:text-on-surface-variant prose-li:text-on-surface-variant prose-strong:text-on-surface">
         <p className="text-lg mb-6">
           Last Updated: April 23, 2025
         </p>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">1. Introduction</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">1. Introduction</h2>
           <p>
-            Welcome to CalCity.info. These Terms of Service ("Terms") govern your access to and use of the CalCity.info website
+            Welcome to {siteConfig.name}. These Terms of Service ("Terms") govern your access to and use of the {siteConfig.name} website
             and all related services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms.
             If you do not agree to these Terms, please do not use the Service.
           </p>
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">2. User Rights and Responsibilities</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">2. User Rights and Responsibilities</h2>
           <p>
-            When using our Service, you have the right to access information about California City and its businesses and events.
+            When using our Service, you have the right to access information about {siteConfig.city} and its businesses and events.
             In return, you are responsible for:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
@@ -35,12 +36,12 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">3. Website Usage Guidelines</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">3. Website Usage Guidelines</h2>
           <p>
             To ensure a positive experience for all users, we ask that you:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>Use the Service for its intended purpose of finding information about California City</li>
+            <li>Use the Service for its intended purpose of finding information about {siteConfig.city}</li>
             <li>Do not attempt to disrupt or interfere with the Service's operation</li>
             <li>Do not use automated systems or software to extract data from the Service (scraping) without our prior written consent</li>
             <li>Do not bypass any measures we may use to prevent or restrict access to the Service</li>
@@ -49,7 +50,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">4. Content Policies and Restrictions</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">4. Content Policies and Restrictions</h2>
           <p>
             Our Service allows users to submit content, including business listings, event information, reviews, and comments.
             You retain ownership of your content, but grant us a license to use, store, and display it in connection with the Service.
@@ -69,7 +70,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">5. User Account Rules</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">5. User Account Rules</h2>
           <p>
             To access certain features of the Service, you may need to create an account. When you do:
           </p>
@@ -83,16 +84,16 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">6. Privacy Policy</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">6. Privacy Policy</h2>
           <p>
-            Our <Link to="/privacy" className="text-desert-500 dark:text-desert-300 hover:underline">Privacy Policy</Link> describes 
+            Our <Link to="/privacy" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">Privacy Policy</Link> describes 
             how we collect, use, and share information about you when you use our Service. By using the Service, you agree to our collection, 
             use, and sharing of information as described in the Privacy Policy.
           </p>
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">7. Limitation of Liability</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">7. Limitation of Liability</h2>
           <p>
             To the maximum extent permitted by law:
           </p>
@@ -108,14 +109,14 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">8. Dispute Resolution</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">8. Dispute Resolution</h2>
           <p>
             If you have a dispute with us, please contact us first and try to resolve the dispute informally. If we cannot resolve the dispute informally:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
             <li>Any dispute arising from or relating to these Terms or the Service will be resolved through binding arbitration</li>
             <li>The arbitration will be conducted by the American Arbitration Association under its Consumer Arbitration Rules</li>
-            <li>The arbitration will take place in Kern County, California</li>
+            <li>The arbitration will take place in {siteConfig.legal.arbitrationLocation}</li>
             <li>Each party will be responsible for its own costs and fees</li>
             <li>You may opt out of this arbitration agreement by notifying us in writing within 30 days of first accepting these Terms</li>
           </ul>
@@ -125,7 +126,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">9. Data Collection and Usage</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">9. Data Collection and Usage</h2>
           <p>
             We collect and process data as described in our Privacy Policy. Additionally:
           </p>
@@ -139,12 +140,12 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">10. Intellectual Property Rights</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">10. Intellectual Property Rights</h2>
           <p>
-            The Service and its original content, features, and functionality are owned by CalCity.info and are protected by copyright, trademark, and other intellectual property laws:
+            The Service and its original content, features, and functionality are owned by {siteConfig.name} and are protected by copyright, trademark, and other intellectual property laws:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>The CalCity.info name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of CalCity.info or its affiliates</li>
+            <li>The {siteConfig.name} name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of {siteConfig.name} or its affiliates</li>
             <li>You may not use these marks without our prior written permission</li>
             <li>You retain ownership of content you submit, but grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, translate, and distribute it</li>
             <li>You represent that you have all necessary rights to grant us this license</li>
@@ -153,7 +154,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">11. Termination</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">11. Termination</h2>
           <p>
             We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason, including:
           </p>
@@ -170,7 +171,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">12. Amendments and Updates</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">12. Amendments and Updates</h2>
           <p>
             We may update these Terms from time to time:
           </p>
@@ -184,25 +185,29 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">13. Governing Law and Jurisdiction</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">13. Governing Law and Jurisdiction</h2>
           <p>
             These Terms and your use of the Service shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions.
           </p>
           <p>
-            Any legal action or proceeding arising out of or relating to these Terms or the Service shall be brought exclusively in the federal or state courts located in Kern County, California, and you consent to the personal jurisdiction of such courts.
+            Any legal action or proceeding arising out of or relating to these Terms or the Service shall be brought exclusively in the federal or state courts located in {siteConfig.city}, {siteConfig.state}, and you consent to the personal jurisdiction of such courts.
           </p>
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-desert-700 dark:text-desert-200">14. Contact Information</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">14. Contact Information</h2>
           <p>
             If you have any questions about these Terms, please contact us at:
           </p>
           <div className="mt-4">
-            <p>CalCity.info Legal Department</p>
-            <p>Email: <a href="mailto:legal@calcity.info" className="text-desert-500 dark:text-desert-300 hover:underline">legal@calcity.info</a></p>
-            <p>Phone: (555) 123-4567</p>
-            <p>Address: 123 Main Street, California City, CA 93505</p>
+            <p>{siteConfig.name} Legal Department</p>
+            <p>Email: <a href={`mailto:legal@${siteConfig.domain}`} className="text-on-surface-variant hover:underline">legal@{siteConfig.domain}</a></p>
+            {siteConfig.contact.phone && (
+              <p>Phone: {siteConfig.contact.phone}</p>
+            )}
+            <p>
+              Address: {siteConfig.legal.address}, {siteConfig.city}, {siteConfig.state} {siteConfig.legal.zipCode}
+            </p>
           </div>
         </section>
       </div>

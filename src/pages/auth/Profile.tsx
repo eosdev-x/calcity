@@ -47,19 +47,19 @@ export function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold text-desert-800 dark:text-desert-100 mb-8">
+          <h1 className="text-3xl font-bold text-on-surface mb-8">
             Your Profile
           </h1>
           
-          <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-8">
+          <div className="bg-surface-container-low rounded-xl shadow-sm p-8 border border-outline-variant">
             {/* Success message */}
             {successMessage && (
-              <div className="mb-6 p-3 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-800 rounded-md flex items-start">
-                <div className="w-5 h-5 text-green-500 dark:text-green-400 mr-2 flex-shrink-0 mt-0.5">✓</div>
-                <span className="text-green-700 dark:text-green-300">
+              <div className="mb-6 p-3 bg-tertiary-container border border-tertiary rounded-xl flex items-start">
+                <div className="w-5 h-5 text-tertiary mr-2 flex-shrink-0 mt-0.5">✓</div>
+                <span className="text-on-tertiary-container">
                   {successMessage}
                 </span>
               </div>
@@ -67,9 +67,9 @@ export function Profile() {
             
             {/* Error message */}
             {(error || authError) && (
-              <div className="mb-6 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md flex items-start">
-                <AlertCircle className="w-5 h-5 text-red-500 dark:text-red-400 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-red-700 dark:text-red-300">
+              <div className="mb-6 p-3 bg-error-container border border-error rounded-xl flex items-start">
+                <AlertCircle className="w-5 h-5 text-error mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-on-error-container">
                   {error || authError}
                 </span>
               </div>
@@ -77,31 +77,31 @@ export function Profile() {
             
             {/* User information */}
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-desert-800 dark:text-desert-100 mb-4">
+              <h2 className="text-xl font-semibold text-on-surface mb-4">
                 Account Information
               </h2>
-              <div className="flex items-center space-x-3 text-desert-700 dark:text-desert-300 mb-2">
-                <Mail className="w-5 h-5 text-desert-500" />
+              <div className="flex items-center space-x-3 text-on-surface-variant mb-2">
+                <Mail className="w-5 h-5 text-on-surface-variant" />
                 <span>{user?.email}</span>
               </div>
-              <div className="flex items-center space-x-3 text-desert-700 dark:text-desert-300 mb-2">
-                <User className="w-5 h-5 text-desert-500" />
+              <div className="flex items-center space-x-3 text-on-surface-variant mb-2">
+                <User className="w-5 h-5 text-on-surface-variant" />
                 <span>{profile?.full_name || 'Not set'}</span>
               </div>
               {profile?.location && (
-                <div className="flex items-center space-x-3 text-desert-700 dark:text-desert-300 mb-2">
-                  <MapPin className="w-5 h-5 text-desert-500" />
+                <div className="flex items-center space-x-3 text-on-surface-variant mb-2">
+                  <MapPin className="w-5 h-5 text-on-surface-variant" />
                   <span>{profile.location}</span>
                 </div>
               )}
               {profile?.company && (
-                <div className="flex items-center space-x-3 text-desert-700 dark:text-desert-300 mb-2">
-                  <Briefcase className="w-5 h-5 text-desert-500" />
+                <div className="flex items-center space-x-3 text-on-surface-variant mb-2">
+                  <Briefcase className="w-5 h-5 text-on-surface-variant" />
                   <span>{profile.company}{profile.job_title ? ` • ${profile.job_title}` : ''}</span>
                 </div>
               )}
               {profile?.updated_at && (
-                <div className="mt-2 text-sm text-desert-500 dark:text-desert-400">
+                <div className="mt-2 text-sm text-on-surface-variant">
                   Last updated: {new Date(profile.updated_at).toLocaleDateString()}
                 </div>
               )}
@@ -110,18 +110,18 @@ export function Profile() {
             {/* Edit profile form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <h2 className="text-xl font-semibold text-desert-800 dark:text-desert-100 mb-4">
+                <h2 className="text-xl font-semibold text-on-surface mb-4">
                   Edit Profile
                 </h2>
                 
                 {/* Tabs */}
-                <div className="flex border-b border-desert-200 dark:border-night-desert-600 mb-6">
+                <div className="flex border-b border-outline-variant mb-6">
                   <button
                     type="button"
                     onClick={() => setActiveTab('basic')}
                     className={`py-2 px-4 font-medium text-sm ${activeTab === 'basic' 
-                      ? 'text-desert-600 dark:text-desert-300 border-b-2 border-desert-500' 
-                      : 'text-desert-500 dark:text-desert-400 hover:text-desert-700 dark:hover:text-desert-300'}`}
+                      ? 'text-on-surface border-b-2 border-primary' 
+                      : 'text-on-surface-variant hover:text-primary'}`}
                   >
                     Basic Information
                   </button>
@@ -129,8 +129,8 @@ export function Profile() {
                     type="button"
                     onClick={() => setActiveTab('contact')}
                     className={`py-2 px-4 font-medium text-sm ${activeTab === 'contact' 
-                      ? 'text-desert-600 dark:text-desert-300 border-b-2 border-desert-500' 
-                      : 'text-desert-500 dark:text-desert-400 hover:text-desert-700 dark:hover:text-desert-300'}`}
+                      ? 'text-on-surface border-b-2 border-primary' 
+                      : 'text-on-surface-variant hover:text-primary'}`}
                   >
                     Contact Details
                   </button>
@@ -138,8 +138,8 @@ export function Profile() {
                     type="button"
                     onClick={() => setActiveTab('work')}
                     className={`py-2 px-4 font-medium text-sm ${activeTab === 'work' 
-                      ? 'text-desert-600 dark:text-desert-300 border-b-2 border-desert-500' 
-                      : 'text-desert-500 dark:text-desert-400 hover:text-desert-700 dark:hover:text-desert-300'}`}
+                      ? 'text-on-surface border-b-2 border-primary' 
+                      : 'text-on-surface-variant hover:text-primary'}`}
                   >
                     Work & Bio
                   </button>
@@ -150,38 +150,38 @@ export function Profile() {
               {activeTab === 'basic' && (
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor="fullName" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="fullName" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Full Name
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-desert-400" />
+                        <User className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="fullName"
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="Your full name"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="location" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Location
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <MapPin className="h-5 w-5 text-desert-400" />
+                        <MapPin className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="location"
                         type="text"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="City, Country"
                       />
                     </div>
@@ -193,38 +193,38 @@ export function Profile() {
               {activeTab === 'contact' && (
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="phone" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Phone Number
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Phone className="h-5 w-5 text-desert-400" />
+                        <Phone className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="phone"
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="Your phone number"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label htmlFor="website" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="website" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Website
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Globe className="h-5 w-5 text-desert-400" />
+                        <Globe className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="website"
                         type="url"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="https://yourwebsite.com"
                       />
                     </div>
@@ -236,57 +236,57 @@ export function Profile() {
               {activeTab === 'work' && (
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="company" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Company
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Briefcase className="h-5 w-5 text-desert-400" />
+                        <Briefcase className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="company"
                         type="text"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="Your company"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label htmlFor="jobTitle" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="jobTitle" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Job Title
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Briefcase className="h-5 w-5 text-desert-400" />
+                        <Briefcase className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <input
                         id="jobTitle"
                         type="text"
                         value={jobTitle}
                         onChange={(e) => setJobTitle(e.target.value)}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="Your job title"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label htmlFor="bio" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+                    <label htmlFor="bio" className="block text-sm font-medium text-on-surface-variant mb-1">
                       Bio
                     </label>
                     <div className="relative">
                       <div className="absolute top-3 left-3 flex items-start pointer-events-none">
-                        <FileText className="h-5 w-5 text-desert-400" />
+                        <FileText className="h-5 w-5 text-on-surface-variant" />
                       </div>
                       <textarea
                         id="bio"
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
                         rows={4}
-                        className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                        className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                         placeholder="Tell us about yourself"
                       />
                     </div>

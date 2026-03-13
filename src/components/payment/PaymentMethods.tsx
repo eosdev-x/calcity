@@ -118,52 +118,52 @@ export function PaymentMethods() {
 
   return (
     <div className="w-full max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold text-desert-800 dark:text-desert-100 mb-6">
+      <h2 className="text-2xl font-bold text-on-surface mb-6">
         Payment Methods
       </h2>
 
       {/* Error message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md">
-          <p className="text-red-700 dark:text-red-300">{error}</p>
+        <div className="mb-6 p-4 bg-error-container border border-error rounded-xl">
+          <p className="text-on-error-container">{error}</p>
         </div>
       )}
 
       {/* Success message */}
       {successMessage && (
-        <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-800 rounded-md">
-          <p className="text-green-700 dark:text-green-300">{successMessage}</p>
+        <div className="mb-6 p-4 bg-tertiary-container border border-tertiary rounded-xl">
+          <p className="text-on-tertiary-container">{successMessage}</p>
         </div>
       )}
 
       {/* Payment methods list */}
-      <div className="bg-white dark:bg-night-desert-900 rounded-lg shadow-desert overflow-hidden mb-6">
+      <div className="bg-surface-container-low rounded-xl shadow-sm overflow-hidden mb-6 border border-outline-variant">
         {isLoading ? (
           <div className="p-6 flex justify-center">
-            <Loader2 className="w-8 h-8 animate-spin text-desert-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-on-surface-variant" />
           </div>
         ) : paymentMethods.length === 0 ? (
-          <div className="p-6 text-center text-desert-600 dark:text-desert-400">
+          <div className="p-6 text-center text-on-surface-variant">
             <p>You don't have any saved payment methods.</p>
           </div>
         ) : (
-          <ul className="divide-y divide-desert-200 dark:divide-night-desert-700">
+          <ul className="divide-y divide-outline-variant">
             {paymentMethods.map((method: PaymentMethod) => (
               <li key={method.id} className="p-4 sm:p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="mr-4 text-desert-700 dark:text-desert-300">
+                    <div className="mr-4 text-on-surface-variant">
                       {getCardIcon(method.card?.brand)}
                     </div>
                     <div>
-                      <div className="font-medium text-desert-800 dark:text-desert-100">
+                      <div className="font-medium text-on-surface">
                         {method.card?.brand?.charAt(0).toUpperCase() + method.card?.brand?.slice(1) || 'Card'} •••• {method.card?.last4}
                       </div>
-                      <div className="text-sm text-desert-600 dark:text-desert-400">
+                      <div className="text-sm text-on-surface-variant">
                         Expires {formatExpiry(method.card?.expMonth, method.card?.expYear)}
                       </div>
                       {method.isDefault && (
-                        <div className="mt-1 flex items-center text-sm text-green-600 dark:text-green-400">
+                        <div className="mt-1 flex items-center text-sm text-tertiary">
                           <CheckCircle2 className="w-4 h-4 mr-1" />
                           Default
                         </div>
@@ -174,7 +174,7 @@ export function PaymentMethods() {
                     {!method.isDefault && (
                       <button
                         onClick={() => handleSetDefaultPaymentMethod(method.id)}
-                        className="p-2 text-desert-600 hover:text-desert-800 dark:text-desert-400 dark:hover:text-desert-200"
+                        className="p-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                         title="Set as default"
                       >
                         <CheckCircle2 className="w-5 h-5" />
@@ -182,7 +182,7 @@ export function PaymentMethods() {
                     )}
                     <button
                       onClick={() => handleRemovePaymentMethod(method.id)}
-                      className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                      className="p-2 text-error hover:text-error transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                       title="Remove payment method"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -196,16 +196,16 @@ export function PaymentMethods() {
       </div>
 
       {/* Add new payment method */}
-      <div className="bg-white dark:bg-night-desert-900 rounded-lg shadow-desert overflow-hidden">
+      <div className="bg-surface-container-low rounded-xl shadow-sm overflow-hidden border border-outline-variant">
         {showAddCard ? (
           <div className="p-6">
-            <h3 className="text-lg font-medium text-desert-800 dark:text-desert-100 mb-4">
+            <h3 className="text-lg font-medium text-on-surface mb-4">
               Add New Payment Method
             </h3>
             
             {/* Card element */}
             <div className="mb-4">
-              <div className="p-3 border border-desert-300 dark:border-night-desert-600 rounded-md bg-white dark:bg-night-desert-800">
+              <div className="p-3 border border-outline rounded-xl bg-surface-container-high">
                 <CardElement
                   options={{
                     style: {
@@ -227,8 +227,8 @@ export function PaymentMethods() {
             
             {/* Error message */}
             {cardError && (
-              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md">
-                <p className="text-red-700 dark:text-red-300">{cardError}</p>
+              <div className="mb-4 p-3 bg-error-container border border-error rounded-xl">
+                <p className="text-on-error-container">{cardError}</p>
               </div>
             )}
             
@@ -241,7 +241,7 @@ export function PaymentMethods() {
                   setCardError(null);
                 }}
                 disabled={isProcessing}
-                className="flex-1 py-2 px-4 border border-desert-300 dark:border-night-desert-600 rounded-md text-desert-700 dark:text-desert-300 hover:bg-desert-50 dark:hover:bg-night-desert-800 transition-colors disabled:opacity-50"
+                className="flex-1 py-2 px-4 border border-outline rounded-full text-primary hover:bg-surface-container transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -249,7 +249,7 @@ export function PaymentMethods() {
                 type="button"
                 onClick={handleAddPaymentMethod}
                 disabled={isProcessing || !stripe || !elements}
-                className="flex-1 py-2 px-4 bg-desert-500 hover:bg-desert-600 dark:bg-desert-600 dark:hover:bg-desert-700 text-white rounded-md transition-colors disabled:opacity-50"
+                className="flex-1 py-2 px-4 bg-primary hover:bg-primary/90 text-on-primary rounded-full transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50"
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
@@ -265,7 +265,7 @@ export function PaymentMethods() {
         ) : (
           <button
             onClick={() => setShowAddCard(true)}
-            className="w-full p-6 flex items-center justify-center text-desert-600 hover:text-desert-800 dark:text-desert-400 dark:hover:text-desert-200"
+            className="w-full p-6 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           >
             <PlusCircle className="w-5 h-5 mr-2" />
             <span>Add New Payment Method</span>

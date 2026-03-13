@@ -3,90 +3,116 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import logo from '../assets/logo.svg';
+import { siteConfig } from '../config/site';
 
 export function Footer() {
+  const hasSocialLinks = Boolean(
+    siteConfig.social.facebook || siteConfig.social.twitter || siteConfig.social.instagram
+  );
+  const contactEmail = siteConfig.contact.email || `info@${siteConfig.domain}`;
+  const contactPhone = siteConfig.contact.phone;
+  const contactPhoneHref = contactPhone ? `tel:${contactPhone.replace(/[^\d+]/g, '')}` : '';
+
   return (
-    <footer className="bg-desert-100 dark:bg-night-desert-200 mt-auto">
+    <footer className="bg-surface-container mt-auto">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col">
             <Link to="/" className="inline-block mb-3">
-              <img src={logo} alt="CalCity.info" className="h-16 w-auto max-w-[90%]" />
+              <img src={logo} alt={siteConfig.name} className="h-16 w-auto max-w-[90%]" />
             </Link>
-            <p className="text-desert-700 dark:text-desert-300 mt-1">
-              Your comprehensive guide to California City, California.
+            <p className="text-on-surface-variant mt-1">
+              Your comprehensive guide to {siteConfig.city}, {siteConfig.state}.
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-on-surface">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link to="/events" className="nav-link">Events</Link></li>
-              <li><Link to="/businesses" className="nav-link">Businesses</Link></li>
-              <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
-              <li><Link to="/guide" className="nav-link">Visitor Guide</Link></li>
+              {siteConfig.features.events && (
+                <li><Link to="/events" className="nav-link">Events</Link></li>
+              )}
+              {siteConfig.features.businesses && (
+                <li><Link to="/businesses" className="nav-link">Businesses</Link></li>
+              )}
+              {siteConfig.features.businesses && (
+                <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
+              )}
+              {siteConfig.features.guide && (
+                <li><Link to="/guide" className="nav-link">Visitor Guide</Link></li>
+              )}
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Contact</h4>
+            <h4 className="font-semibold mb-4 text-on-surface">Contact</h4>
             <ul className="space-y-2">
               <li>
                 <a 
-                  href="mailto:info@calcity.info" 
+                  href={`mailto:${contactEmail}`}
                   className="flex items-center space-x-2 nav-link"
                 >
                   <Mail className="w-4 h-4" />
-                  <span>info@calcity.info</span>
+                  <span>{contactEmail}</span>
                 </a>
               </li>
-              <li>
-                <a 
-                  href="tel:+15551234567" 
-                  className="flex items-center space-x-2 nav-link"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>(555) 123-4567</span>
-                </a>
-              </li>
+              {contactPhone && (
+                <li>
+                  <a 
+                    href={contactPhoneHref} 
+                    className="flex items-center space-x-2 nav-link"
+                  >
+                    <Phone className="w-4 h-4" />
+                    <span>{contactPhone}</span>
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-4 text-desert-800 dark:text-desert-100">Follow Us</h4>
-            <div className="flex space-x-4">
-              <a 
-                href="https://facebook.com/calcityinfo" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="nav-link"
-              >
-                <Facebook className="w-6 h-6" />
-              </a>
-              <a 
-                href="https://twitter.com/calcityinfo" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="nav-link"
-              >
-                <Twitter className="w-6 h-6" />
-              </a>
-              <a 
-                href="https://instagram.com/calcityinfo" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="nav-link"
-              >
-                <Instagram className="w-6 h-6" />
-              </a>
+          {hasSocialLinks && (
+            <div>
+              <h4 className="font-semibold mb-4 text-on-surface">Follow Us</h4>
+              <div className="flex space-x-4">
+                {siteConfig.social.facebook && (
+                  <a 
+                    href={siteConfig.social.facebook}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="nav-link"
+                  >
+                    <Facebook className="w-6 h-6" />
+                  </a>
+                )}
+                {siteConfig.social.twitter && (
+                  <a 
+                    href={siteConfig.social.twitter}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="nav-link"
+                  >
+                    <Twitter className="w-6 h-6" />
+                  </a>
+                )}
+                {siteConfig.social.instagram && (
+                  <a 
+                    href={siteConfig.social.instagram}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="nav-link"
+                  >
+                    <Instagram className="w-6 h-6" />
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="mt-8 pt-8 border-t border-desert-200 dark:border-night-desert-300">
+        <div className="mt-8 pt-8 border-t border-outline-variant">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-desert-700 dark:text-desert-300">
-              © 2025 CalCity.info. All rights reserved.
+            <p className="text-on-surface-variant">
+              © 2025 {siteConfig.name}. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <Link to="/privacy" className="nav-link">Privacy Policy</Link>

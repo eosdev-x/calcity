@@ -67,11 +67,11 @@ export function ResetPasswordForm() {
   if (isSuccess) {
     return (
       <div className="w-full max-w-md mx-auto">
-        <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-8">
-          <h2 className="text-2xl font-bold text-center mb-6 text-desert-800 dark:text-desert-100">
+        <div className="bg-surface-container-low rounded-xl shadow-sm p-8 border border-outline-variant">
+          <h2 className="text-2xl font-bold text-center mb-6 text-on-surface">
             Password Reset Successful
           </h2>
-          <p className="text-center text-desert-700 dark:text-desert-300 mb-6">
+          <p className="text-center text-on-surface-variant mb-6">
             Your password has been successfully reset. You will be redirected to the login page shortly.
           </p>
           <button
@@ -87,16 +87,16 @@ export function ResetPasswordForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white dark:bg-night-desert-100 rounded-lg shadow-desert p-8">
-        <h2 className="text-2xl font-bold text-center mb-6 text-desert-800 dark:text-desert-100">
+      <div className="bg-surface-container-low rounded-xl shadow-sm p-8 border border-outline-variant">
+        <h2 className="text-2xl font-bold text-center mb-6 text-on-surface">
           Reset Your Password
         </h2>
         
         {/* Error message */}
         {error && (
-          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md flex items-start">
-            <AlertCircle className="w-5 h-5 text-red-500 dark:text-red-400 mr-2 flex-shrink-0 mt-0.5" />
-            <span className="text-red-700 dark:text-red-300 text-sm">
+          <div className="mb-4 p-3 bg-error-container border border-error rounded-xl flex items-start">
+            <AlertCircle className="w-5 h-5 text-error mr-2 flex-shrink-0 mt-0.5" />
+            <span className="text-on-error-container text-sm">
               {error}
             </span>
           </div>
@@ -105,42 +105,42 @@ export function ResetPasswordForm() {
         {/* Reset password form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-on-surface-variant mb-1">
               New Password
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-desert-400" />
+                <Lock className="h-5 w-5 text-on-surface-variant" />
               </div>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                 placeholder="••••••••"
                 required
               />
             </div>
-            <p className="mt-1 text-xs text-desert-500 dark:text-desert-400">
+            <p className="mt-1 text-xs text-on-surface-variant">
               Must be at least 8 characters long
             </p>
           </div>
           
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-desert-700 dark:text-desert-300 mb-1">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-on-surface-variant mb-1">
               Confirm New Password
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-desert-400" />
+                <Lock className="h-5 w-5 text-on-surface-variant" />
               </div>
               <input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="pl-10 w-full rounded-md border-desert-300 dark:border-night-desert-600 dark:bg-night-desert-200 text-desert-800 dark:text-desert-100 focus:ring-desert-500 focus:border-desert-500"
+                className="pl-10 w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                 placeholder="••••••••"
                 required
               />

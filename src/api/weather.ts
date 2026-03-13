@@ -1,6 +1,10 @@
-const API_KEY = '3ce60b5f72624df49cbfd96ac728fe65';
-const CITY_NAME = 'California City';
-const COUNTRY_CODE = 'US';
+import { siteConfig } from '../config/site';
+
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
+
+if (!API_KEY) {
+  console.warn('Missing VITE_OPENWEATHER_API_KEY: weather data will be unavailable.');
+}
 
 export interface WeatherData {
   temp: number;
@@ -11,7 +15,7 @@ export interface WeatherData {
 export async function getWeather(): Promise<WeatherData> {
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME},${COUNTRY_CODE}&appid=${API_KEY}&units=imperial`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${siteConfig.weather.lat}&lon=${siteConfig.weather.lon}&appid=${API_KEY}&units=imperial`
     );
 
     if (!response.ok) {

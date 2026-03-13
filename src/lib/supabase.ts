@@ -11,7 +11,7 @@ const getSupabaseUrl = () => {
     return window.env.VITE_SUPABASE_URL;
   }
   // Fallback to hardcoded value
-  return 'https://qbuhadgmvrwquufqhmrz.supabase.co';
+  return 'https://mbazrezahuojknfgcwou.supabase.co';
 };
 
 const getSupabaseAnonKey = () => {
@@ -24,7 +24,7 @@ const getSupabaseAnonKey = () => {
     return window.env.VITE_SUPABASE_ANON_KEY;
   }
   // Fallback to empty string
-  return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFidWhhZGdtdnJ3cXV1ZnFobXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUyODIyNjgsImV4cCI6MjA2MDg1ODI2OH0.IVj9LSYCWOEu2K3FJsi6wOGvpHeoMU-uMqS-KmXr6tE';
+  return 'sb_publishable_98WQlIzjiBwD9soSjB9QgA_54OZ72T9';
 };
 
 // Initialize Supabase client

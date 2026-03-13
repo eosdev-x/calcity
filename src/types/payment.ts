@@ -2,16 +2,16 @@ import { Stripe } from '@stripe/stripe-js';
 
 // Subscription tiers
 export enum SubscriptionTier {
-  FREE = 'free',
+  BASIC = 'basic',
   PREMIUM = 'premium',
-  ENTERPRISE = 'enterprise'
+  SPOTLIGHT = 'spotlight'
 }
 
 // Subscription prices (monthly)
 export const SUBSCRIPTION_PRICES = {
-  [SubscriptionTier.FREE]: 0,
-  [SubscriptionTier.PREMIUM]: 29,
-  [SubscriptionTier.ENTERPRISE]: 99
+  [SubscriptionTier.BASIC]: 9.99,
+  [SubscriptionTier.PREMIUM]: 24.99,
+  [SubscriptionTier.SPOTLIGHT]: 49.99
 };
 
 // Subscription features
@@ -83,6 +83,7 @@ export interface Subscription {
   customerId: string;
   status: SubscriptionStatus;
   planId: string;
+  tier: SubscriptionTier;
   currentPeriodStart: number;
   currentPeriodEnd: number;
   cancelAtPeriodEnd: boolean;
@@ -112,10 +113,7 @@ export interface PaymentHistoryItem {
 // Checkout session options
 export interface CheckoutOptions {
   priceId: string;
-  successUrl: string;
-  cancelUrl: string;
-  customerEmail?: string;
-  metadata?: Record<string, string>;
+  businessId: string;
 }
 
 // Payment context type
@@ -125,10 +123,10 @@ export interface PaymentContextType {
   currentSubscription: Subscription | null;
   paymentMethods: PaymentMethod[];
   paymentHistory: PaymentHistoryItem[];
-  createCheckoutSession: (options: CheckoutOptions) => Promise<{ sessionId: string } | { error: any }>;
+  createCheckoutSession: (options: CheckoutOptions) => Promise<{ url: string } | { error: any }>;
   createPaymentIntent: (amount: number, metadata?: Record<string, string>) => Promise<{ clientSecret: string } | { error: any }>;
-  updateSubscription: (subscriptionId: string, newPriceId: string) => Promise<{ subscription: Subscription } | { error: any }>;
   cancelSubscription: (subscriptionId: string) => Promise<{ success: boolean } | { error: any }>;
+  getCustomerPortalUrl: () => Promise<{ url: string } | { error: any }>;
   addPaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;
   removePaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;
   setDefaultPaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;

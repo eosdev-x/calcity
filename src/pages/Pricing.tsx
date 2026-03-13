@@ -4,26 +4,31 @@ import { useNavigate } from 'react-router-dom';
 import { usePayment } from '../context/PaymentContext';
 import { useAuth } from '../context/AuthContext';
 import { SubscriptionTier, SUBSCRIPTION_PRICES, SubscriptionFeatures } from '../types/payment';
+import { getPrimaryBusinessIdForOwner } from '../utils/business';
+import { siteConfig } from '../config/site';
 
 export function Pricing() {
   const { user } = useAuth();
   const { createCheckoutSession, currentSubscription, isLoading, error } = usePayment();
   const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Define subscription plans with features and Stripe price IDs
   const plans = [
     {
-      id: "free-plan",
+      id: "basic-plan",
       name: "Basic Listing",
-      tier: SubscriptionTier.FREE,
-      price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
-      priceDisplay: "Free",
+      tier: SubscriptionTier.BASIC,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
+      priceDisplay: "$9.99/month",
+      stripePriceId: siteConfig.stripe.basicPriceId,
       features: [
-        "Basic business profile",
-        "Contact information",
-        "Business hours",
-        "Map location"
+        "Business name, address & phone",
+        "Business hours display",
+        "One photo",
+        "Category listing",
+        "Appears in search results"
       ],
       featureDetails: {
         photoLimit: 1,
@@ -36,18 +41,18 @@ export function Pricing() {
     },
     {
       id: "premium-plan",
-      name: "Premium",
+      name: "Premium Listing",
       tier: SubscriptionTier.PREMIUM,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
-      priceDisplay: `$${SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM]}/month`,
-      stripePriceId: 'price_premium_monthly',
+      priceDisplay: "$24.99/month",
+      stripePriceId: siteConfig.stripe.premiumPriceId,
       features: [
         "Everything in Basic",
+        "Photo gallery (up to 10)",
         "Featured in search results",
-        "Photo gallery (10 photos)",
-        "Special offers section",
-        "Customer reviews",
-        "Social media links"
+        "Business description & services",
+        "Direct website link",
+        "Premium badge"
       ],
       featureDetails: {
         photoLimit: 10,
@@ -59,19 +64,19 @@ export function Pricing() {
       } as SubscriptionFeatures
     },
     {
-      id: "enterprise-plan",
-      name: "Enterprise",
-      tier: SubscriptionTier.ENTERPRISE,
-      price: SUBSCRIPTION_PRICES[SubscriptionTier.ENTERPRISE],
-      priceDisplay: `$${SUBSCRIPTION_PRICES[SubscriptionTier.ENTERPRISE]}/month`,
-      stripePriceId: 'price_enterprise_monthly',
+      id: "spotlight-plan",
+      name: "Spotlight Listing",
+      tier: SubscriptionTier.SPOTLIGHT,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
+      priceDisplay: "$49.99/month",
+      stripePriceId: siteConfig.stripe.spotlightPriceId,
       features: [
         "Everything in Premium",
-        "Priority support",
-        "Custom branding",
-        "Analytics dashboard",
-        "Email marketing integration",
-        "Multiple locations (up to 3)"
+        "Top of search results",
+        "Homepage spotlight rotation",
+        "Monthly event promotion",
+        "Social media cross-promotion",
+        "Analytics dashboard"
       ],
       featureDetails: {
         photoLimit: 30,
@@ -85,7 +90,7 @@ export function Pricing() {
   ];
 
   // Get current plan
-  const currentPlanId = currentSubscription?.planId || 'free-plan';
+  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
 
   // Handle subscription checkout
   const handleSubscribe = async (plan: typeof plans[0]) => {
@@ -95,7 +100,7 @@ export function Pricing() {
       return;
     }
 
-    if (plan.tier === SubscriptionTier.FREE) {
+    if (plan.tier === SubscriptionTier.BASIC) {
       // For free plan, redirect to payment page to manage subscription
       navigate('/payment');
       return;
@@ -107,50 +112,58 @@ export function Pricing() {
     }
 
     setProcessingPlanId(plan.id);
+    setLocalError(null);
 
     try {
+      const businessId = await getPrimaryBusinessIdForOwner(user.id);
+
+      if (!businessId) {
+        setLocalError('Create a business profile before subscribing to a plan.');
+        return;
+      }
+
       const result = await createCheckoutSession({
         priceId: plan.stripePriceId,
-        successUrl: `${window.location.origin}/payment/success?plan=${plan.tier}`,
-        cancelUrl: `${window.location.origin}/payment/cancel`,
+        businessId,
       });
 
       if ('error' in result) {
-        throw new Error(result.error.message || 'Failed to create checkout session');
+        const message = typeof result.error === 'string' ? result.error : result.error.message;
+        throw new Error(message || 'Failed to create checkout session');
       }
 
-      // For now, redirect to payment page since we don't have actual backend
-      // In a real implementation with a backend, we would redirect to Stripe Checkout URL
-      // window.location.href = result.url
-      navigate('/payment');
+      if (result.url) {
+        window.location.href = result.url;
+      }
     } catch (err: any) {
       console.error('Subscription error:', err);
+      setLocalError(err.message || 'Failed to start checkout');
     } finally {
       setProcessingPlanId(null);
     }
   };
 
   // Check if a plan is the current active plan
-  const isCurrentPlan = (planId: string) => {
-    return currentPlanId === planId;
+  const isCurrentPlan = (tier: SubscriptionTier) => {
+    return currentTier === tier;
   };
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-900 py-12">
+    <div className="min-h-screen bg-surface  py-12">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100 mb-4">
+          <h1 className="text-4xl font-display font-bold text-on-surface mb-4">
             Choose Your Plan
           </h1>
-          <p className="text-desert-700 dark:text-desert-300 max-w-2xl mx-auto">
-            Select the perfect plan for your business and start reaching more customers in California City
+          <p className="text-on-surface-variant max-w-2xl mx-auto">
+            Select the perfect plan for your business and start reaching more customers in {siteConfig.city}
           </p>
         </div>
 
         {/* Error message */}
-        {error && (
-          <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md">
-            <p className="text-red-700 dark:text-red-300">{error}</p>
+        {(localError || error) && (
+          <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
+            <p className="text-on-error-container">{localError || error}</p>
           </div>
         )}
 
@@ -159,39 +172,39 @@ export function Pricing() {
             <div 
               key={plan.id}
               className={`card overflow-hidden ${
-                isCurrentPlan(plan.id) 
-                  ? 'border-desert-500 dark:border-desert-400 shadow-desert' 
+                isCurrentPlan(plan.tier) 
+                  ? 'border-outline  shadow-sm' 
                   : ''
               }`}
             >
               {/* Plan header */}
               <div className={`p-6 ${
-                isCurrentPlan(plan.id)
-                  ? 'bg-desert-500 dark:bg-desert-600 text-white'
-                  : 'bg-white dark:bg-night-desert-800'
+                isCurrentPlan(plan.tier)
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-surface-container'
               }`}>
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                 <p className={`text-3xl font-bold ${
-                  isCurrentPlan(plan.id)
-                    ? 'text-white'
-                    : 'text-desert-800 dark:text-desert-100'
+                  isCurrentPlan(plan.tier)
+                    ? 'text-on-primary'
+                    : 'text-on-surface'
                 } mb-2`}>
                   {plan.priceDisplay}
                 </p>
-                {isCurrentPlan(plan.id) && (
-                  <div className="mt-1 text-sm font-medium text-white">
+                {isCurrentPlan(plan.tier) && (
+                  <div className="mt-1 text-sm font-medium text-on-primary">
                     Current Plan
                   </div>
                 )}
               </div>
 
               {/* Plan features */}
-              <div className="p-6 bg-white dark:bg-night-desert-900">
+              <div className="p-6 bg-surface-container-low">
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-center space-x-2">
-                      <Check className="w-5 h-5 text-desert-400" />
-                      <span className="text-desert-700 dark:text-desert-300">{feature}</span>
+                      <Check className="w-5 h-5 text-on-surface-variant" />
+                      <span className="text-on-surface-variant">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -199,9 +212,9 @@ export function Pricing() {
                 {/* Action button */}
                 <button
                   onClick={() => handleSubscribe(plan)}
-                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.id)}
+                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
                   className={`btn-primary w-full ${
-                    isCurrentPlan(plan.id) ? 'opacity-50 cursor-not-allowed' : ''
+                    isCurrentPlan(plan.tier) ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
                   {processingPlanId === plan.id ? (
@@ -209,10 +222,8 @@ export function Pricing() {
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Processing...
                     </div>
-                  ) : isCurrentPlan(plan.id) ? (
+                  ) : isCurrentPlan(plan.tier) ? (
                     'Current Plan'
-                  ) : plan.tier === SubscriptionTier.FREE ? (
-                    'Get Started'
                   ) : (
                     'Subscribe Now'
                   )}
@@ -222,9 +233,9 @@ export function Pricing() {
           ))}
         </div>
 
-        <div className="mt-12 text-center text-sm text-desert-600 dark:text-desert-400 max-w-2xl mx-auto">
+        <div className="mt-12 text-center text-sm text-on-surface-variant max-w-2xl mx-auto">
           <p>All plans include access to our community events calendar and local business directory.</p>
-          <p className="mt-2">Need help choosing? <a href="/contact" className="text-desert-500 hover:text-desert-600 dark:text-desert-400 dark:hover:text-desert-300 underline">Contact our team</a> for personalized assistance.</p>
+          <p className="mt-2">Need help choosing? <a href="/contact" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">Contact our team</a> for personalized assistance.</p>
         </div>
       </div>
     </div>

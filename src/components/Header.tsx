@@ -4,24 +4,35 @@ import { Menu, X, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileDropdown } from './auth/UserProfileDropdown';
 import logo from '../assets/logo.svg';
+import { siteConfig } from '../config/site';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, isLoading } = useAuth();
+  const { user, profile, isLoading } = useAuth();
 
   return (
-    <header className="bg-white dark:bg-night-desert-100 shadow-desert sticky top-0 z-50">
+    <header className="bg-surface-container-low elevation-2 sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center -my-2">
-            <img src={logo} alt="CalCity.info" className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
+            <img src={logo} alt={siteConfig.name} className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/events" className="nav-link">Events</Link>
-            <Link to="/businesses" className="nav-link">Businesses</Link>
+            {siteConfig.features.events && (
+              <Link to="/events" className="nav-link">Events</Link>
+            )}
+            {siteConfig.features.businesses && (
+              <Link to="/businesses" className="nav-link">Businesses</Link>
+            )}
             <Link to="/pricing" className="nav-link">Pricing</Link>
+            {!isLoading && user && (
+              <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            )}
+            {!isLoading && profile?.role === 'admin' && (
+              <Link to="/admin" className="nav-link">Admin</Link>
+            )}
             
             {/* Authentication */}
             {!isLoading && (
@@ -31,7 +42,7 @@ export function Header() {
                 <div className="flex items-center space-x-4">
                   <Link 
                     to="/auth/login" 
-                    className="text-desert-600 dark:text-desert-300 hover:text-desert-800 dark:hover:text-desert-100 transition-colors"
+                    className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   >
                     Log in
                   </Link>
@@ -54,9 +65,9 @@ export function Header() {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-desert-800 dark:text-desert-100" />
+              <X className="w-6 h-6 text-on-surface" />
             ) : (
-              <Menu className="w-6 h-6 text-desert-800 dark:text-desert-100" />
+              <Menu className="w-6 h-6 text-on-surface" />
             )}
           </button>
         </div>
@@ -64,20 +75,24 @@ export function Header() {
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden mt-4 space-y-4 pb-4">
-              <Link
-                to="/events"
-                className="block nav-link py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Events
-              </Link>
-              <Link
-                to="/businesses"
-                className="block nav-link py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Businesses
-              </Link>
+              {siteConfig.features.events && (
+                <Link
+                  to="/events"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Events
+                </Link>
+              )}
+              {siteConfig.features.businesses && (
+                <Link
+                  to="/businesses"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Businesses
+                </Link>
+              )}
               <Link
                 to="/pricing"
                 className="block nav-link py-2"
@@ -85,6 +100,15 @@ export function Header() {
               >
                 Pricing
               </Link>
+              {!isLoading && profile?.role === 'admin' && (
+                <Link
+                  to="/admin"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              )}
               
               {/* Authentication for mobile */}
               {!isLoading && !user && (
@@ -98,7 +122,7 @@ export function Header() {
                   </Link>
                   <Link
                     to="/auth/signup"
-                    className="block nav-link py-2 text-desert-600 dark:text-desert-300 font-medium"
+                    className="block nav-link py-2 text-on-surface-variant font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign up

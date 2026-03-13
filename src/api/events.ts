@@ -1,24 +1,30 @@
 import { Event } from '../types/event';
+import { supabase } from '../lib/supabase';
+import { slugify } from '../utils/slugify';
 
-// Mock function to simulate API call for submitting a new event
 export async function submitEvent(event: Omit<Event, 'id'>): Promise<Event> {
-  // In a real application, this would be an API call to a backend service
-  // For now, we'll simulate a successful response with a delay
-  
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Generate a random ID for the new event
-      const newEvent: Event = {
-        ...event,
-        id: Math.floor(Math.random() * 10000) + 100, // Random ID between 100 and 10100
-      };
-      
-      // In a real app, we would save this to a database
-      console.log('Event submitted:', newEvent);
-      
-      resolve(newEvent);
-    }, 800); // Simulate network delay
-  });
+  const sanitizedEvent = {
+    ...event
+  } as Omit<Event, 'id'> & { status?: Event['status']; approved_at?: string | null };
+  delete sanitizedEvent.status;
+  delete sanitizedEvent.approved_at;
+  const payload: Omit<Event, 'id'> = {
+    ...sanitizedEvent,
+    slug: sanitizedEvent.slug || slugify(sanitizedEvent.title),
+    status: 'pending'
+  };
+
+  const { data, error } = await supabase
+    .from('events')
+    .insert(payload)
+    .select('*')
+    .single();
+
+  if (error || !data) {
+    throw new Error(error?.message || 'Failed to submit event');
+  }
+
+  return data;
 }
 
 // Mock function to get event categories
