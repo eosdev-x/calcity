@@ -13,6 +13,11 @@ import {
   Users
 } from 'lucide-react';
 import { useEvents } from '../context/EventContext';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
+import { buildBreadcrumbListJsonLd, buildEventJsonLd } from '../utils/jsonLd';
+import { truncateText } from '../utils/seo';
 
 export function EventDetails() {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +35,17 @@ export function EventDetails() {
     navigate('/events');
     return null;
   }
+
+  const description = truncateText(event.description, 160);
+  const eventJsonLd = buildEventJsonLd(event, siteConfig);
+  const breadcrumbsJsonLd = buildBreadcrumbListJsonLd(
+    [
+      { name: siteConfig.seo.pages.homeTitle, path: '/' },
+      { name: siteConfig.seo.pages.eventsTitle, path: '/events' },
+      { name: event.title, path: `/events/${event.id}` },
+    ],
+    siteConfig
+  );
 
   const capacity = Math.max(50, event.view_count + 100);
   const registeredCount = Math.min(event.view_count, capacity);
@@ -62,6 +78,21 @@ export function EventDetails() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={event.title}
+        description={description}
+        path={`/events/${event.id}`}
+        type="event"
+        image={event.image || undefined}
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(eventJsonLd)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbsJsonLd)}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button

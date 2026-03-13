@@ -9,6 +9,8 @@ import { Business } from '../types/business';
 import { BusinessEditForm } from '../components/dashboard/BusinessEditForm';
 import { PhotoManager } from '../components/dashboard/PhotoManager';
 import { AnalyticsDashboard } from '../components/dashboard/AnalyticsDashboard';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 const tabs = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -144,6 +146,11 @@ export function BusinessDashboard() {
   if (!business) {
     return (
       <div className="min-h-screen bg-surface py-12">
+        <SEO
+          title={siteConfig.seo.pages.dashboardTitle}
+          path="/dashboard"
+          noindex
+        />
         <div className="container mx-auto px-4">
           {error && (
             <div className="mb-6 rounded-xl border border-error bg-error-container p-4 text-on-error-container text-sm">
@@ -166,6 +173,11 @@ export function BusinessDashboard() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.dashboardTitle}
+        path="/dashboard"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>

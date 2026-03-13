@@ -8,6 +8,9 @@ import { useBusinesses } from '../context/BusinessContext';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
 import { getTierBadge } from '../hooks/useBusinessPermissions';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
+import { buildWebSiteJsonLd } from '../utils/jsonLd';
 
 export function Home() {
   // Get events and businesses from context
@@ -30,9 +33,22 @@ export function Home() {
     .filter(business => business.is_featured && business.status === 'active')
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3);
+
+  const webSiteJsonLd = buildWebSiteJsonLd(siteConfig);
     
   return (
     <div className="flex flex-col min-h-screen">
+      <SEO
+        title={siteConfig.seo.pages.homeTitle}
+        description={siteConfig.seo.pages.homeDescription}
+        path="/"
+        type="website"
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(webSiteJsonLd)}
+        </script>
+      </Helmet>
       {/* Hero Section */}
       <section 
         className="relative min-h-[800px] bg-cover bg-center"

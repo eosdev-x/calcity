@@ -9,6 +9,8 @@ import { useAuth } from '../context/AuthContext';
 import { usePayment } from '../context/PaymentContext';
 import { stripePromise } from '../lib/stripe';
 import { SubscriptionTier } from '../types/payment';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 export function Payment() {
   const { user } = useAuth();
@@ -58,6 +60,11 @@ export function Payment() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO
+        title={siteConfig.seo.pages.paymentTitle}
+        path="/payment"
+        noindex
+      />
       <h1 className="text-3xl font-bold text-on-surface mb-8">
         Payment Management
       </h1>

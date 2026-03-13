@@ -4,6 +4,7 @@ import { List, ArrowLeft } from 'lucide-react';
 import { EventCalendar } from '../components/EventCalendar';
 import { useEvents } from '../context/EventContext';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 export function EventCalendarView() {
   const { events, loading } = useEvents();
@@ -14,6 +15,12 @@ export function EventCalendarView() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.eventCalendarTitle}
+        description={siteConfig.seo.pages.eventsDescription}
+        path="/events/calendar"
+        type="website"
+      />
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <div className="flex items-center justify-between mb-6">

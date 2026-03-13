@@ -18,6 +18,7 @@ import { clsx } from 'clsx';
 import { useAuth } from '../context/AuthContext';
 import { slugify } from '../utils/slugify';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 type EventFormData = {
   title: string;
@@ -194,6 +195,11 @@ export function EventSubmission() {
   
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.eventSubmissionTitle}
+        path="/events/new"
+        noindex
+      />
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button
