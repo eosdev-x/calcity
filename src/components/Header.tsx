@@ -7,7 +7,7 @@ import logo from '../assets/logo.svg';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, isLoading } = useAuth();
+  const { user, profile, isLoading } = useAuth();
 
   return (
     <header className="bg-surface-container-low elevation-2 sticky top-0 z-50">
@@ -24,6 +24,9 @@ export function Header() {
             <Link to="/pricing" className="nav-link">Pricing</Link>
             {!isLoading && user && (
               <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            )}
+            {!isLoading && profile?.role === 'admin' && (
+              <Link to="/admin" className="nav-link">Admin</Link>
             )}
             
             {/* Authentication */}
@@ -88,6 +91,15 @@ export function Header() {
               >
                 Pricing
               </Link>
+              {!isLoading && profile?.role === 'admin' && (
+                <Link
+                  to="/admin"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              )}
               
               {/* Authentication for mobile */}
               {!isLoading && !user && (

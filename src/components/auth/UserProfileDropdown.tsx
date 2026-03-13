@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, LogOut, Settings, ChevronDown, LayoutDashboard } from 'lucide-react';
+import { User, LogOut, Settings, ChevronDown, LayoutDashboard, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function UserProfileDropdown() {
@@ -103,6 +103,17 @@ export function UserProfileDropdown() {
             <LayoutDashboard className="w-4 h-4 mr-2" />
             Dashboard
           </Link>
+
+          {profile?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-high flex items-center transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+              onClick={() => setIsOpen(false)}
+            >
+              <Shield className="w-4 h-4 mr-2" />
+              Admin Panel
+            </Link>
+          )}
           
           <Link
             to="/profile/settings"
