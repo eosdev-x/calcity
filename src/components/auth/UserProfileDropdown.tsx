@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, LogOut, Settings, ChevronDown } from 'lucide-react';
+import { User, LogOut, Settings, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function UserProfileDropdown() {
@@ -93,6 +93,15 @@ export function UserProfileDropdown() {
           >
             <User className="w-4 h-4 mr-2" />
             Your Profile
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-high flex items-center transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+            onClick={() => setIsOpen(false)}
+          >
+            <LayoutDashboard className="w-4 h-4 mr-2" />
+            Dashboard
           </Link>
           
           <Link

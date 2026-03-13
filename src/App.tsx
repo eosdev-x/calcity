@@ -10,6 +10,7 @@ import { EventCalendarView } from './pages/EventCalendarView';
 import { Businesses } from './pages/Businesses';
 import { BusinessDetails } from './pages/BusinessDetails';
 import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
+import { BusinessDashboard } from './pages/BusinessDashboard';
 import { Pricing } from './pages/Pricing';
 import { Guide } from './pages/Guide';
 import { Terms } from './pages/Terms';
@@ -53,6 +54,7 @@ function App() {
                   <Route path="/businesses" element={<Businesses />} />
                   <Route path="/businesses/new" element={<ProtectedRoute><BusinessProfileCreation /></ProtectedRoute>} />
                   <Route path="/businesses/:id" element={<BusinessDetails />} />
+                  <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
                   <Route path="/pricing" element={<Pricing />} />
                   <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
                   <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
