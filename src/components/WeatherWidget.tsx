@@ -30,15 +30,15 @@ export function WeatherWidget() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-4">
-        <Loader2 className="w-6 h-6 text-desert-600 dark:text-white animate-spin" />
+        <Loader2 className="w-6 h-6 text-on-surface-variant animate-spin" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center py-4 text-desert-700 dark:text-white">
-        <CloudRain className="w-6 h-6 text-desert-600 dark:text-white mr-2" />
+      <div className="flex items-center justify-center py-4 text-on-surface-variant">
+        <CloudRain className="w-6 h-6 text-on-surface-variant mr-2" />
         <span>Weather data unavailable</span>
       </div>
     );
@@ -51,7 +51,7 @@ export function WeatherWidget() {
         alt={weather?.description}
         className="w-10 h-10"
       />
-      <div className="text-desert-700 dark:text-white">
+      <div className="text-on-surface-variant">
         <span className="font-semibold">{weather?.temp}°F</span>
         <span className="mx-2">|</span>
         <span className="capitalize">{weather?.description}</span>

@@ -99,23 +99,23 @@ export function BusinessHoursStatus({ hours, className }: BusinessHoursStatusPro
 
   const statusConfig = {
     'open': {
-      color: 'text-green-500',
-      bgColor: 'bg-green-100 dark:bg-green-900/20',
+      color: 'text-on-tertiary-container',
+      bgColor: 'bg-tertiary-container',
       text: 'Open'
     },
     'closed': {
-      color: 'text-red-500',
-      bgColor: 'bg-red-100 dark:bg-red-900/20',
+      color: 'text-on-error-container',
+      bgColor: 'bg-error-container',
       text: 'Closed'
     },
     'opening-soon': {
-      color: 'text-yellow-500',
-      bgColor: 'bg-yellow-100 dark:bg-yellow-900/20',
+      color: 'text-on-secondary-container',
+      bgColor: 'bg-secondary-container',
       text: 'Opening Soon'
     },
     'closing-soon': {
-      color: 'text-orange-500',
-      bgColor: 'bg-orange-100 dark:bg-orange-900/20',
+      color: 'text-on-tertiary-container',
+      bgColor: 'bg-tertiary-container',
       text: 'Closing Soon'
     }
   };
@@ -132,7 +132,7 @@ export function BusinessHoursStatus({ hours, className }: BusinessHoursStatusPro
         </span>
       </div>
       {status === 'closed' && nextOpenTime && (
-        <span className="text-sm text-desert-600 dark:text-desert-400">
+        <span className="text-sm text-on-surface-variant">
           Opens {nextOpenTime}
         </span>
       )}

@@ -14,11 +14,11 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
       onClose={onClose}
       className="min-h-[80vh] md:min-h-[600px] flex flex-col"
     >
-      <div className="p-6 pb-4 border-b border-desert-200 dark:border-night-desert-300">
-        <h2 className="text-2xl font-semibold text-desert-800 dark:text-desert-100">
+      <div className="p-6 pb-4 border-b border-outline-variant">
+        <h2 className="text-2xl font-semibold text-on-surface">
           Chat with CalCityBot
         </h2>
-        <p className="text-desert-600 dark:text-desert-300 mt-1">
+        <p className="text-on-surface-variant mt-1">
           Ask me anything about California City!
         </p>
       </div>

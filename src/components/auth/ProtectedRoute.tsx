@@ -18,10 +18,10 @@ export function ProtectedRoute({
   // Show loading state while checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-desert-50 dark:bg-night-desert-50">
+      <div className="min-h-screen flex items-center justify-center bg-surface">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-desert-500 animate-spin mx-auto mb-4" />
-          <p className="text-desert-700 dark:text-desert-300">Loading...</p>
+          <Loader2 className="w-12 h-12 text-on-surface-variant animate-spin mx-auto mb-4" />
+          <p className="text-on-surface-variant">Loading...</p>
         </div>
       </div>
     );

@@ -10,7 +10,7 @@ export function Header() {
   const { user, isLoading } = useAuth();
 
   return (
-    <header className="bg-white dark:bg-night-desert-100 shadow-desert sticky top-0 z-50">
+    <header className="bg-surface-container-low elevation-2 sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center -my-2">
@@ -31,7 +31,7 @@ export function Header() {
                 <div className="flex items-center space-x-4">
                   <Link 
                     to="/auth/login" 
-                    className="text-desert-600 dark:text-desert-300 hover:text-desert-800 dark:hover:text-desert-100 transition-colors"
+                    className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   >
                     Log in
                   </Link>
@@ -54,9 +54,9 @@ export function Header() {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-desert-800 dark:text-desert-100" />
+              <X className="w-6 h-6 text-on-surface" />
             ) : (
-              <Menu className="w-6 h-6 text-desert-800 dark:text-desert-100" />
+              <Menu className="w-6 h-6 text-on-surface" />
             )}
           </button>
         </div>
@@ -98,7 +98,7 @@ export function Header() {
                   </Link>
                   <Link
                     to="/auth/signup"
-                    className="block nav-link py-2 text-desert-600 dark:text-desert-300 font-medium"
+                    className="block nav-link py-2 text-on-surface-variant font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign up

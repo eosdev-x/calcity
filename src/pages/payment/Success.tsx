@@ -27,22 +27,22 @@ export function PaymentSuccess() {
   }, [location, navigate]);
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-900 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
-        <div className="max-w-md mx-auto bg-white dark:bg-night-desert-800 rounded-lg shadow-desert p-8 text-center">
+        <div className="max-w-md mx-auto bg-surface-container-low rounded-xl shadow-sm p-8 text-center border border-outline-variant">
           <div className="flex justify-center mb-6">
-            <CheckCircle className="w-16 h-16 text-green-500" />
+            <CheckCircle className="w-16 h-16 text-tertiary" />
           </div>
           
-          <h1 className="text-2xl font-bold text-desert-800 dark:text-desert-100 mb-4">
+          <h1 className="text-2xl font-bold text-on-surface mb-4">
             Payment Successful!
           </h1>
           
-          <p className="text-desert-700 dark:text-desert-300 mb-6">
+          <p className="text-on-surface-variant mb-6">
             Thank you for your payment. Your {planName} subscription has been activated successfully.
           </p>
           
-          <p className="text-desert-600 dark:text-desert-400 mb-8">
+          <p className="text-on-surface-variant mb-8">
             You will be redirected to your payment dashboard in a few seconds...
           </p>
           

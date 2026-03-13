@@ -106,13 +106,13 @@ const events: Event[] = [
 
 export function EventCalendarView() {
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-50 py-12">
+    <div className="min-h-screen bg-surface py-12">
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <div className="flex items-center justify-between mb-6">
           <Link
             to="/events"
-            className="flex items-center text-desert-600 dark:text-desert-400 hover:text-desert-800 dark:hover:text-desert-200 transition-colors"
+            className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back to Events
@@ -121,7 +121,7 @@ export function EventCalendarView() {
           <div className="flex items-center space-x-4">
             <Link
               to="/events"
-              className="flex items-center px-3 py-2 rounded-md bg-desert-100 dark:bg-night-desert-300 text-desert-700 dark:text-desert-300 hover:bg-desert-200 dark:hover:bg-night-desert-400 transition-colors"
+              className="flex items-center px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
             >
               <List className="w-4 h-4 mr-2" />
               List View
@@ -137,10 +137,10 @@ export function EventCalendarView() {
         
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100 mb-2">
+          <h1 className="text-4xl font-display font-bold text-on-surface mb-2">
             Event Calendar
           </h1>
-          <p className="text-desert-600 dark:text-desert-400">
+          <p className="text-on-surface-variant">
             Browse upcoming events in California City by date
           </p>
         </div>

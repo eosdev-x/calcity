@@ -69,7 +69,7 @@ export function Tabs({
 // TabsList component
 export function TabsList({ children, className = '' }: TabsListProps) {
   return (
-    <div className={`flex border-b border-desert-200 dark:border-night-desert-700 ${className}`}>
+    <div className={`flex border-b border-outline-variant ${className}`}>
       {children}
     </div>
   );
@@ -92,10 +92,10 @@ export function TabsTrigger({ children, value, className = '' }: TabsTriggerProp
       role="tab"
       aria-selected={isActive}
       onClick={() => setActiveTab(value)}
-      className={`px-4 py-2 font-medium text-sm transition-colors
+      className={`px-4 py-2 font-medium text-sm transition-colors duration-[var(--md-sys-motion-duration-short3)]
         ${isActive 
-          ? 'text-desert-800 dark:text-desert-100 border-b-2 border-desert-500 dark:border-desert-400' 
-          : 'text-desert-600 dark:text-desert-300 hover:text-desert-800 dark:hover:text-desert-100'
+          ? 'text-on-surface border-b-2 border-primary' 
+          : 'text-on-surface-variant hover:text-primary'
         } ${className}`}
     >
       {children}

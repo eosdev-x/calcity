@@ -136,21 +136,21 @@ export function Pricing() {
   };
 
   return (
-    <div className="min-h-screen bg-desert-50 dark:bg-night-desert-900 py-12">
+    <div className="min-h-screen bg-surface  py-12">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-display font-bold text-desert-800 dark:text-desert-100 mb-4">
+          <h1 className="text-4xl font-display font-bold text-on-surface mb-4">
             Choose Your Plan
           </h1>
-          <p className="text-desert-700 dark:text-desert-300 max-w-2xl mx-auto">
+          <p className="text-on-surface-variant max-w-2xl mx-auto">
             Select the perfect plan for your business and start reaching more customers in California City
           </p>
         </div>
 
         {/* Error message */}
         {error && (
-          <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded-md">
-            <p className="text-red-700 dark:text-red-300">{error}</p>
+          <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
+            <p className="text-on-error-container">{error}</p>
           </div>
         )}
 
@@ -160,38 +160,38 @@ export function Pricing() {
               key={plan.id}
               className={`card overflow-hidden ${
                 isCurrentPlan(plan.id) 
-                  ? 'border-desert-500 dark:border-desert-400 shadow-desert' 
+                  ? 'border-outline  shadow-sm' 
                   : ''
               }`}
             >
               {/* Plan header */}
               <div className={`p-6 ${
                 isCurrentPlan(plan.id)
-                  ? 'bg-desert-500 dark:bg-desert-600 text-white'
-                  : 'bg-white dark:bg-night-desert-800'
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-surface-container'
               }`}>
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                 <p className={`text-3xl font-bold ${
                   isCurrentPlan(plan.id)
-                    ? 'text-white'
-                    : 'text-desert-800 dark:text-desert-100'
+                    ? 'text-on-primary'
+                    : 'text-on-surface'
                 } mb-2`}>
                   {plan.priceDisplay}
                 </p>
                 {isCurrentPlan(plan.id) && (
-                  <div className="mt-1 text-sm font-medium text-white">
+                  <div className="mt-1 text-sm font-medium text-on-primary">
                     Current Plan
                   </div>
                 )}
               </div>
 
               {/* Plan features */}
-              <div className="p-6 bg-white dark:bg-night-desert-900">
+              <div className="p-6 bg-surface-container-low">
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-center space-x-2">
-                      <Check className="w-5 h-5 text-desert-400" />
-                      <span className="text-desert-700 dark:text-desert-300">{feature}</span>
+                      <Check className="w-5 h-5 text-on-surface-variant" />
+                      <span className="text-on-surface-variant">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -222,9 +222,9 @@ export function Pricing() {
           ))}
         </div>
 
-        <div className="mt-12 text-center text-sm text-desert-600 dark:text-desert-400 max-w-2xl mx-auto">
+        <div className="mt-12 text-center text-sm text-on-surface-variant max-w-2xl mx-auto">
           <p>All plans include access to our community events calendar and local business directory.</p>
-          <p className="mt-2">Need help choosing? <a href="/contact" className="text-desert-500 hover:text-desert-600 dark:text-desert-400 dark:hover:text-desert-300 underline">Contact our team</a> for personalized assistance.</p>
+          <p className="mt-2">Need help choosing? <a href="/contact" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">Contact our team</a> for personalized assistance.</p>
         </div>
       </div>
     </div>

@@ -3,41 +3,56 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
+    borderRadius: {
+      none: 'var(--md-sys-shape-corner-none)',
+      sm: 'var(--md-sys-shape-corner-extra-small)',
+      DEFAULT: 'var(--md-sys-shape-corner-small)',
+      md: 'var(--md-sys-shape-corner-medium)',
+      lg: 'var(--md-sys-shape-corner-large)',
+      xl: 'var(--md-sys-shape-corner-extra-large)',
+      '2xl': 'var(--md-sys-shape-corner-extra-large)',
+      full: 'var(--md-sys-shape-corner-full)',
+    },
     extend: {
       colors: {
-        // Light theme colors
-        'desert': {
-          50: '#FAF7F2',
-          100: '#F3EDE3',
-          200: '#E6D9C7',
-          300: '#D2B48C', // Sandy beige
-          400: '#C47451', // Terracotta
-          500: '#9CAF88', // Sage green
-          600: '#8B4513', // Saddle brown
-          700: '#654321', // Deep brown
-          800: '#4A3219',
-          900: '#2D1F10',
-        },
-        // Dark theme specific colors
-        'night-desert': {
-          50: '#1A1614',
-          100: '#251E1B',
-          200: '#312824',
-          300: '#3D322D',
-          400: '#4A3C36',
-          500: '#574640',
-          600: '#635049',
-          700: '#705A53',
-          800: '#7C645C',
-          900: '#896E65',
-        }
+        primary: 'var(--md-sys-color-primary)',
+        'on-primary': 'var(--md-sys-color-on-primary)',
+        'primary-container': 'var(--md-sys-color-primary-container)',
+        'on-primary-container': 'var(--md-sys-color-on-primary-container)',
+        secondary: 'var(--md-sys-color-secondary)',
+        'on-secondary': 'var(--md-sys-color-on-secondary)',
+        'secondary-container': 'var(--md-sys-color-secondary-container)',
+        'on-secondary-container': 'var(--md-sys-color-on-secondary-container)',
+        tertiary: 'var(--md-sys-color-tertiary)',
+        'on-tertiary': 'var(--md-sys-color-on-tertiary)',
+        'tertiary-container': 'var(--md-sys-color-tertiary-container)',
+        'on-tertiary-container': 'var(--md-sys-color-on-tertiary-container)',
+        error: 'var(--md-sys-color-error)',
+        'on-error': 'var(--md-sys-color-on-error)',
+        'error-container': 'var(--md-sys-color-error-container)',
+        'on-error-container': 'var(--md-sys-color-on-error-container)',
+        background: 'var(--md-sys-color-background)',
+        'on-background': 'var(--md-sys-color-on-background)',
+        surface: 'var(--md-sys-color-surface)',
+        'on-surface': 'var(--md-sys-color-on-surface)',
+        'surface-variant': 'var(--md-sys-color-surface-variant)',
+        'on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
+        'surface-container-lowest': 'var(--md-sys-color-surface-container-lowest)',
+        'surface-container-low': 'var(--md-sys-color-surface-container-low)',
+        'surface-container': 'var(--md-sys-color-surface-container)',
+        'surface-container-high': 'var(--md-sys-color-surface-container-high)',
+        'surface-container-highest': 'var(--md-sys-color-surface-container-highest)',
+        outline: 'var(--md-sys-color-outline)',
+        'outline-variant': 'var(--md-sys-color-outline-variant)',
+        'inverse-surface': 'var(--md-sys-color-inverse-surface)',
+        'inverse-on-surface': 'var(--md-sys-color-inverse-on-surface)',
+        'inverse-primary': 'var(--md-sys-color-inverse-primary)',
+        scrim: 'var(--md-sys-color-scrim)',
+        'surface-tint': 'var(--md-sys-color-surface-tint)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Montserrat', 'system-ui', 'sans-serif'],
-      },
-      boxShadow: {
-        'desert': '0 4px 6px -1px rgba(100, 67, 33, 0.1), 0 2px 4px -1px rgba(100, 67, 33, 0.06)',
+        sans: ['Roboto', 'system-ui', 'sans-serif'],
+        display: ['Roboto', 'system-ui', 'sans-serif'],
       },
     },
   },

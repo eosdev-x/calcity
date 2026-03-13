@@ -65,30 +65,30 @@ export function UserProfileDropdown() {
             className="w-8 h-8 rounded-full object-cover"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-desert-500 text-white flex items-center justify-center text-sm font-medium">
+          <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center text-sm font-medium">
             {getInitials()}
           </div>
         )}
-        <span className="hidden md:block text-sm font-medium text-desert-800 dark:text-desert-100">
+        <span className="hidden md:block text-sm font-medium text-on-surface">
           {profile?.full_name || user?.email?.split('@')[0] || 'User'}
         </span>
-        <ChevronDown className="w-4 h-4 text-desert-600 dark:text-desert-300" />
+        <ChevronDown className="w-4 h-4 text-on-surface-variant" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-night-desert-100 rounded-md shadow-lg py-1 z-50 border border-desert-200 dark:border-night-desert-600">
-          <div className="px-4 py-2 border-b border-desert-200 dark:border-night-desert-600">
-            <p className="text-sm font-medium text-desert-800 dark:text-desert-100">
+        <div className="absolute right-0 mt-2 w-48 bg-surface-container-high rounded-xl elevation-2 py-1 z-50 border border-outline-variant">
+          <div className="px-4 py-2 border-b border-outline-variant">
+            <p className="text-sm font-medium text-on-surface">
               {profile?.full_name || 'User'}
             </p>
-            <p className="text-xs text-desert-500 dark:text-desert-400 truncate">
+            <p className="text-xs text-on-surface-variant truncate">
               {user?.email}
             </p>
           </div>
           
           <Link
             to="/profile"
-            className="block px-4 py-2 text-sm text-desert-700 dark:text-desert-300 hover:bg-desert-100 dark:hover:bg-night-desert-200 flex items-center"
+            className="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-high flex items-center transition-colors duration-[var(--md-sys-motion-duration-short3)]"
             onClick={() => setIsOpen(false)}
           >
             <User className="w-4 h-4 mr-2" />
@@ -97,7 +97,7 @@ export function UserProfileDropdown() {
           
           <Link
             to="/profile/settings"
-            className="block px-4 py-2 text-sm text-desert-700 dark:text-desert-300 hover:bg-desert-100 dark:hover:bg-night-desert-200 flex items-center"
+            className="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-high flex items-center transition-colors duration-[var(--md-sys-motion-duration-short3)]"
             onClick={() => setIsOpen(false)}
           >
             <Settings className="w-4 h-4 mr-2" />
@@ -106,7 +106,7 @@ export function UserProfileDropdown() {
           
           <button
             onClick={handleSignOut}
-            className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-desert-100 dark:hover:bg-night-desert-200 flex items-center"
+            className="block w-full text-left px-4 py-2 text-sm text-error hover:bg-error-container flex items-center transition-colors duration-[var(--md-sys-motion-duration-short3)]"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Sign out
