@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageSquare, X } from 'lucide-react';
 import { ChatInterface } from './ChatInterface';
 import { clsx } from 'clsx';
+import { siteConfig } from '../config/site';
 
 export function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +56,7 @@ export function FloatingChatWidget() {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-outline-variant">
             <h2 className="font-semibold text-on-surface">
-              Chat with CalCityBot
+              Chat with {siteConfig.chatBotName}
             </h2>
             <div className="flex items-center gap-2">
               <button

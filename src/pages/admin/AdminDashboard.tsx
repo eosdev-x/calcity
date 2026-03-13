@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, CalendarDays, Clock, Users, ClipboardCheck } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { siteConfig } from '../../config/site';
 
 interface AdminStats {
   totalBusinesses: number;
@@ -163,7 +164,7 @@ export function AdminDashboard() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-semibold text-on-surface">Admin Dashboard</h1>
-            <p className="text-on-surface-variant">Monitor CalCity approvals and activity.</p>
+            <p className="text-on-surface-variant">Monitor {siteConfig.name} approvals and activity.</p>
           </div>
         </div>
 

@@ -1,13 +1,14 @@
 
 import { MapPin, Info, Calendar, Compass, Sun, Car } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
+import { siteConfig } from '../config/site';
 
 export function Guide() {
   const sections = [
     {
       title: "Getting Here",
       icon: Car,
-      content: "California City is easily accessible via Highway 14 and Highway 58. The nearest major airports are Mojave Air & Space Port (30 minutes) and Los Angeles International Airport (LAX, 2 hours)."
+      content: siteConfig.guide.gettingHere
     },
     {
       title: "Best Time to Visit",
@@ -17,7 +18,7 @@ export function Guide() {
     {
       title: "Must-See Attractions",
       icon: Compass,
-      content: "Don't miss Central Park with its 26-acre lake, the California City Municipal Airport, and the Tierra Del Sol Golf Course. The surrounding desert offers excellent opportunities for off-road adventures and stargazing."
+      content: siteConfig.guide.attractions
     }
   ];
 
@@ -46,16 +47,18 @@ export function Guide() {
         
         {/* Content */}
         <div className="container mx-auto px-4 py-12 h-full flex flex-col relative">
-          <div className="self-end mb-8">
-            <WeatherWidget />
-          </div>
+          {siteConfig.features.weather && (
+            <div className="self-end mb-8">
+              <WeatherWidget />
+            </div>
+          )}
           
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-6xl font-display font-bold text-inverse-on-surface mb-4">
               Visitor Guide
             </h1>
             <p className="text-xl text-inverse-on-surface">
-              Everything you need to know about visiting California City
+              Everything you need to know about visiting {siteConfig.city}
             </p>
           </div>
         </div>
@@ -106,11 +109,9 @@ export function Guide() {
                 Important Locations
               </h3>
               <ul className="space-y-3 text-on-surface-variant">
-                <li>Police Department: 21130 Hacienda Blvd</li>
-                <li>Fire Station: 20890 Hacienda Blvd</li>
-                <li>Medical Center: 8001 Cal City Blvd</li>
-                <li>City Hall: 21000 Hacienda Blvd</li>
-                <li>Visitor Center: 13200 Central Park</li>
+                {siteConfig.guide.importantLocations.map((location) => (
+                  <li key={location.name}>{location.name}: {location.detail}</li>
+                ))}
               </ul>
             </div>
 
