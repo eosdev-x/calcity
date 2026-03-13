@@ -22,6 +22,9 @@ export function Header() {
             <Link to="/events" className="nav-link">Events</Link>
             <Link to="/businesses" className="nav-link">Businesses</Link>
             <Link to="/pricing" className="nav-link">Pricing</Link>
+            {!isLoading && user && (
+              <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            )}
             
             {/* Authentication */}
             {!isLoading && (
