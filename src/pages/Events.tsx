@@ -96,7 +96,7 @@ export function Events() {
             <div key={event.id} className="card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)]">
               <Link to={`/events/${event.id}`}>
                 <img
-                  src={event.image}
+                  src={event.image || ''}
                   alt={event.title}
                   className="w-full h-48 object-cover rounded-t-xl mb-4 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
                 />

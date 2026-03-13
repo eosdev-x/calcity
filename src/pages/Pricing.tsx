@@ -16,8 +16,8 @@ export function Pricing() {
     {
       id: "basic-plan",
       name: "Basic Listing",
-      tier: SubscriptionTier.FREE,
-      price: 9.99,
+      tier: SubscriptionTier.BASIC,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
       priceDisplay: "$9.99/month",
       stripePriceId: 'price_1TASQfRpRbHjjRj8mXv5x9rB',
       features: [
@@ -40,7 +40,7 @@ export function Pricing() {
       id: "premium-plan",
       name: "Premium Listing",
       tier: SubscriptionTier.PREMIUM,
-      price: 24.99,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
       priceDisplay: "$24.99/month",
       stripePriceId: 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
       features: [
@@ -63,8 +63,8 @@ export function Pricing() {
     {
       id: "spotlight-plan",
       name: "Spotlight Listing",
-      tier: SubscriptionTier.ENTERPRISE,
-      price: 49.99,
+      tier: SubscriptionTier.SPOTLIGHT,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
       priceDisplay: "$49.99/month",
       stripePriceId: 'price_1TASSRRpRbHjjRj8nfJz5gSc',
       features: [
@@ -87,7 +87,7 @@ export function Pricing() {
   ];
 
   // Get current plan
-  const currentPlanId = currentSubscription?.planId || 'free-plan';
+  const currentPlanId = currentSubscription?.planId || 'basic-plan';
 
   // Handle subscription checkout
   const handleSubscribe = async (plan: typeof plans[0]) => {
@@ -97,7 +97,7 @@ export function Pricing() {
       return;
     }
 
-    if (plan.tier === SubscriptionTier.FREE) {
+    if (plan.tier === SubscriptionTier.BASIC) {
       // For free plan, redirect to payment page to manage subscription
       navigate('/payment');
       return;
@@ -213,7 +213,7 @@ export function Pricing() {
                     </div>
                   ) : isCurrentPlan(plan.id) ? (
                     'Current Plan'
-                  ) : plan.tier === SubscriptionTier.FREE ? (
+                  ) : plan.tier === SubscriptionTier.BASIC ? (
                     'Get Started'
                   ) : (
                     'Subscribe Now'

@@ -11,10 +11,10 @@ import {
 // Define subscription plans with features
 const subscriptionPlans: SubscriptionPlan[] = [
   {
-    id: 'free-plan',
-    name: 'Free',
-    tier: SubscriptionTier.FREE,
-    price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
+    id: 'basic-plan',
+    name: 'Basic',
+    tier: SubscriptionTier.BASIC,
+    price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
     features: {
       photoLimit: 1,
       featuredListing: false,
@@ -40,11 +40,11 @@ const subscriptionPlans: SubscriptionPlan[] = [
     }
   },
   {
-    id: 'enterprise-plan',
-    name: 'Enterprise',
-    tier: SubscriptionTier.ENTERPRISE,
-    price: SUBSCRIPTION_PRICES[SubscriptionTier.ENTERPRISE],
-    stripePriceId: 'price_enterprise_monthly',
+    id: 'spotlight-plan',
+    name: 'Spotlight',
+    tier: SubscriptionTier.SPOTLIGHT,
+    price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
+    stripePriceId: 'price_spotlight_monthly',
     features: {
       photoLimit: 30,
       featuredListing: true,
@@ -70,7 +70,7 @@ export function SubscriptionPlans() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Get current plan
-  const currentPlanId = currentSubscription?.planId || 'free-plan';
+  const currentPlanId = currentSubscription?.planId || 'basic-plan';
   
   // Handle subscription checkout
   const handleSubscribe = async (plan: SubscriptionPlan) => {
@@ -80,8 +80,8 @@ export function SubscriptionPlans() {
       return;
     }
 
-    if (plan.tier === SubscriptionTier.FREE) {
-      // Handle downgrade to free plan
+    if (plan.tier === SubscriptionTier.BASIC) {
+      // Handle downgrade to basic plan
       if (currentSubscription) {
         handleCancelSubscription();
       }
@@ -259,7 +259,7 @@ export function SubscriptionPlans() {
               {/* Action button */}
               <div className="mt-6">
                 {isCurrentPlan(plan.id) ? (
-                  plan.tier !== SubscriptionTier.FREE && (
+                  plan.tier !== SubscriptionTier.BASIC && (
                     <button
                       onClick={handleCancelSubscription}
                       disabled={isLoading || processingPlanId === 'cancel'}
@@ -280,7 +280,7 @@ export function SubscriptionPlans() {
                     onClick={() => handleSubscribe(plan)}
                     disabled={isLoading || processingPlanId === plan.id}
                     className={`w-full py-2 px-4 rounded-full ${
-                      plan.tier === SubscriptionTier.FREE
+                      plan.tier === SubscriptionTier.BASIC
                         ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
                         : 'bg-primary text-on-primary hover:bg-primary/90'
                     } transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50`}
@@ -291,9 +291,9 @@ export function SubscriptionPlans() {
                         Processing...
                       </div>
                     ) : (
-                      plan.tier === SubscriptionTier.FREE
+                      plan.tier === SubscriptionTier.BASIC
                         ? 'Select Free Plan'
-                        : isCurrentPlan('free-plan')
+                        : isCurrentPlan('basic-plan')
                           ? `Upgrade to ${plan.name}`
                           : `Switch to ${plan.name}`
                     )}

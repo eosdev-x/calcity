@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useBusinesses } from '../context/BusinessContext';
 import { useNavigate } from 'react-router-dom';
 import { 
   MapPin, 
@@ -14,17 +13,38 @@ import {
 } from 'lucide-react';
 import { Business } from '../types/business';
 import { submitBusiness, getBusinessCategories } from '../api/businesses';
+import { useAuth } from '../context/AuthContext';
+
+type BusinessFormData = {
+  name: string;
+  category: string;
+  address: string;
+  phone: string;
+  website: string;
+  image: string;
+  description: string;
+  hours: Record<string, string>;
+  amenities: string[];
+};
+
+const slugify = (value: string): string => {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+};
 
 export function BusinessProfileCreation() {
   const navigate = useNavigate();
   const categories = getBusinessCategories();
-  const { addBusiness } = useBusinesses();
+  const { user } = useAuth();
   
   // Form state
-  const [formData, setFormData] = useState<Omit<Business, 'id'>>({
+  const [formData, setFormData] = useState<BusinessFormData>({
     name: '',
     category: '',
-    rating: 0, // Will be calculated later based on reviews
     address: '',
     phone: '',
     website: '',
@@ -129,12 +149,42 @@ export function BusinessProfileCreation() {
         throw new Error('Please upload a business photo');
       }
       
-      // Submit the form data
-      const result = await submitBusiness(formData);
-      console.log('Business created:', result);
-      
-      // Add the new business to the context for optimistic updates
-      addBusiness(result);
+      if (!user) {
+        throw new Error('You must be signed in to create a business profile');
+      }
+
+      const now = new Date().toISOString();
+      const payload: Omit<Business, 'id'> = {
+        owner_id: user.id,
+        name: formData.name,
+        slug: slugify(formData.name),
+        category: formData.category,
+        address: formData.address,
+        city: 'California City',
+        state: 'CA',
+        zip: null,
+        phone: formData.phone,
+        email: null,
+        hours: formData.hours,
+        image: formData.image || null,
+        description: formData.description,
+        website: formData.website || null,
+        social_media: {},
+        gallery: [],
+        amenities: formData.amenities,
+        services: [],
+        subscription_tier: 'basic',
+        is_featured: false,
+        is_spotlight: false,
+        rating: 0,
+        review_count: 0,
+        view_count: 0,
+        status: 'pending',
+        created_at: now,
+        updated_at: now
+      };
+
+      const result = await submitBusiness(payload);
       
       // Show success message
       setSuccess(true);

@@ -12,128 +12,28 @@ import {
   ArrowLeft,
   Users
 } from 'lucide-react';
-import { Event } from '../types/event';
-
-// This would typically come from a central data store or API
-const events: Event[] = [
-  {
-    id: 1,
-    title: "Desert Arts Festival",
-    date: "2024-04-15",
-    time: "10:00 AM - 6:00 PM",
-    location: "Central Park",
-    description: "Annual arts and crafts festival featuring local artists",
-    image: "https://images.unsplash.com/photo-1603228254119-e6a4d095dc59?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXJ0JTIwZmVzdGl2YWx8ZW58MHx8MHx8fDA%3D",
-    category: "Arts & Culture",
-    tags: ["art", "festival", "family-friendly"],
-    organizer: {
-      name: "California City Arts Council",
-      email: "arts@calcity.org",
-      phone: "(555) 123-4567"
-    }
-  },
-  {
-    id: 2,
-    title: "Community Cleanup Day",
-    date: "2024-04-22",
-    time: "8:00 AM - 12:00 PM",
-    location: "City Hall",
-    description: "Join us in keeping our desert community beautiful",
-    image: "https://plus.unsplash.com/premium_photo-1681152760811-5f0f6e0b7f0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29tbXVuaXR5JTIwY2xlYW4lMjB1cHxlbnwwfHwwfHx8MA%3D%3D",
-    category: "Community",
-    tags: ["volunteer", "environment"],
-    organizer: {
-      name: "City Hall",
-      email: "community@calcity.org",
-      phone: "(555) 234-5678"
-    }
-  },
-  {
-    id: 3,
-    title: "Stargazing Night",
-    date: "2024-05-15",
-    time: "8:00 PM - 11:00 PM",
-    location: "Desert Observatory",
-    description: "Experience the beauty of the desert night sky with professional astronomers",
-    image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a",
-    category: "Science & Nature",
-    tags: ["astronomy", "education", "night-event"],
-    organizer: {
-      name: "Desert Astronomy Club",
-      email: "stars@calcity.org",
-      phone: "(555) 345-6789"
-    }
-  },
-  {
-    id: 4,
-    title: "Desert Food Truck Festival",
-    date: "2024-05-01",
-    time: "11:00 AM - 8:00 PM",
-    location: "Central Park",
-    description: "A gathering of the region's best food trucks featuring local and international cuisine",
-    image: "https://images.unsplash.com/photo-1565123409695-7b5ef63a2efb",
-    category: "Food & Drink",
-    tags: ["food", "festival", "family-friendly"],
-    organizer: {
-      name: "CalCity Food Collective",
-      email: "food@calcity.org",
-      phone: "(555) 456-7890"
-    }
-  },
-  {
-    id: 5,
-    title: "Desert Adventure Race",
-    date: "2024-05-08",
-    time: "6:00 AM - 2:00 PM",
-    location: "Galileo Hill Park",
-    description: "Challenge yourself in this exciting desert terrain race featuring multiple categories",
-    image: "https://images.unsplash.com/photo-1721327473745-f70f87ba675e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZGVzZXJ0JTIwcmFjZXxlbnwwfHwwfHx8MA%3D%3D",
-    category: "Sports",
-    tags: ["race", "outdoor", "fitness"],
-    organizer: {
-      name: "CalCity Sports Association",
-      email: "sports@calcity.org",
-      phone: "(555) 567-8901"
-    }
-  },
-  {
-    id: 6,
-    title: "Desert Wildlife Photography Workshop",
-    date: "2024-05-20",
-    time: "9:00 AM - 4:00 PM",
-    location: "Desert Tortoise Natural Area",
-    description: "Learn wildlife photography techniques while exploring local desert fauna",
-    image: "https://images.unsplash.com/photo-1469827160215-9d29e96e72f4",
-    category: "Education",
-    tags: ["photography", "wildlife", "workshop"],
-    organizer: {
-      name: "Desert Photography Society",
-      email: "photo@calcity.org",
-      phone: "(555) 678-9012"
-    }
-  }
-];
+import { useEvents } from '../context/EventContext';
 
 export function EventDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const { events, loading } = useEvents();
 
   const event = useMemo(() => {
-    const foundEvent = events.find(e => e.id === Number(id));
-    if (!foundEvent) {
-      navigate('/events');
-      return null;
-    }
-    return {
-      ...foundEvent,
-      capacity: 500,
-      registeredCount: Math.floor(Math.random() * 300) + 100, // Mock data
-      registrationUrl: `https://example.com/register/${foundEvent.id}`
-    };
-  }, [id, navigate]);
+    return events.find(e => e.id === id) || null;
+  }, [events, id]);
 
-  if (!event) return null;
+  if (loading) return null;
+
+  if (!event) {
+    navigate('/events');
+    return null;
+  }
+
+  const capacity = Math.max(50, event.view_count + 100);
+  const registeredCount = Math.min(event.view_count, capacity);
+  const registrationProgress = capacity > 0 ? (registeredCount / capacity) * 100 : 0;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -155,7 +55,9 @@ export function EventDetails() {
   };
 
   const handleRegister = () => {
-    window.open(event.registrationUrl, '_blank');
+    if (event.ticket_url) {
+      window.open(event.ticket_url, '_blank');
+    }
   };
 
   return (
@@ -173,7 +75,7 @@ export function EventDetails() {
         {/* Hero Image */}
         <div className="relative h-[400px] rounded-xl overflow-hidden mb-8">
           <img
-            src={event.image}
+            src={event.image || ''}
             alt={event.title}
             className="w-full h-full object-cover"
           />
@@ -277,19 +179,20 @@ export function EventDetails() {
                 <div className="flex items-center">
                   <Users className="w-5 h-5 text-on-surface-variant mr-2" />
                   <span className="text-on-surface-variant">
-                    {event.registeredCount} / {event.capacity} registered
+                    {registeredCount} / {capacity} registered
                   </span>
                 </div>
               </div>
               <div className="w-full bg-surface-container rounded-full h-2 mb-6">
                 <div 
                   className="bg-primary h-2 rounded-full"
-                  style={{ width: `${(event.registeredCount! / event.capacity!) * 100}%` }}
+                  style={{ width: `${registrationProgress}%` }}
                 />
               </div>
               <button
                 onClick={handleRegister}
                 className="btn-primary w-full mb-4"
+                disabled={!event.ticket_url}
               >
                 Register Now
               </button>
@@ -299,23 +202,25 @@ export function EventDetails() {
             <div className="card">
               <h3 className="text-xl font-semibold mb-4">Event Organizer</h3>
               <p className="text-on-surface font-medium mb-4">
-                {event.organizer.name}
+                {event.organizer_name}
               </p>
               <div className="space-y-3">
                 <a 
-                  href={`mailto:${event.organizer.email}`}
+                  href={`mailto:${event.organizer_email}`}
                   className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <Mail className="w-5 h-5 mr-2" />
-                  {event.organizer.email}
+                  {event.organizer_email}
                 </a>
-                <a 
-                  href={`tel:${event.organizer.phone}`}
-                  className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
-                >
-                  <Phone className="w-5 h-5 mr-2" />
-                  {event.organizer.phone}
-                </a>
+                {event.organizer_phone && (
+                  <a 
+                    href={`tel:${event.organizer_phone}`}
+                    className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+                  >
+                    <Phone className="w-5 h-5 mr-2" />
+                    {event.organizer_phone}
+                  </a>
+                )}
               </div>
             </div>
           </div>
