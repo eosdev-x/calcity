@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { usePayment } from '../context/PaymentContext';
 import { useAuth } from '../context/AuthContext';
 import { SubscriptionTier, SUBSCRIPTION_PRICES, SubscriptionFeatures } from '../types/payment';
+import { getPrimaryBusinessIdForOwner } from '../utils/business';
 
 export function Pricing() {
   const { user } = useAuth();
   const { createCheckoutSession, currentSubscription, isLoading, error } = usePayment();
   const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Define subscription plans with features and Stripe price IDs
@@ -87,7 +89,7 @@ export function Pricing() {
   ];
 
   // Get current plan
-  const currentPlanId = currentSubscription?.planId || 'basic-plan';
+  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
 
   // Handle subscription checkout
   const handleSubscribe = async (plan: typeof plans[0]) => {
@@ -109,32 +111,40 @@ export function Pricing() {
     }
 
     setProcessingPlanId(plan.id);
+    setLocalError(null);
 
     try {
+      const businessId = await getPrimaryBusinessIdForOwner(user.id);
+
+      if (!businessId) {
+        setLocalError('Create a business profile before subscribing to a plan.');
+        return;
+      }
+
       const result = await createCheckoutSession({
         priceId: plan.stripePriceId,
-        successUrl: `${window.location.origin}/payment/success?plan=${plan.tier}`,
-        cancelUrl: `${window.location.origin}/payment/cancel`,
+        businessId,
       });
 
       if ('error' in result) {
-        throw new Error(result.error.message || 'Failed to create checkout session');
+        const message = typeof result.error === 'string' ? result.error : result.error.message;
+        throw new Error(message || 'Failed to create checkout session');
       }
 
-      // For now, redirect to payment page since we don't have actual backend
-      // In a real implementation with a backend, we would redirect to Stripe Checkout URL
-      // window.location.href = result.url
-      navigate('/payment');
+      if (result.url) {
+        window.location.href = result.url;
+      }
     } catch (err: any) {
       console.error('Subscription error:', err);
+      setLocalError(err.message || 'Failed to start checkout');
     } finally {
       setProcessingPlanId(null);
     }
   };
 
   // Check if a plan is the current active plan
-  const isCurrentPlan = (planId: string) => {
-    return currentPlanId === planId;
+  const isCurrentPlan = (tier: SubscriptionTier) => {
+    return currentTier === tier;
   };
 
   return (
@@ -150,9 +160,9 @@ export function Pricing() {
         </div>
 
         {/* Error message */}
-        {error && (
+        {(localError || error) && (
           <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
-            <p className="text-on-error-container">{error}</p>
+            <p className="text-on-error-container">{localError || error}</p>
           </div>
         )}
 
@@ -161,26 +171,26 @@ export function Pricing() {
             <div 
               key={plan.id}
               className={`card overflow-hidden ${
-                isCurrentPlan(plan.id) 
+                isCurrentPlan(plan.tier) 
                   ? 'border-outline  shadow-sm' 
                   : ''
               }`}
             >
               {/* Plan header */}
               <div className={`p-6 ${
-                isCurrentPlan(plan.id)
+                isCurrentPlan(plan.tier)
                   ? 'bg-primary text-on-primary'
                   : 'bg-surface-container'
               }`}>
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                 <p className={`text-3xl font-bold ${
-                  isCurrentPlan(plan.id)
+                  isCurrentPlan(plan.tier)
                     ? 'text-on-primary'
                     : 'text-on-surface'
                 } mb-2`}>
                   {plan.priceDisplay}
                 </p>
-                {isCurrentPlan(plan.id) && (
+                {isCurrentPlan(plan.tier) && (
                   <div className="mt-1 text-sm font-medium text-on-primary">
                     Current Plan
                   </div>
@@ -201,9 +211,9 @@ export function Pricing() {
                 {/* Action button */}
                 <button
                   onClick={() => handleSubscribe(plan)}
-                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.id)}
+                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
                   className={`btn-primary w-full ${
-                    isCurrentPlan(plan.id) ? 'opacity-50 cursor-not-allowed' : ''
+                    isCurrentPlan(plan.tier) ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
                   {processingPlanId === plan.id ? (
@@ -211,10 +221,8 @@ export function Pricing() {
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Processing...
                     </div>
-                  ) : isCurrentPlan(plan.id) ? (
+                  ) : isCurrentPlan(plan.tier) ? (
                     'Current Plan'
-                  ) : plan.tier === SubscriptionTier.BASIC ? (
-                    'Get Started'
                   ) : (
                     'Subscribe Now'
                   )}

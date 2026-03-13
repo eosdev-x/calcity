@@ -11,7 +11,8 @@ import {
   PaymentHistoryItem,
   CheckoutOptions,
   Invoice,
-  SubscriptionStatus
+  SubscriptionStatus,
+  SubscriptionTier
 } from '../types/payment';
 
 // Create context with default values
@@ -31,7 +32,7 @@ interface PaymentProviderProps {
 }
 
 export function PaymentProvider({ children }: PaymentProviderProps) {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [stripe, setStripe] = useState<Stripe | null>(null);
@@ -82,7 +83,9 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
         .from('subscriptions')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .order('current_period_end', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching subscription:', error);
@@ -91,15 +94,19 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
       }
 
       if (data) {
+        const tier = (data.tier as SubscriptionTier) || SubscriptionTier.BASIC;
         setCurrentSubscription({
           id: data.stripe_subscription_id,
           customerId: data.stripe_customer_id,
           status: data.status as SubscriptionStatus,
-          planId: data.plan_id,
-          currentPeriodStart: data.current_period_start,
-          currentPeriodEnd: data.current_period_end,
-          cancelAtPeriodEnd: data.cancel_at_period_end
+          planId: data.stripe_price_id,
+          tier,
+          currentPeriodStart: data.current_period_start ? new Date(data.current_period_start).getTime() : 0,
+          currentPeriodEnd: data.current_period_end ? new Date(data.current_period_end).getTime() : 0,
+          cancelAtPeriodEnd: Boolean(data.cancel_at_period_end)
         });
+      } else {
+        setCurrentSubscription(null);
       }
     } catch (err: any) {
       console.error('Error in fetchUserSubscription:', err);
@@ -192,6 +199,12 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     }
   };
 
+  const getAccessToken = async () => {
+    if (session?.access_token) return session.access_token;
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token || null;
+  };
+
   // Create a checkout session
   const createCheckoutSession = async (options: CheckoutOptions) => {
     if (!user) {
@@ -202,31 +215,37 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     setError(null);
 
     try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch('/api/create-checkout-session', {
+      const token = await getAccessToken();
+      if (!token) {
+        return { error: 'User not authenticated' };
+      }
+
+      const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           priceId: options.priceId,
-          successUrl: options.successUrl,
-          cancelUrl: options.cancelUrl,
-          customerEmail: options.customerEmail || user.email,
-          metadata: options.metadata
+          businessId: options.businessId,
         }),
       });
 
       const session = await response.json();
 
-      if (session.error) {
-        setError(session.error.message);
-        return { error: session.error };
+      if (!response.ok || session?.error) {
+        const message = session?.error || 'Failed to create checkout session';
+        setError(typeof message === 'string' ? message : message.message);
+        return { error: session?.error || message };
       }
 
-      return { sessionId: session.id };
+      if (!session?.url) {
+        setError('Failed to create checkout session');
+        return { error: 'Failed to create checkout session' };
+      }
+
+      return { url: session.url };
     } catch (err: any) {
       console.error('Error creating checkout session:', err);
       setError(err.message || 'Failed to create checkout session');
@@ -339,13 +358,16 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     setError(null);
 
     try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/cancel-subscription`, {
+      const token = await getAccessToken();
+      if (!token) {
+        return { error: 'User not authenticated' };
+      }
+
+      const response = await fetch(`/api/stripe/cancel-subscription`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           subscriptionId
@@ -354,9 +376,10 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
 
       const result = await response.json();
 
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
+      if (!response.ok || result?.error) {
+        const message = result?.error || 'Failed to cancel subscription';
+        setError(typeof message === 'string' ? message : message.message);
+        return { error: result?.error || message };
       }
 
       // Update the subscription in state with optimistic UI update
@@ -371,6 +394,51 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     } catch (err: any) {
       console.error('Error canceling subscription:', err);
       setError(err.message || 'Failed to cancel subscription');
+      return { error: err };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getCustomerPortalUrl = async () => {
+    if (!user) {
+      return { error: 'User not authenticated' };
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const token = await getAccessToken();
+      if (!token) {
+        return { error: 'User not authenticated' };
+      }
+
+      const response = await fetch('/api/stripe/customer-portal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || result?.error) {
+        const message = result?.error || 'Failed to open billing portal';
+        setError(typeof message === 'string' ? message : message.message);
+        return { error: result?.error || message };
+      }
+
+      if (!result?.url) {
+        setError('Failed to open billing portal');
+        return { error: 'Failed to open billing portal' };
+      }
+
+      return { url: result.url };
+    } catch (err: any) {
+      console.error('Error opening billing portal:', err);
+      setError(err.message || 'Failed to open billing portal');
       return { error: err };
     } finally {
       setIsLoading(false);
@@ -554,6 +622,7 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     createPaymentIntent,
     updateSubscription,
     cancelSubscription,
+    getCustomerPortalUrl,
     addPaymentMethod,
     removePaymentMethod,
     setDefaultPaymentMethod,
