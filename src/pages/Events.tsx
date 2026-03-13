@@ -1,9 +1,13 @@
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Search, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useEvents } from '../context/EventContext';
 import { Event } from '../types/event';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+import { Helmet } from 'react-helmet-async';
+import { buildEventsItemListJsonLd } from '../utils/jsonLd';
 
 export function Events() {
   const location = useLocation();
@@ -40,8 +44,23 @@ export function Events() {
     setFilteredEvents(filtered);
   }, [events, searchTerm]);
 
+  const eventsJsonLd = useMemo(() => {
+    return buildEventsItemListJsonLd(filteredEvents, siteConfig);
+  }, [filteredEvents]);
+
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.eventsTitle}
+        description={siteConfig.seo.pages.eventsDescription}
+        path="/events"
+        type="website"
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(eventsJsonLd)}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-display font-bold text-on-surface">

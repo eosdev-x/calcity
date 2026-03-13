@@ -49,6 +49,12 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 4. Add environment variables (see below)
 5. Add custom domain
 
+## SEO
+- Update `public/robots.txt` with your domain for the sitemap URL.
+- Set `siteConfig.seo.defaultDescription` and `siteConfig.seo.defaultImage` in `src/config/site.ts`.
+- Generate a sitemap (future improvement: build it dynamically from Supabase business/event data).
+- Submit your sitemap in Google Search Console after launch.
+
 ## Environment Variables
 | Variable | Where | Notes |
 |----------|-------|-------|

@@ -16,6 +16,7 @@ import { submitBusiness, getBusinessCategories } from '../api/businesses';
 import { useAuth } from '../context/AuthContext';
 import { slugify } from '../utils/slugify';
 import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
 
 type BusinessFormData = {
   name: string;
@@ -196,6 +197,11 @@ export function BusinessProfileCreation() {
   
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.businessCreationTitle}
+        path="/businesses/new"
+        noindex
+      />
       <div className="container mx-auto px-4">
         {/* Navigation */}
         <button

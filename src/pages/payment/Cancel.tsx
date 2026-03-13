@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { XCircle } from 'lucide-react';
+import { siteConfig } from '../../config/site';
+import { SEO } from '../../components/SEO';
 
 export function PaymentCancel() {
   const navigate = useNavigate();
@@ -16,6 +18,11 @@ export function PaymentCancel() {
 
   return (
     <div className="min-h-screen bg-surface py-12">
+      <SEO
+        title={siteConfig.seo.pages.paymentCancelTitle}
+        path="/payment/cancel"
+        noindex
+      />
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-surface-container-low rounded-xl shadow-sm p-8 text-center border border-outline-variant">
           <div className="flex justify-center mb-6">
