@@ -9,6 +9,9 @@ export function Footer() {
   const hasSocialLinks = Boolean(
     siteConfig.social.facebook || siteConfig.social.twitter || siteConfig.social.instagram
   );
+  const contactEmail = siteConfig.contact.email || `info@${siteConfig.domain}`;
+  const contactPhone = siteConfig.contact.phone;
+  const contactPhoneHref = contactPhone ? `tel:${contactPhone.replace(/[^\d+]/g, '')}` : '';
 
   return (
     <footer className="bg-surface-container mt-auto">
@@ -32,7 +35,9 @@ export function Footer() {
               {siteConfig.features.businesses && (
                 <li><Link to="/businesses" className="nav-link">Businesses</Link></li>
               )}
-              <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
+              {siteConfig.features.businesses && (
+                <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
+              )}
               {siteConfig.features.guide && (
                 <li><Link to="/guide" className="nav-link">Visitor Guide</Link></li>
               )}
@@ -44,22 +49,24 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <a 
-                  href={`mailto:info@${siteConfig.domain}`}
+                  href={`mailto:${contactEmail}`}
                   className="flex items-center space-x-2 nav-link"
                 >
                   <Mail className="w-4 h-4" />
-                  <span>info@{siteConfig.domain}</span>
+                  <span>{contactEmail}</span>
                 </a>
               </li>
-              <li>
-                <a 
-                  href="tel:+15551234567" 
-                  className="flex items-center space-x-2 nav-link"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>(555) 123-4567</span>
-                </a>
-              </li>
+              {contactPhone && (
+                <li>
+                  <a 
+                    href={contactPhoneHref} 
+                    className="flex items-center space-x-2 nav-link"
+                  >
+                    <Phone className="w-4 h-4" />
+                    <span>{contactPhone}</span>
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 

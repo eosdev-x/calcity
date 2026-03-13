@@ -13,7 +13,7 @@ export function Guide() {
     {
       title: "Best Time to Visit",
       icon: Sun,
-      content: "Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold. Always bring sun protection and plenty of water."
+      content: siteConfig.guide.bestTimeToVisit
     },
     {
       title: "Must-See Attractions",
@@ -121,11 +121,11 @@ export function Guide() {
                 Annual Events
               </h3>
               <ul className="space-y-3 text-on-surface-variant">
-                <li>Spring Desert Festival (April)</li>
-                <li>Independence Day Celebration (July)</li>
-                <li>Desert Star-Gazing Night (August)</li>
-                <li>Fall Arts & Crafts Fair (October)</li>
-                <li>Winter Holiday Parade (December)</li>
+                {siteConfig.guide.annualEvents.map((event) => (
+                  <li key={`${event.name}-${event.month}`}>
+                    {event.name} ({event.month})
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

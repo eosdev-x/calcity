@@ -2,9 +2,10 @@
 
 ## Quick Start
 1. Fork this repo
-2. Edit `src/config/site.ts` with your city's details
-3. Set up external services (see below)
-4. Deploy to Cloudflare Pages
+2. Install dependencies: `npm install`
+3. Edit `src/config/site.ts` with your city's details
+4. Set up external services (see below)
+5. Deploy to Cloudflare Pages
 
 ## Step 1: Configure Your City
 Edit `src/config/site.ts`:
@@ -16,6 +17,7 @@ Edit `src/config/site.ts`:
 - `features`: Toggle sections on/off
 - `weather`: Lat/lon for your city
 - `guide`: Local info content
+- Replace your branding: `src/assets/logo.svg` and the favicon files in `public/`
 
 Theme customization: Edit CSS custom properties in `src/index.css`. For a quick approach, use the Material Theme Builder (https://www.figma.com/community/plugin/1034969338659738588) to generate colors from your seed color. (Future enhancement: generate M3 palettes from `seedColor` programmatically.)
 
@@ -28,14 +30,19 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 
 ## Step 3: Stripe
 1. Create Stripe account
-2. Create 3 subscription products (Basic .99, Premium 4.99, Spotlight 9.99)
+2. Create 3 subscription products for your tiers (pricing is configurable)
 3. Copy the 3 price IDs
 4. Set up webhook: https://yourdomain.com/api/stripe/webhook
    Events: checkout.session.completed, customer.subscription.updated, customer.subscription.deleted, invoice.payment_failed
 5. Copy webhook secret
 6. Enable Customer Portal
 
-## Step 4: Cloudflare Pages
+## Step 4: Chat Worker (Optional)
+1. Deploy your own Venice chat worker (or disable chat in `siteConfig.features.chat`)
+2. Set `siteConfig.chatWorkerUrl` to your worker URL
+3. Add `VENICE_API_KEY` in Cloudflare Pages environment variables
+
+## Step 5: Cloudflare Pages
 1. Create Pages project, connect your Git repo
 2. Build command: `npm run build`
 3. Output directory: `dist`
@@ -48,15 +55,19 @@ Theme customization: Edit CSS custom properties in `src/index.css`. For a quick 
 | VITE_SUPABASE_URL | Pages | Supabase project URL |
 | VITE_SUPABASE_ANON_KEY | Pages | Supabase anon key |
 | VITE_STRIPE_PUBLISHABLE_KEY | Pages | Stripe pk_test/pk_live |
+| VITE_STRIPE_BASIC_PRICE_ID | Pages | Stripe Basic plan price ID |
+| VITE_STRIPE_PREMIUM_PRICE_ID | Pages | Stripe Premium plan price ID |
+| VITE_STRIPE_SPOTLIGHT_PRICE_ID | Pages | Stripe Spotlight plan price ID |
 | STRIPE_SECRET_KEY | Pages (encrypted) | Stripe sk_test/sk_live |
 | STRIPE_WEBHOOK_SECRET | Pages (encrypted) | Stripe webhook secret |
 | SUPABASE_URL | Pages | Same as VITE_SUPABASE_URL |
 | SUPABASE_SERVICE_ROLE_KEY | Pages (encrypted) | Supabase service role |
 | RESEND_API_KEY | Pages (encrypted) | For contact form |
+| VITE_OPENWEATHER_API_KEY | Pages | OpenWeatherMap API key |
 | TURNSTILE_SECRET | Pages (encrypted) | Cloudflare Turnstile |
 | VENICE_API_KEY | Pages (encrypted) | AI chat (optional) |
 
-## Step 5: Launch
+## Step 6: Launch
 1. Sign up on your site
 2. Set yourself as admin: UPDATE profiles SET role = 'admin' WHERE email = 'you@example.com';
 3. Add 5-10 seed businesses (approve them)

@@ -31,19 +31,6 @@ export function Home() {
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3);
     
-  // Visitor guide attractions
-  const attractions = [
-    {
-      name: "Central Park",
-      description: "26-acre lake with walking trails and picnic areas",
-      image: "https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFya3xlbnwwfHwwfHx8MA%3D%3D?auto=format&fit=crop&q=80"
-    },
-    {
-      name: "Desert Observatory",
-      description: "Experience the beauty of the desert night sky",
-      image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a"
-    }
-  ];
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -330,7 +317,7 @@ export function Home() {
                   <div className="mt-4 pt-4 border-t border-outline-variant">
                     <h4 className="font-medium mb-2">Best Time to Visit</h4>
                     <p className="text-on-surface-variant text-sm">
-                      Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold.
+                      {siteConfig.guide.bestTimeToVisit}
                     </p>
                   </div>
                 </div>
@@ -344,7 +331,7 @@ export function Home() {
                 </h3>
                 
                 <div className="space-y-4">
-                  {attractions.map((attraction, index) => (
+                  {siteConfig.guide.attractionsList.map((attraction, index) => (
                     <div key={index} className="flex">
                       <Link to="/guide" className="flex-shrink-0">
                         <img 
@@ -409,9 +396,11 @@ export function Home() {
                       Annual Events
                     </h4>
                     <ul className="text-on-surface-variant text-sm ml-6 space-y-1">
-                      <li>Spring Desert Festival (April)</li>
-                      <li>Desert Star-Gazing Night (August)</li>
-                      <li>Fall Arts & Crafts Fair (October)</li>
+                      {siteConfig.guide.annualEvents.slice(0, 3).map((event) => (
+                        <li key={`${event.name}-${event.month}`}>
+                          {event.name} ({event.month})
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

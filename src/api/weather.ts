@@ -1,6 +1,10 @@
 import { siteConfig } from '../config/site';
 
-const API_KEY = '3ce60b5f72624df49cbfd96ac728fe65';
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
+
+if (!API_KEY) {
+  console.warn('Missing VITE_OPENWEATHER_API_KEY: weather data will be unavailable.');
+}
 
 export interface WeatherData {
   temp: number;
