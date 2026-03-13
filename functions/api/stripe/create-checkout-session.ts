@@ -28,6 +28,17 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       return jsonResponse({ error: 'Missing priceId or businessId' }, 400);
     }
 
+    const { data: business, error: bizError } = await supabase
+      .from('businesses')
+      .select('id')
+      .eq('id', businessId)
+      .eq('owner_id', user.id)
+      .maybeSingle();
+
+    if (bizError || !business) {
+      return jsonResponse({ error: 'Business not found or not owned by user' }, 403);
+    }
+
     const { data: customerRecord, error: customerError } = await supabase
       .from('customers')
       .select('stripe_customer_id')
@@ -47,7 +58,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
         metadata: {
           userId: user.id,
         },
-      });
+      }, { idempotencyKey: `customer-${user.id}` });
 
       stripeCustomerId = customer.id;
 
