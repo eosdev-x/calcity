@@ -8,6 +8,9 @@ export function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [page, setPage] = useState(0);
+  const [pageSize] = useState(25);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -16,18 +19,24 @@ export function UserManagement() {
       setLoading(true);
       setError(null);
 
-      const { data, error: fetchError } = await supabase
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
+
+      const { data, error: fetchError, count } = await supabase
         .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(from, to);
 
       if (!isMounted) return;
 
       if (fetchError) {
         setError(fetchError.message || 'Failed to load profiles');
         setProfiles([]);
+        setTotalCount(0);
       } else {
         setProfiles((data as UserProfile[]) || []);
+        setTotalCount(count ?? 0);
       }
       setLoading(false);
     };
@@ -37,7 +46,11 @@ export function UserManagement() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [query]);
 
   const filteredProfiles = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -55,6 +68,7 @@ export function UserManagement() {
     business_owner: 'bg-primary-container text-on-primary-container',
     user: 'bg-surface-container-high text-on-surface-variant',
   };
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   if (loading) {
     return (
@@ -141,6 +155,30 @@ export function UserManagement() {
               ))}
             </div>
           )}
+        </div>
+
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-on-surface-variant">
+            Page {page + 1} of {totalPages}
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setPage(prev => Math.max(0, prev - 1))}
+              disabled={page === 0}
+              className="btn-outline"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage(prev => Math.min(totalPages - 1, prev + 1))}
+              disabled={page + 1 >= totalPages}
+              className="btn-primary"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

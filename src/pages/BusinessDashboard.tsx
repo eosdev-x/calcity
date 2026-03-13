@@ -187,6 +187,23 @@ export function BusinessDashboard() {
           </div>
         )}
 
+        {business.status === 'rejected' && (
+          <div className="mb-6 rounded-xl border border-error bg-error-container p-4">
+            <h3 className="text-sm font-semibold text-on-error-container mb-1">Listing Rejected</h3>
+            <p className="text-sm text-on-error-container">
+              {business.rejection_reason || 'Your listing was not approved. Please update and resubmit.'}
+            </p>
+          </div>
+        )}
+
+        {business.status === 'pending' && (
+          <div className="mb-6 rounded-xl border border-outline bg-surface-container p-4">
+            <p className="text-sm text-on-surface-variant">
+              Your listing is pending admin approval. You'll see it go live once approved.
+            </p>
+          </div>
+        )}
+
         <div className="flex gap-2 border-b border-outline-variant mb-6">
           {tabs.map(tab => (
             <button

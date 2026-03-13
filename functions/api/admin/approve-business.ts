@@ -1,4 +1,4 @@
-import { getBearerToken, getSupabaseAdmin, jsonResponse, StripeEnv } from '../stripe/_shared';
+import { jsonResponse, StripeEnv, verifyAdmin } from './_shared';
 
 type ApproveAction = 'approve' | 'reject';
 
@@ -10,32 +10,10 @@ interface ApproveBusinessBody {
 
 export async function onRequestPost(context: { request: Request; env: StripeEnv }) {
   const { request, env } = context;
-  const supabase = getSupabaseAdmin(env);
 
   try {
-    const token = getBearerToken(request);
-    if (!token) {
-      return jsonResponse({ error: 'Unauthorized' }, 401);
-    }
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser(token);
-
-    if (userError || !user) {
-      return jsonResponse({ error: 'Unauthorized' }, 401);
-    }
-
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle();
-
-    if (profileError || profile?.role !== 'admin') {
-      return jsonResponse({ error: 'Forbidden' }, 403);
-    }
+    const { error: authError, supabase } = await verifyAdmin(request, env);
+    if (authError) return authError;
 
     const body = (await request.json().catch(() => ({}))) as ApproveBusinessBody;
     const businessId = typeof body.businessId === 'string' ? body.businessId : null;
@@ -56,10 +34,16 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       rejection_reason: action === 'reject' ? reason : null,
     };
 
-    const { error: updateError } = await supabase
+    const { data: updated, error: updateError } = await supabase
       .from('businesses')
       .update(updatePayload)
-      .eq('id', businessId);
+      .eq('id', businessId)
+      .eq('status', 'pending')
+      .select('id');
+
+    if (!updateError && (!updated || updated.length === 0)) {
+      return jsonResponse({ error: 'Business is not in pending status' }, 409);
+    }
 
     if (updateError) {
       console.error('Failed to update business:', updateError);
