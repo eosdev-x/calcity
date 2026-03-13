@@ -14,16 +14,18 @@ export function Pricing() {
   // Define subscription plans with features and Stripe price IDs
   const plans = [
     {
-      id: "free-plan",
+      id: "basic-plan",
       name: "Basic Listing",
       tier: SubscriptionTier.FREE,
-      price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
-      priceDisplay: "Free",
+      price: 9.99,
+      priceDisplay: "$9.99/month",
+      stripePriceId: 'price_1TASQfRpRbHjjRj8mXv5x9rB',
       features: [
-        "Basic business profile",
-        "Contact information",
-        "Business hours",
-        "Map location"
+        "Business name, address & phone",
+        "Business hours display",
+        "One photo",
+        "Category listing",
+        "Appears in search results"
       ],
       featureDetails: {
         photoLimit: 1,
@@ -36,18 +38,18 @@ export function Pricing() {
     },
     {
       id: "premium-plan",
-      name: "Premium",
+      name: "Premium Listing",
       tier: SubscriptionTier.PREMIUM,
-      price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
-      priceDisplay: `$${SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM]}/month`,
-      stripePriceId: 'price_premium_monthly',
+      price: 24.99,
+      priceDisplay: "$24.99/month",
+      stripePriceId: 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
       features: [
         "Everything in Basic",
+        "Photo gallery (up to 10)",
         "Featured in search results",
-        "Photo gallery (10 photos)",
-        "Special offers section",
-        "Customer reviews",
-        "Social media links"
+        "Business description & services",
+        "Direct website link",
+        "Premium badge"
       ],
       featureDetails: {
         photoLimit: 10,
@@ -59,19 +61,19 @@ export function Pricing() {
       } as SubscriptionFeatures
     },
     {
-      id: "enterprise-plan",
-      name: "Enterprise",
+      id: "spotlight-plan",
+      name: "Spotlight Listing",
       tier: SubscriptionTier.ENTERPRISE,
-      price: SUBSCRIPTION_PRICES[SubscriptionTier.ENTERPRISE],
-      priceDisplay: `$${SUBSCRIPTION_PRICES[SubscriptionTier.ENTERPRISE]}/month`,
-      stripePriceId: 'price_enterprise_monthly',
+      price: 49.99,
+      priceDisplay: "$49.99/month",
+      stripePriceId: 'price_1TASSRRpRbHjjRj8nfJz5gSc',
       features: [
         "Everything in Premium",
-        "Priority support",
-        "Custom branding",
-        "Analytics dashboard",
-        "Email marketing integration",
-        "Multiple locations (up to 3)"
+        "Top of search results",
+        "Homepage spotlight rotation",
+        "Monthly event promotion",
+        "Social media cross-promotion",
+        "Analytics dashboard"
       ],
       featureDetails: {
         photoLimit: 30,
