@@ -19,7 +19,7 @@ export interface Business {
     twitter?: string;
     instagram?: string;
   };
-  gallery: { url: string; alt: string }[];
+  gallery: { url: string; alt: string; storagePath?: string }[];
   amenities: string[];
   services: string[];
   subscription_tier: "basic" | "premium" | "spotlight";
