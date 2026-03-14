@@ -1,0 +1,250 @@
+import { useState } from 'react';
+import { Check, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { usePayment } from '../context/PaymentContext';
+import { useAuth } from '../context/AuthContext';
+import { SubscriptionTier, SUBSCRIPTION_PRICES, SubscriptionFeatures } from '../types/payment';
+import { getPrimaryBusinessIdForOwner } from '../utils/business';
+import { siteConfig } from '../config/site';
+import { SEO } from '../components/SEO';
+
+export function Pricing() {
+  const { user } = useAuth();
+  const { createCheckoutSession, currentSubscription, isLoading, error } = usePayment();
+  const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Define subscription plans with features and Stripe price IDs
+  const plans = [
+    {
+      id: "basic-plan",
+      name: "Basic Listing",
+      tier: SubscriptionTier.BASIC,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
+      priceDisplay: "$9.99/month",
+      stripePriceId: siteConfig.stripe.basicPriceId,
+      features: [
+        "Business name, address & phone",
+        "Business hours display",
+        "One photo",
+        "Category listing",
+        "Appears in search results"
+      ],
+      featureDetails: {
+        photoLimit: 1,
+        featuredListing: false,
+        analytics: false,
+        prioritySupport: false,
+        customBranding: false,
+        promotedEvents: 0
+      } as SubscriptionFeatures
+    },
+    {
+      id: "premium-plan",
+      name: "Premium Listing",
+      tier: SubscriptionTier.PREMIUM,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
+      priceDisplay: "$24.99/month",
+      stripePriceId: siteConfig.stripe.premiumPriceId,
+      features: [
+        "Everything in Basic",
+        "Photo gallery (up to 10)",
+        "Featured in search results",
+        "Business description & services",
+        "Direct website link",
+        "Premium badge"
+      ],
+      featureDetails: {
+        photoLimit: 10,
+        featuredListing: true,
+        analytics: true,
+        prioritySupport: false,
+        customBranding: false,
+        promotedEvents: 1
+      } as SubscriptionFeatures
+    },
+    {
+      id: "spotlight-plan",
+      name: "Spotlight Listing",
+      tier: SubscriptionTier.SPOTLIGHT,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
+      priceDisplay: "$49.99/month",
+      stripePriceId: siteConfig.stripe.spotlightPriceId,
+      features: [
+        "Everything in Premium",
+        "Top of search results",
+        "Homepage spotlight rotation",
+        "Monthly event promotion",
+        "Social media cross-promotion",
+        "Analytics dashboard"
+      ],
+      featureDetails: {
+        photoLimit: 30,
+        featuredListing: true,
+        analytics: true,
+        prioritySupport: true,
+        customBranding: true,
+        promotedEvents: 3
+      } as SubscriptionFeatures
+    }
+  ];
+
+  // Get current plan
+  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
+
+  // Handle subscription checkout
+  const handleSubscribe = async (plan: typeof plans[0]) => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      navigate(`/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+
+    if (plan.tier === SubscriptionTier.BASIC) {
+      // For free plan, redirect to payment page to manage subscription
+      navigate('/payment');
+      return;
+    }
+
+    if (!plan.stripePriceId) {
+      console.error('No Stripe price ID for plan:', plan.name);
+      return;
+    }
+
+    setProcessingPlanId(plan.id);
+    setLocalError(null);
+
+    try {
+      const businessId = await getPrimaryBusinessIdForOwner(user.id);
+
+      if (!businessId) {
+        setLocalError('Create a business profile before subscribing to a plan.');
+        return;
+      }
+
+      const result = await createCheckoutSession({
+        priceId: plan.stripePriceId,
+        businessId,
+      });
+
+      if ('error' in result) {
+        const message = typeof result.error === 'string' ? result.error : result.error.message;
+        throw new Error(message || 'Failed to create checkout session');
+      }
+
+      if (result.url) {
+        window.location.href = result.url;
+      }
+    } catch (err: any) {
+      console.error('Subscription error:', err);
+      setLocalError(err.message || 'Failed to start checkout');
+    } finally {
+      setProcessingPlanId(null);
+    }
+  };
+
+  // Check if a plan is the current active plan
+  const isCurrentPlan = (tier: SubscriptionTier) => {
+    return currentTier === tier;
+  };
+
+  return (
+    <div className="min-h-screen bg-surface  py-12">
+      <SEO
+        title={siteConfig.seo.pages.pricingTitle}
+        description={siteConfig.seo.pages.pricingDescription}
+        path="/pricing"
+        type="product"
+      />
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-display font-bold text-on-surface mb-4">
+            Choose Your Plan
+          </h1>
+          <p className="text-on-surface-variant max-w-2xl mx-auto">
+            Select the perfect plan for your business and start reaching more customers in {siteConfig.city}
+          </p>
+        </div>
+
+        {/* Error message */}
+        {(localError || error) && (
+          <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
+            <p className="text-on-error-container">{localError || error}</p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {plans.map((plan) => (
+            <div 
+              key={plan.id}
+              className={`card overflow-hidden ${
+                isCurrentPlan(plan.tier) 
+                  ? 'border-outline  shadow-sm' 
+                  : ''
+              }`}
+            >
+              {/* Plan header */}
+              <div className={`p-6 ${
+                isCurrentPlan(plan.tier)
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-surface-container'
+              }`}>
+                <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
+                <p className={`text-3xl font-bold ${
+                  isCurrentPlan(plan.tier)
+                    ? 'text-on-primary'
+                    : 'text-on-surface'
+                } mb-2`}>
+                  {plan.priceDisplay}
+                </p>
+                {isCurrentPlan(plan.tier) && (
+                  <div className="mt-1 text-sm font-medium text-on-primary">
+                    Current Plan
+                  </div>
+                )}
+              </div>
+
+              {/* Plan features */}
+              <div className="p-6 bg-surface-container-low">
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center space-x-2">
+                      <Check className="w-5 h-5 text-on-surface-variant" />
+                      <span className="text-on-surface-variant">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Action button */}
+                <button
+                  onClick={() => handleSubscribe(plan)}
+                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
+                  className={`btn-primary w-full ${
+                    isCurrentPlan(plan.tier) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  {processingPlanId === plan.id ? (
+                    <div className="flex items-center justify-center">
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </div>
+                  ) : isCurrentPlan(plan.tier) ? (
+                    'Current Plan'
+                  ) : (
+                    'Subscribe Now'
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center text-sm text-on-surface-variant max-w-2xl mx-auto">
+          <p>All plans include access to our community events calendar and local business directory.</p>
+          <p className="mt-2">Need help choosing? <a href="/contact" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">Contact our team</a> for personalized assistance.</p>
+        </div>
+      </div>
+    </div>
+  );
+}

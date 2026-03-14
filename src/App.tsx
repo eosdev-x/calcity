@@ -1,45 +1,110 @@
-import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navigation } from './components/Navigation';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
-import { Businesses } from './pages/Businesses';
-import { Attractions } from './pages/Attractions';
 import { Events } from './pages/Events';
-import { Contact } from './pages/Contact';
+import { EventDetails } from './pages/EventDetails';
+import { EventSubmission } from './pages/EventSubmission';
+import { EventCalendarView } from './pages/EventCalendarView';
+import { Businesses } from './pages/Businesses';
+import { BusinessDetails } from './pages/BusinessDetails';
+import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
+import { BusinessDashboard } from './pages/BusinessDashboard';
+import { Pricing } from './pages/Pricing';
+import { Guide } from './pages/Guide';
+import { Terms } from './pages/Terms';
+import { ScrollToTop } from './components/ScrollToTop';
+import { FloatingChatWidget } from './components/FloatingChatWidget';
+import { EventProvider } from './context/EventContext';
+import { BusinessProvider } from './context/BusinessContext';
+import { AuthProvider } from './context/AuthContext';
+import { PaymentProvider } from './context/PaymentContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { AdminRoute } from './components/auth/AdminRoute';
+import { Payment } from './pages/Payment';
+import PaymentSuccess from './pages/payment/Success';
+import PaymentCancel from './pages/payment/Cancel';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { BusinessApprovals } from './pages/admin/BusinessApprovals';
+import { EventApprovals } from './pages/admin/EventApprovals';
+import { UserManagement } from './pages/admin/UserManagement';
+import { siteConfig } from './config/site';
+
+// Auth pages
+import { Login } from './pages/auth/Login';
+import { Signup } from './pages/auth/Signup';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
+import { ResetPassword } from './pages/auth/ResetPassword';
+import { AuthCallback } from './pages/auth/AuthCallback';
+import { Profile } from './pages/auth/Profile';
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-        <Navigation />
-        <main className="flex-grow pt-16">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/attractions" element={<Attractions />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/businesses" element={<Businesses />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </main>
-        
-        {/* Footer */}
-        <footer className="bg-gray-800 dark:bg-gray-950 text-white py-8 transition-colors duration-200">
-          <div className="container mx-auto px-4 text-center">
-            <p>&copy; {new Date().getFullYear()} calcity.info. All rights reserved.</p>
-            <p className="mt-2">Site by:{' '}  
-              <a
-                href="https://eosdev.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                eosdev
-              </a>
-            </p>
-          </div>
-        </footer>
-      </div>
-    </Router>
+    <AuthProvider>
+      <PaymentProvider>
+        <EventProvider>
+          <BusinessProvider>
+          <Router>
+            <ScrollToTop />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-grow">
+                <Routes>
+                  {/* Main Routes */}
+                  <Route path="/" element={<Home />} />
+                  {siteConfig.features.events && (
+                    <>
+                      <Route path="/events" element={<Events />} />
+                      <Route path="/events/new" element={<ProtectedRoute><EventSubmission /></ProtectedRoute>} />
+                      <Route path="/events/calendar" element={<EventCalendarView />} />
+                      <Route path="/events/:id" element={<EventDetails />} />
+                    </>
+                  )}
+                  {siteConfig.features.businesses && (
+                    <>
+                      <Route path="/businesses" element={<Businesses />} />
+                      <Route path="/businesses/new" element={<ProtectedRoute><BusinessProfileCreation /></ProtectedRoute>} />
+                      <Route path="/businesses/:id" element={<BusinessDetails />} />
+                      <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
+                    </>
+                  )}
+                  {siteConfig.features.businesses && (
+                    <Route path="/pricing" element={<Pricing />} />
+                  )}
+                  <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+                  <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
+                  <Route path="/payment/cancel" element={<PaymentCancel />} />
+                  {siteConfig.features.guide && (
+                    <Route path="/guide" element={<Guide />} />
+                  )}
+                  <Route path="/terms" element={<Terms />} />
+                  
+                  {/* Auth Routes */}
+                  <Route path="/auth/login" element={<Login />} />
+                  <Route path="/auth/signup" element={<Signup />} />
+                  <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/auth/reset-password" element={<ResetPassword />} />
+                  <Route path="/auth/callback" element={<AuthCallback />} />
+                  
+                  {/* Protected Profile Routes */}
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                  <Route path="/admin/businesses" element={<AdminRoute><BusinessApprovals /></AdminRoute>} />
+                  <Route path="/admin/events" element={<AdminRoute><EventApprovals /></AdminRoute>} />
+                  <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+                </Routes>
+              </main>
+              <Footer />
+              {siteConfig.features.chat && <FloatingChatWidget />}
+            </div>
+          </Router>
+        </BusinessProvider>
+      </EventProvider>
+    </PaymentProvider>
+    </AuthProvider>
   );
 }
 

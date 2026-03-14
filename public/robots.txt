@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /auth/
+Disallow: /payment
+Disallow: /profile
+
+Sitemap: https://calcity.info/sitemap.xml
