@@ -170,7 +170,6 @@ export function BusinessProfileCreation() {
         subscription_tier: 'basic',
         is_featured: false,
         is_spotlight: false,
-        rating: 0,
         review_count: 0,
         view_count: 0,
         status: 'pending',
