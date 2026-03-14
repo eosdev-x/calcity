@@ -22,7 +22,7 @@ export interface Business {
   gallery: { url: string; alt: string; storagePath?: string }[];
   amenities: string[];
   services: string[];
-  subscription_tier: "basic" | "premium" | "spotlight";
+  subscription_tier: "free" | "basic" | "premium" | "spotlight";
   is_featured: boolean;
   is_spotlight: boolean;
   review_count: number;

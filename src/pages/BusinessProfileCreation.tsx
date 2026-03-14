@@ -167,7 +167,7 @@ export function BusinessProfileCreation() {
         gallery: [],
         amenities: formData.amenities,
         services: [],
-        subscription_tier: 'basic',
+        subscription_tier: 'free',
         is_featured: false,
         is_spotlight: false,
         review_count: 0,
