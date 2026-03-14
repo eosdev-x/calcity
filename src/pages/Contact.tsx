@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import { SEO } from '../components/SEO';
 import { siteConfig } from '../config/site';
+import { Turnstile } from '../components/Turnstile';
 
 type ContactFormData = {
   name: string;
@@ -21,6 +22,9 @@ export function Contact() {
   });
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
+  const [companyUrl, setCompanyUrl] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -41,7 +45,11 @@ export function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          company_url: companyUrl,
+          turnstileToken,
+        }),
       });
 
       const payload = await response.json().catch(() => ({}));
@@ -57,6 +65,9 @@ export function Contact() {
         subject: '',
         message: '',
       });
+      setCompanyUrl('');
+      setTurnstileToken('');
+      setTurnstileResetKey((prev) => prev + 1);
     } catch (err) {
       setStatus('error');
       setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
@@ -72,7 +83,7 @@ export function Contact() {
       />
       <div className="container mx-auto px-4">
         <div className="w-full max-w-2xl mx-auto">
-          <div className="bg-surface-container-low rounded-xl shadow-sm p-8 border border-outline-variant">
+          <div className="bg-surface-container-low rounded-xl shadow-sm p-4 sm:p-8 border border-outline-variant overflow-hidden break-words">
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-on-surface">Contact Us</h1>
               <p className="text-on-surface-variant mt-2">
@@ -96,7 +107,7 @@ export function Contact() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 min-w-0">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-on-surface-variant mb-1">
                   Name
@@ -107,7 +118,7 @@ export function Contact() {
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                  className="w-full max-w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary px-3 py-2"
                   placeholder="Jane Doe"
                   required
                 />
@@ -123,7 +134,7 @@ export function Contact() {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                  className="w-full max-w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary px-3 py-2"
                   placeholder="you@example.com"
                   required
                 />
@@ -139,7 +150,7 @@ export function Contact() {
                   type="text"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                  className="w-full max-w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary px-3 py-2"
                   placeholder="How can we help?"
                   required
                 />
@@ -155,15 +166,37 @@ export function Contact() {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                  className="w-full max-w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary px-3 py-2"
                   placeholder="Tell us more about what you need..."
                   required
                 />
               </div>
 
+              <div
+                className="absolute left-[-10000px] top-auto h-0 w-0 overflow-hidden opacity-0"
+                aria-hidden="true"
+              >
+                <label htmlFor="company_url">Company Website</label>
+                <input
+                  id="company_url"
+                  name="company_url"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={companyUrl}
+                  onChange={(e) => setCompanyUrl(e.target.value)}
+                />
+              </div>
+
+              <Turnstile
+                onVerify={setTurnstileToken}
+                onExpire={() => setTurnstileToken('')}
+                resetKey={turnstileResetKey}
+              />
+
               <button
                 type="submit"
-                disabled={status === 'submitting'}
+                disabled={status === 'submitting' || !turnstileToken}
                 className="w-full btn-primary flex justify-center items-center"
               >
                 {status === 'submitting' ? (

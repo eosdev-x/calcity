@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, User, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { Turnstile } from '../Turnstile';
 
 export function SignupForm() {
   const { signUp, signInWithGoogle, signInWithApple, error } = useAuth();
@@ -12,6 +13,7 @@ export function SignupForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -170,11 +172,13 @@ export function SignupForm() {
               />
             </div>
           </div>
+
+          <Turnstile onVerify={setTurnstileToken} onExpire={() => setTurnstileToken('')} />
           
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !turnstileToken}
               className="w-full btn-primary flex justify-center items-center"
             >
               {isSubmitting ? (
