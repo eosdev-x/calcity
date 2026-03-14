@@ -238,7 +238,7 @@ export function BusinessDashboard() {
             <div className="lg:col-span-2 space-y-6">
               <div className="card overflow-hidden">
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  {business.image ? (
+                  {business.image && business.image.length > 0 ? (
                     <img
                       src={business.image}
                       alt={business.name}
