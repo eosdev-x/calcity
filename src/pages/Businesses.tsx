@@ -25,6 +25,7 @@ export function Businesses() {
     spotlight: 0,
     premium: 1,
     basic: 2,
+    free: 3,
   };
 
   const getTierBorder = (tier: Business['subscription_tier']) => {

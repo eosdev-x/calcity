@@ -41,7 +41,7 @@ export function BusinessDetails() {
   const { trackView } = useAnalytics();
 
   const business = businesses.find(b => b.id === id);
-  const permissions = useBusinessPermissions(business?.subscription_tier ?? 'basic');
+  const permissions = useBusinessPermissions(business?.subscription_tier ?? 'free');
   const isOwner = user?.id === business?.owner_id;
   const hasSocialLinks = Boolean(
     business?.social_media?.facebook ||

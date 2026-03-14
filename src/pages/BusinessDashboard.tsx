@@ -37,7 +37,7 @@ export function BusinessDashboard() {
   const activeTab: TabId = tabs.some(tab => tab.id === tabParam) ? (tabParam as TabId) : 'overview';
   const setActiveTab = (tab: TabId) => setSearchParams({ tab });
 
-  const permissions = useBusinessPermissions(business?.subscription_tier ?? 'basic');
+  const permissions = useBusinessPermissions(business?.subscription_tier ?? 'free');
 
   useEffect(() => {
     if (!user) return;
@@ -117,7 +117,7 @@ export function BusinessDashboard() {
   };
 
   const currentTierLabel = useMemo(() => {
-    if (!business?.subscription_tier) return 'Basic';
+    if (!business?.subscription_tier) return 'Free';
     return business.subscription_tier.charAt(0).toUpperCase() + business.subscription_tier.slice(1);
   }, [business?.subscription_tier]);
 
@@ -333,11 +333,16 @@ export function BusinessDashboard() {
                 <button
                   type="button"
                   onClick={handleManageBilling}
-                  disabled={portalLoading || billingLoading}
+                  disabled={!currentSubscription || portalLoading || billingLoading}
                   className="btn-primary"
                 >
                   {portalLoading ? 'Opening Billing...' : 'Manage Billing'}
                 </button>
+                {!currentSubscription && (
+                  <p className="text-sm text-on-surface-variant">
+                    You are on the free plan. Upgrade to manage billing.
+                  </p>
+                )}
                 {(portalError || billingError) && (
                   <p className="text-sm text-error">{portalError || billingError}</p>
                 )}

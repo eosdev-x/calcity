@@ -14,6 +14,21 @@ import { siteConfig } from '../../config/site';
 // Define subscription plans with features
 const subscriptionPlans: SubscriptionPlan[] = [
   {
+    id: 'free-plan',
+    name: 'Free',
+    tier: SubscriptionTier.FREE,
+    price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
+    stripePriceId: siteConfig.stripe.freePriceId || undefined,
+    features: {
+      photoLimit: 1,
+      featuredListing: false,
+      analytics: false,
+      prioritySupport: false,
+      customBranding: false,
+      promotedEvents: 0
+    }
+  },
+  {
     id: 'basic-plan',
     name: 'Basic',
     tier: SubscriptionTier.BASIC,
@@ -75,7 +90,7 @@ export function SubscriptionPlans() {
   const [localError, setLocalError] = useState<string | null>(null);
 
   // Get current plan
-  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
+  const currentTier = currentSubscription?.tier || SubscriptionTier.FREE;
   const hasActiveSubscription = Boolean(
     currentSubscription &&
     currentSubscription.status !== SubscriptionStatus.CANCELED &&
@@ -87,6 +102,11 @@ export function SubscriptionPlans() {
     if (!user) {
       // Redirect to login if not authenticated
       window.location.href = `/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}`;
+      return;
+    }
+
+    if (plan.tier === SubscriptionTier.FREE) {
+      window.location.href = '/businesses/new';
       return;
     }
 
@@ -177,7 +197,10 @@ export function SubscriptionPlans() {
 
   // Check if a plan is the current active plan
   const isCurrentPlan = (tier: SubscriptionTier) => {
-    return currentSubscription !== null && currentTier === tier;
+    if (!currentSubscription) {
+      return tier === SubscriptionTier.FREE;
+    }
+    return currentTier === tier;
   };
 
   return (
@@ -196,7 +219,7 @@ export function SubscriptionPlans() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {subscriptionPlans.map((plan) => (
           <div 
             key={plan.id}
@@ -280,7 +303,14 @@ export function SubscriptionPlans() {
               {/* Action button */}
               <div className="mt-6">
                 {isCurrentPlan(plan.tier) ? (
-                  currentSubscription && !currentSubscription.cancelAtPeriodEnd && (
+                  plan.tier === SubscriptionTier.FREE ? (
+                    <button
+                      disabled
+                      className="w-full py-2 px-4 rounded-full bg-surface-container-high text-on-surface-variant cursor-not-allowed"
+                    >
+                      Current Plan
+                    </button>
+                  ) : currentSubscription && !currentSubscription.cancelAtPeriodEnd ? (
                     <button
                       onClick={handleCancelSubscription}
                       disabled={isLoading || processingPlanId === 'cancel'}
@@ -295,7 +325,7 @@ export function SubscriptionPlans() {
                         'Cancel Subscription'
                       )}
                     </button>
-                  )
+                  ) : null
                 ) : (
                   hasActiveSubscription ? (
                     <button
@@ -317,7 +347,7 @@ export function SubscriptionPlans() {
                       onClick={() => handleSubscribe(plan)}
                       disabled={isLoading || processingPlanId === plan.id}
                       className={`w-full py-2 px-4 rounded-full ${
-                        plan.tier === SubscriptionTier.BASIC
+                        plan.tier === SubscriptionTier.FREE || plan.tier === SubscriptionTier.BASIC
                           ? 'bg-secondary-container text-on-secondary-container hover:opacity-90'
                           : 'bg-primary text-on-primary hover:bg-primary/90'
                       } transition-colors duration-[var(--md-sys-motion-duration-short3)] disabled:opacity-50`}
@@ -328,7 +358,9 @@ export function SubscriptionPlans() {
                           Processing...
                         </div>
                       ) : (
-                        `Subscribe to ${plan.name}`
+                        plan.tier === SubscriptionTier.FREE
+                          ? 'Get Started'
+                          : `Subscribe to ${plan.name}`
                       )}
                     </button>
                   )
