@@ -18,9 +18,10 @@ const subscriptionPlans: SubscriptionPlan[] = [
     name: 'Free',
     tier: SubscriptionTier.FREE,
     price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
-    stripePriceId: siteConfig.stripe.freePriceId || undefined,
+    // Free tier has no Stripe price — handleSubscribe short-circuits before checkout
+    stripePriceId: undefined,
     features: {
-      photoLimit: 1,
+      photoLimit: 0,
       featuredListing: false,
       analytics: false,
       prioritySupport: false,
@@ -35,7 +36,7 @@ const subscriptionPlans: SubscriptionPlan[] = [
     price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
     stripePriceId: siteConfig.stripe.basicPriceId,
     features: {
-      photoLimit: 1,
+      photoLimit: 3,
       featuredListing: false,
       analytics: false,
       prioritySupport: false,
@@ -219,7 +220,7 @@ export function SubscriptionPlans() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
         {subscriptionPlans.map((plan) => (
           <div 
             key={plan.id}

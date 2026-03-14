@@ -27,11 +27,12 @@ export function Pricing() {
       features: [
         "Business name, address & phone",
         "Business hours display",
+        "Business description",
         "Category listing",
-        "Appears in search results (lowest priority)"
+        "Generic placeholder photo"
       ],
       featureDetails: {
-        photoLimit: 1,
+        photoLimit: 0,
         featuredListing: false,
         analytics: false,
         prioritySupport: false,
@@ -47,14 +48,14 @@ export function Pricing() {
       priceDisplay: "$4.99/month",
       stripePriceId: siteConfig.stripe.basicPriceId,
       features: [
-        "Business name, address & phone",
-        "Business hours display",
-        "One photo",
-        "Category listing",
-        "Appears in search results"
+        "Everything in Free",
+        "Upload up to 3 photos",
+        "Website link",
+        "Services list",
+        "Higher search priority"
       ],
       featureDetails: {
-        photoLimit: 1,
+        photoLimit: 3,
         featuredListing: false,
         analytics: false,
         prioritySupport: false,
@@ -200,7 +201,7 @@ export function Pricing() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {plans.map((plan) => (
             <div 
               key={plan.id}
