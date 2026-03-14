@@ -27,7 +27,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(payload, signature, env.STRIPE_WEBHOOK_SECRET);
+    event = await stripe.webhooks.constructEventAsync(payload, signature, env.STRIPE_WEBHOOK_SECRET);
   } catch (error) {
     console.error('Webhook signature verification failed:', error);
     return new Response('Invalid signature', { status: 400 });

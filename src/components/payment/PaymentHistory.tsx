@@ -62,12 +62,12 @@ export function PaymentHistory() {
     }
   };
 
-  // Mock function to download invoice (would be implemented with actual backend)
-  const downloadInvoice = (paymentId: string) => {
-    // In a real application, this would trigger a backend request to generate
-    // and download a PDF invoice
-    console.log(`Downloading invoice for payment ${paymentId}`);
-    alert('Invoice download would be implemented with actual backend integration');
+  // Open invoice PDF or hosted invoice URL
+  const downloadInvoice = (payment: PaymentRecord & { invoicePdf?: string; invoiceUrl?: string }) => {
+    const url = payment.invoicePdf || (payment as any).invoiceUrl;
+    if (url) {
+      window.open(url, '_blank');
+    }
   };
 
   return (
@@ -157,18 +157,20 @@ export function PaymentHistory() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex justify-end space-x-2">
-                        <button
-                          onClick={() => {/* View details implementation */}}
-                          className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
-                          title="View details"
-                        >
-                          <FileText className="w-5 h-5" />
-                        </button>
-                        {payment.status === PaymentStatus.SUCCEEDED && (
+                        {(payment as any).invoiceUrl && (
                           <button
-                            onClick={() => downloadInvoice(payment.id)}
+                            onClick={() => window.open((payment as any).invoiceUrl, '_blank')}
                             className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
-                            title="Download invoice"
+                            title="View invoice"
+                          >
+                            <FileText className="w-5 h-5" />
+                          </button>
+                        )}
+                        {payment.status === PaymentStatus.SUCCEEDED && (payment as any).invoicePdf && (
+                          <button
+                            onClick={() => downloadInvoice(payment as any)}
+                            className="text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+                            title="Download invoice PDF"
                           >
                             <Download className="w-5 h-5" />
                           </button>

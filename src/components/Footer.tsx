@@ -1,78 +1,50 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
+import { Facebook, Twitter, Instagram } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import { siteConfig } from '../config/site';
 
 export function Footer() {
   const hasSocialLinks = Boolean(
     siteConfig.social.facebook || siteConfig.social.twitter || siteConfig.social.instagram
   );
-  const contactEmail = siteConfig.contact.email || `info@${siteConfig.domain}`;
-  const contactPhone = siteConfig.contact.phone;
-  const contactPhoneHref = contactPhone ? `tel:${contactPhone.replace(/[^\d+]/g, '')}` : '';
+  const quickLinks = [
+    { label: 'Events', to: '/events', enabled: siteConfig.features.events },
+    { label: 'Businesses', to: '/businesses', enabled: siteConfig.features.businesses },
+    { label: 'Pricing', to: '/pricing', enabled: siteConfig.features.businesses },
+    { label: 'Visitor Guide', to: '/guide', enabled: siteConfig.features.guide },
+    { label: 'Contact', to: '/contact', enabled: true },
+  ].filter((link) => link.enabled);
 
   return (
     <footer className="bg-surface-container mt-auto">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="flex flex-col">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col md:flex-1">
             <Link to="/" className="inline-block mb-3">
-              <img src={logo} alt={siteConfig.name} className="h-16 w-auto max-w-[90%]" />
+              <img src={logo} alt={siteConfig.name} className="h-16 w-auto" />
             </Link>
             <p className="text-on-surface-variant mt-1">
               Your comprehensive guide to {siteConfig.city}, {siteConfig.state}.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-4 text-on-surface">Quick Links</h4>
-            <ul className="space-y-2">
-              {siteConfig.features.events && (
-                <li><Link to="/events" className="nav-link">Events</Link></li>
-              )}
-              {siteConfig.features.businesses && (
-                <li><Link to="/businesses" className="nav-link">Businesses</Link></li>
-              )}
-              {siteConfig.features.businesses && (
-                <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
-              )}
-              {siteConfig.features.guide && (
-                <li><Link to="/guide" className="nav-link">Visitor Guide</Link></li>
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4 text-on-surface">Contact</h4>
-            <ul className="space-y-2">
-              <li>
-                <a 
-                  href={`mailto:${contactEmail}`}
-                  className="flex items-center space-x-2 nav-link"
-                >
-                  <Mail className="w-4 h-4" />
-                  <span>{contactEmail}</span>
-                </a>
-              </li>
-              {contactPhone && (
-                <li>
-                  <a 
-                    href={contactPhoneHref} 
-                    className="flex items-center space-x-2 nav-link"
-                  >
-                    <Phone className="w-4 h-4" />
-                    <span>{contactPhone}</span>
-                  </a>
+          <div className="md:flex-1 md:flex md:justify-center">
+            <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+              {quickLinks.map((link, index) => (
+                <li key={link.to} className="flex items-center">
+                  {index > 0 && <span className="mx-2 text-outline-variant">•</span>}
+                  <Link to={link.to} className="nav-link">
+                    {link.label}
+                  </Link>
                 </li>
-              )}
+              ))}
             </ul>
           </div>
 
           {hasSocialLinks && (
-            <div>
-              <h4 className="font-semibold mb-4 text-on-surface">Follow Us</h4>
+            <div className="md:flex-1 md:flex md:justify-end">
               <div className="flex space-x-4">
                 {siteConfig.social.facebook && (
                   <a 
