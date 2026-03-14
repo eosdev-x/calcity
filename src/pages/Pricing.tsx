@@ -18,21 +18,44 @@ export function Pricing() {
   // Define subscription plans with features and Stripe price IDs
   const plans = [
     {
+      id: "free-plan",
+      name: "Free Listing",
+      tier: SubscriptionTier.FREE,
+      price: SUBSCRIPTION_PRICES[SubscriptionTier.FREE],
+      priceDisplay: "Free",
+      stripePriceId: siteConfig.stripe.freePriceId,
+      features: [
+        "Business name, address & phone",
+        "Business hours display",
+        "Business description",
+        "Category listing",
+        "Generic placeholder photo"
+      ],
+      featureDetails: {
+        photoLimit: 0,
+        featuredListing: false,
+        analytics: false,
+        prioritySupport: false,
+        customBranding: false,
+        promotedEvents: 0
+      } as SubscriptionFeatures
+    },
+    {
       id: "basic-plan",
       name: "Basic Listing",
       tier: SubscriptionTier.BASIC,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.BASIC],
-      priceDisplay: "$9.99/month",
+      priceDisplay: "$4.99/month",
       stripePriceId: siteConfig.stripe.basicPriceId,
       features: [
-        "Business name, address & phone",
-        "Business hours display",
-        "One photo",
-        "Category listing",
-        "Appears in search results"
+        "Everything in Free",
+        "Upload up to 3 photos",
+        "Website link",
+        "Services list",
+        "Higher search priority"
       ],
       featureDetails: {
-        photoLimit: 1,
+        photoLimit: 3,
         featuredListing: false,
         analytics: false,
         prioritySupport: false,
@@ -45,7 +68,7 @@ export function Pricing() {
       name: "Premium Listing",
       tier: SubscriptionTier.PREMIUM,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.PREMIUM],
-      priceDisplay: "$24.99/month",
+      priceDisplay: "$14.99/month",
       stripePriceId: siteConfig.stripe.premiumPriceId,
       features: [
         "Everything in Basic",
@@ -69,7 +92,7 @@ export function Pricing() {
       name: "Spotlight Listing",
       tier: SubscriptionTier.SPOTLIGHT,
       price: SUBSCRIPTION_PRICES[SubscriptionTier.SPOTLIGHT],
-      priceDisplay: "$49.99/month",
+      priceDisplay: "$29.99/month",
       stripePriceId: siteConfig.stripe.spotlightPriceId,
       features: [
         "Everything in Premium",
@@ -91,19 +114,23 @@ export function Pricing() {
   ];
 
   // Get current plan
-  const currentTier = currentSubscription?.tier || SubscriptionTier.BASIC;
+  const currentTier = currentSubscription?.tier ?? (user ? SubscriptionTier.FREE : null);
 
   // Handle subscription checkout
   const handleSubscribe = async (plan: typeof plans[0]) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      navigate(`/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}`);
+    if (plan.tier === SubscriptionTier.FREE) {
+      const returnTo = encodeURIComponent('/businesses/new');
+      if (!user) {
+        navigate(`/auth/login?returnTo=${returnTo}`);
+        return;
+      }
+      navigate('/businesses/new');
       return;
     }
 
-    if (plan.tier === SubscriptionTier.BASIC) {
-      // For free plan, redirect to payment page to manage subscription
-      navigate('/payment');
+    if (!user) {
+      // Redirect to login if not authenticated
+      navigate(`/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
 
@@ -174,7 +201,7 @@ export function Pricing() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {plans.map((plan) => (
             <div 
               key={plan.id}
@@ -231,6 +258,8 @@ export function Pricing() {
                     </div>
                   ) : isCurrentPlan(plan.tier) ? (
                     'Current Plan'
+                  ) : plan.tier === SubscriptionTier.FREE ? (
+                    'Get Started'
                   ) : (
                     'Subscribe Now'
                   )}

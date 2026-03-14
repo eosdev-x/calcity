@@ -1,13 +1,20 @@
-export function useBusinessPermissions(tier: 'basic' | 'premium' | 'spotlight') {
+export function useBusinessPermissions(tier: 'free' | 'basic' | 'premium' | 'spotlight') {
   return {
-    canShowDescription: tier !== 'basic',
-    canShowWebsite: tier !== 'basic',
-    canShowGallery: tier !== 'basic',
-    canShowSocial: tier !== 'basic',
-    canShowAmenities: tier !== 'basic',
-    canShowServices: tier !== 'basic',
-    maxPhotos: tier === 'basic' ? 1 : tier === 'premium' ? 10 : 30,
-    hasBadge: tier !== 'basic',
+    canShowDescription: true,
+    canShowWebsite: tier !== 'free',
+    canShowGallery: tier === 'premium' || tier === 'spotlight',
+    canShowSocial: tier === 'premium' || tier === 'spotlight',
+    canShowAmenities: tier === 'premium' || tier === 'spotlight',
+    canShowServices: tier !== 'free',
+    maxPhotos:
+      tier === 'free'
+        ? 0
+        : tier === 'basic'
+          ? 3
+          : tier === 'premium'
+            ? 10
+            : 30,
+    hasBadge: tier === 'premium' || tier === 'spotlight',
     badgeText: tier === 'spotlight' ? '⭐ Spotlight' : '✨ Premium',
     badgeClass:
       tier === 'spotlight'
@@ -19,13 +26,13 @@ export function useBusinessPermissions(tier: 'basic' | 'premium' | 'spotlight') 
         : tier === 'premium'
           ? 'border border-primary/30'
           : 'border border-transparent',
-    isFeatured: tier !== 'basic',
+    isFeatured: tier === 'premium' || tier === 'spotlight',
     isSpotlight: tier === 'spotlight',
   };
 }
 
 // Standalone helper for components that don't use the full hook
-export function getTierBadge(tier: 'basic' | 'premium' | 'spotlight') {
+export function getTierBadge(tier: 'free' | 'basic' | 'premium' | 'spotlight') {
   if (tier === 'spotlight') {
     return { text: '⭐ Spotlight', className: 'bg-tertiary-container text-on-tertiary-container' };
   }

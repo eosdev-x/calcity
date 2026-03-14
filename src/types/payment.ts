@@ -2,6 +2,7 @@ import { Stripe } from '@stripe/stripe-js';
 
 // Subscription tiers
 export enum SubscriptionTier {
+  FREE = 'free',
   BASIC = 'basic',
   PREMIUM = 'premium',
   SPOTLIGHT = 'spotlight'
@@ -9,9 +10,10 @@ export enum SubscriptionTier {
 
 // Subscription prices (monthly)
 export const SUBSCRIPTION_PRICES = {
-  [SubscriptionTier.BASIC]: 9.99,
-  [SubscriptionTier.PREMIUM]: 24.99,
-  [SubscriptionTier.SPOTLIGHT]: 49.99
+  [SubscriptionTier.FREE]: 0,
+  [SubscriptionTier.BASIC]: 4.99,
+  [SubscriptionTier.PREMIUM]: 14.99,
+  [SubscriptionTier.SPOTLIGHT]: 29.99
 };
 
 // Subscription features

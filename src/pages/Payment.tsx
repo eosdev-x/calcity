@@ -48,7 +48,7 @@ export function Payment() {
 
   const currentTierLabel = currentSubscription?.tier
     ? currentSubscription.tier.charAt(0).toUpperCase() + currentSubscription.tier.slice(1)
-    : SubscriptionTier.BASIC.charAt(0).toUpperCase() + SubscriptionTier.BASIC.slice(1);
+    : SubscriptionTier.FREE.charAt(0).toUpperCase() + SubscriptionTier.FREE.slice(1);
 
   const formatDate = (timestamp?: number) => {
     if (!timestamp) return '—';
@@ -86,11 +86,16 @@ export function Payment() {
           <div className="flex flex-col gap-2">
             <button
               onClick={handleManageBilling}
-              disabled={portalLoading || isLoading}
+              disabled={!currentSubscription || portalLoading || isLoading}
               className="btn-primary w-full md:w-auto"
             >
               {portalLoading ? 'Opening Billing...' : 'Manage Billing'}
             </button>
+            {!currentSubscription && (
+              <p className="text-sm text-on-surface-variant">
+                You are on the free plan. Upgrade to manage billing.
+              </p>
+            )}
             {(portalError || error) && (
               <p className="text-sm text-error">{portalError || error}</p>
             )}

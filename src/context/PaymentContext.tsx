@@ -94,7 +94,7 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
       }
 
       if (data) {
-        const tier = (data.tier as SubscriptionTier) || SubscriptionTier.BASIC;
+        const tier = (data.tier as SubscriptionTier) || SubscriptionTier.FREE;
         setCurrentSubscription({
           id: data.stripe_subscription_id,
           customerId: data.stripe_customer_id,

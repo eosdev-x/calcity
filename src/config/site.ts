@@ -69,6 +69,7 @@ export interface SiteConfig {
 
   // Stripe price IDs
   stripe: {
+    freePriceId: string | null;
     basicPriceId: string;
     premiumPriceId: string;
     spotlightPriceId: string;
@@ -171,6 +172,7 @@ export const siteConfig: SiteConfig = {
   weather: { lat: 35.1258, lon: -117.9859, name: 'California City' },
 
   stripe: {
+    freePriceId: null,
     basicPriceId: import.meta.env.VITE_STRIPE_BASIC_PRICE_ID || 'price_1TASQfRpRbHjjRj8mXv5x9rB',
     premiumPriceId: import.meta.env.VITE_STRIPE_PREMIUM_PRICE_ID || 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
     spotlightPriceId: import.meta.env.VITE_STRIPE_SPOTLIGHT_PRICE_ID || 'price_1TASSRRpRbHjjRj8nfJz5gSc',

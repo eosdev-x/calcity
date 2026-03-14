@@ -8,7 +8,7 @@ const formatTimestamp = (timestamp: number | null | undefined) => {
 
 const buildBusinessFlags = (tier: string) => ({
   subscription_tier: tier,
-  is_featured: tier !== 'basic',
+  is_featured: tier === 'premium' || tier === 'spotlight',
   is_spotlight: tier === 'spotlight',
 });
 
@@ -195,7 +195,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           const { error: businessUpdateError } = await supabase
             .from('businesses')
             .update({
-              subscription_tier: null,
+              subscription_tier: 'free',
               stripe_subscription_id: null,
               stripe_customer_id: null,
               is_featured: false,
