@@ -2,6 +2,7 @@ import { jsonResponse } from './stripe/_shared';
 
 type ContactEnv = {
   RESEND_API_KEY: string;
+  TURNSTILE_SECRET_KEY: string;
 };
 
 type ContactPayload = {
@@ -9,6 +10,8 @@ type ContactPayload = {
   email?: string;
   subject?: string;
   message?: string;
+  company_url?: string;
+  turnstileToken?: string;
 };
 
 const escapeHtml = (value: string) =>
@@ -21,6 +24,25 @@ const escapeHtml = (value: string) =>
 
 const isValidEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 3;
+const rateLimitMap = new Map<string, number[]>();
+
+const isRateLimited = (ip: string) => {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+  const recent = (rateLimitMap.get(ip) ?? []).filter((timestamp) => timestamp > windowStart);
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    rateLimitMap.set(ip, recent);
+    return true;
+  }
+
+  recent.push(now);
+  rateLimitMap.set(ip, recent);
+  return false;
+};
+
 export async function onRequestPost(context: { request: Request; env: ContactEnv }) {
   const { request, env } = context;
 
@@ -28,11 +50,26 @@ export async function onRequestPost(context: { request: Request; env: ContactEnv
     return jsonResponse({ error: 'Missing RESEND_API_KEY' }, 500);
   }
 
+  if (!env.TURNSTILE_SECRET_KEY) {
+    return jsonResponse({ error: 'Missing TURNSTILE_SECRET_KEY' }, 500);
+  }
+
   const body = (await request.json().catch(() => ({}))) as ContactPayload;
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   const subject = typeof body.subject === 'string' ? body.subject.trim() : '';
   const message = typeof body.message === 'string' ? body.message.trim() : '';
+  const companyUrl = typeof body.company_url === 'string' ? body.company_url.trim() : '';
+  const turnstileToken = typeof body.turnstileToken === 'string' ? body.turnstileToken.trim() : '';
+
+  if (companyUrl) {
+    return jsonResponse({ success: true });
+  }
+
+  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+  if (isRateLimited(ip)) {
+    return jsonResponse({ error: 'Too many submissions. Please try again later.' }, 429);
+  }
 
   if (!name || !email || !subject || !message) {
     return jsonResponse({ error: 'All fields are required.' }, 400);
@@ -40,6 +77,27 @@ export async function onRequestPost(context: { request: Request; env: ContactEnv
 
   if (!isValidEmail(email)) {
     return jsonResponse({ error: 'Please provide a valid email address.' }, 400);
+  }
+
+  if (!turnstileToken) {
+    return jsonResponse({ error: 'Turnstile verification failed.' }, 403);
+  }
+
+  const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      secret: env.TURNSTILE_SECRET_KEY,
+      response: turnstileToken,
+    }),
+  });
+
+  const verification = (await verifyResponse.json().catch(() => null)) as { success?: boolean };
+
+  if (!verifyResponse.ok || !verification?.success) {
+    return jsonResponse({ error: 'Turnstile verification failed.' }, 403);
   }
 
   const html = `
