@@ -14,7 +14,7 @@ export function Terms() {
       
       <div className="prose max-w-none prose-headings:text-on-surface prose-p:text-on-surface-variant prose-li:text-on-surface-variant prose-strong:text-on-surface">
         <p className="text-lg mb-6">
-          Last Updated: April 23, 2025
+          Last Updated: March 2026
         </p>
 
         <section className="mb-8">
@@ -90,7 +90,48 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">6. Privacy Policy</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">6. Subscription Terms</h2>
+          <p>
+            We offer subscription plans for businesses that want enhanced visibility and tools. Current tiers include
+            Basic, Premium, and Spotlight. Pricing, features, and availability are described on the pricing page and
+            may change from time to time.
+          </p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Subscriptions are billed in advance and typically renew automatically each billing cycle.</li>
+            <li>Payments are processed by Stripe, and your payment details are handled directly by Stripe.</li>
+            <li>You are responsible for maintaining accurate billing information and keeping your account in good standing.</li>
+          </ul>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">7. Cancellation and Refunds</h2>
+          <p>
+            You can cancel a subscription at any time through your account settings. Unless otherwise required by law,
+            cancellations take effect at the end of the current billing period, and you will continue to receive the
+            benefits of your plan until that time.
+          </p>
+          <p>
+            Refunds are not guaranteed and may be provided at our discretion or when required by law. If you believe a
+            billing error has occurred, please contact us through the contact form.
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">8. Business Listing Guidelines</h2>
+          <p>
+            Business listings should be accurate, current, and relevant to {siteConfig.city}. By submitting a listing,
+            you confirm that you have the authority to represent the business and that the information provided is
+            truthful and not misleading.
+          </p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Listings must not contain prohibited content described in these Terms.</li>
+            <li>We may edit, remove, or reject listings that violate guidelines or applicable laws.</li>
+            <li>Promotional content should match the selected subscription tier and pricing rules.</li>
+          </ul>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">9. Privacy Policy</h2>
           <p>
             Our <Link to="/privacy" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">Privacy Policy</Link> describes 
             how we collect, use, and share information about you when you use our Service. By using the Service, you agree to our collection, 
@@ -99,7 +140,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">7. Limitation of Liability</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">10. Limitation of Liability</h2>
           <p>
             To the maximum extent permitted by law:
           </p>
@@ -115,7 +156,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">8. Dispute Resolution</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant">11. Dispute Resolution</h2>
           <p>
             If you have a dispute with us, please contact us first and try to resolve the dispute informally. If we cannot resolve the dispute informally:
           </p>
@@ -132,7 +173,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">9. Data Collection and Usage</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">12. Data Collection and Usage</h2>
           <p>
             We collect and process data as described in our Privacy Policy. Additionally:
           </p>
@@ -146,7 +187,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">10. Intellectual Property Rights</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">13. Intellectual Property Rights</h2>
           <p>
             The Service and its original content, features, and functionality are owned by {siteConfig.name} and are protected by copyright, trademark, and other intellectual property laws:
           </p>
@@ -160,7 +201,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">11. Termination</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">14. Termination</h2>
           <p>
             We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason, including:
           </p>
@@ -177,12 +218,12 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">12. Amendments and Updates</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">15. Amendments and Updates</h2>
           <p>
             We may update these Terms from time to time:
           </p>
           <ul className="list-disc pl-6 mb-4 space-y-2">
-            <li>We will notify you of significant changes by posting a notice on the Service or sending you an email</li>
+            <li>We will notify you of significant changes by posting a notice on the Service or through your account</li>
             <li>Your continued use of the Service after changes become effective constitutes acceptance of the updated Terms</li>
             <li>The date at the top of these Terms indicates when they were last updated</li>
             <li>We encourage you to review these Terms periodically</li>
@@ -191,7 +232,7 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">13. Governing Law and Jurisdiction</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">16. Governing Law and Jurisdiction</h2>
           <p>
             These Terms and your use of the Service shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions.
           </p>
@@ -201,13 +242,13 @@ export function Terms() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">14. Contact Information</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-on-surface-variant ">17. Contact Information</h2>
           <p>
-            If you have any questions about these Terms, please contact us at:
+            If you have any questions about these Terms, please use the contact form at{' '}
+            <Link to="/contact" className="text-on-surface-variant hover:text-primary underline transition-colors duration-[var(--md-sys-motion-duration-short3)]">/contact</Link>.
           </p>
           <div className="mt-4">
             <p>{siteConfig.name} Legal Department</p>
-            <p>Email: <a href={`mailto:legal@${siteConfig.domain}`} className="text-on-surface-variant hover:underline">legal@{siteConfig.domain}</a></p>
             {siteConfig.contact.phone && (
               <p>Phone: {siteConfig.contact.phone}</p>
             )}

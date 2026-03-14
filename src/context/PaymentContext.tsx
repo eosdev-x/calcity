@@ -117,85 +117,44 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
   };
 
   // Fetch user's payment methods
+  // Payment methods are managed via Stripe Customer Portal — no local table needed
   const fetchPaymentMethods = async () => {
-    if (!user) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate with a Supabase call
-      const { data, error } = await supabase
-        .from('payment_methods')
-        .select('*')
-        .eq('user_id', user.id);
-
-      if (error) {
-        console.error('Error fetching payment methods:', error);
-        setError('Failed to fetch payment methods');
-        return;
-      }
-
-      if (data) {
-        const formattedPaymentMethods: PaymentMethod[] = data.map((method: any) => ({
-          id: method.stripe_payment_method_id,
-          type: method.type,
-          card: method.card_details ? {
-            brand: method.card_details.brand,
-            last4: method.card_details.last4,
-            expMonth: method.card_details.exp_month,
-            expYear: method.card_details.exp_year
-          } : undefined
-        }));
-        setPaymentMethods(formattedPaymentMethods);
-      }
-    } catch (err: any) {
-      console.error('Error in fetchPaymentMethods:', err);
-      setError(err.message || 'An unexpected error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+    // No-op: payment methods live in Stripe, accessed via Customer Portal
+    setPaymentMethods([]);
   };
 
-  // Fetch user's payment history
+  // Fetch user's payment history from Stripe via backend
   const fetchPaymentHistory = async () => {
     if (!user) return;
 
-    setIsLoading(true);
-    setError(null);
-
     try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate with a Supabase call
-      const { data, error } = await supabase
-        .from('payments')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      const token = await getAccessToken();
+      if (!token) return;
 
-      if (error) {
-        console.error('Error fetching payment history:', error);
-        setError('Failed to fetch payment history');
+      const response = await fetch('/api/stripe/invoices', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        console.error('Failed to fetch payment history');
         return;
       }
 
-      if (data) {
-        const formattedPaymentHistory: PaymentHistoryItem[] = data.map((payment: any) => ({
-          id: payment.id,
-          type: payment.type,
-          amount: payment.amount,
-          status: payment.status,
-          date: new Date(payment.created_at).getTime(),
-          description: payment.description
-        }));
-        setPaymentHistory(formattedPaymentHistory);
+      const data = await response.json();
+      if (data.invoices) {
+        setPaymentHistory(data.invoices.map((inv: any) => ({
+          id: inv.id,
+          type: 'subscription',
+          amount: inv.amount,
+          status: inv.status,
+          date: inv.date,
+          description: inv.description,
+          invoiceUrl: inv.invoiceUrl,
+          invoicePdf: inv.invoicePdf,
+        })));
       }
-    } catch (err: any) {
-      console.error('Error in fetchPaymentHistory:', err);
-      setError(err.message || 'An unexpected error occurred');
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      console.error('Error fetching payment history:', err);
     }
   };
 

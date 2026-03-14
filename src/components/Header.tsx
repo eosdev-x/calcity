@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileDropdown } from './auth/UserProfileDropdown';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import { siteConfig } from '../config/site';
 
 export function Header() {
@@ -12,10 +12,10 @@ export function Header() {
 
   return (
     <header className="bg-surface-container-low elevation-2 sticky top-0 z-50">
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 py-1.5">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center -my-2">
-            <img src={logo} alt={siteConfig.name} className="h-16 w-auto max-h-[calc(100%-0.5rem)]" />
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt={siteConfig.name} className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { Turnstile } from '../Turnstile';
 
 export function LoginForm() {
   const { signIn, signInWithGoogle, signInWithApple, error } = useAuth();
@@ -9,6 +10,7 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,6 +101,9 @@ export function LoginForm() {
               />
             </div>
           </div>
+
+          <Turnstile onVerify={setTurnstileToken} onExpire={() => setTurnstileToken('')} />
+          <input type="hidden" name="turnstileToken" value={turnstileToken} />
           
           <div className="flex items-center">
             <input

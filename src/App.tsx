@@ -14,6 +14,8 @@ import { BusinessDashboard } from './pages/BusinessDashboard';
 import { Pricing } from './pages/Pricing';
 import { Guide } from './pages/Guide';
 import { Terms } from './pages/Terms';
+import { Privacy } from './pages/Privacy';
+import { Contact } from './pages/Contact';
 import { ScrollToTop } from './components/ScrollToTop';
 import { FloatingChatWidget } from './components/FloatingChatWidget';
 import { EventProvider } from './context/EventContext';
@@ -78,7 +80,9 @@ function App() {
                   {siteConfig.features.guide && (
                     <Route path="/guide" element={<Guide />} />
                   )}
+                  <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms" element={<Terms />} />
+                  <Route path="/contact" element={<Contact />} />
                   
                   {/* Auth Routes */}
                   <Route path="/auth/login" element={<Login />} />
