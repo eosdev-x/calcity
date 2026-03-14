@@ -170,7 +170,7 @@ export function Businesses() {
               return (
             <div
               key={business.id}
-              className={`card hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] ${getTierBorder(
+              className={`card overflow-hidden hover:shadow-md transition-shadow duration-[var(--md-sys-motion-duration-medium2)] ${getTierBorder(
                 business.subscription_tier
               )}`}
             >
@@ -184,7 +184,7 @@ export function Businesses() {
               <div className="flex items-center mb-2">
                 <Link to={`/businesses/${business.id}`}>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">
+                    <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)] line-clamp-1">
                       {business.name}
                     </h3>
                     {badge && (
@@ -215,7 +215,7 @@ export function Businesses() {
                   className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                 >
                   <MapPin className="w-4 h-4 flex-shrink-0" />
-                  <span className="hover:underline">{business.address}</span>
+                  <span className="hover:underline truncate">{business.address}</span>
                 </a>
                 <a
                   href={`tel:${business.phone.replace(/[^\d]/g, '')}`}
@@ -232,7 +232,7 @@ export function Businesses() {
                     className="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   >
                     <Globe className="w-4 h-4 flex-shrink-0" />
-                    <span className="hover:underline">{business.website}</span>
+                    <span className="hover:underline truncate">{business.website}</span>
                   </a>
                 )}
               </div>
