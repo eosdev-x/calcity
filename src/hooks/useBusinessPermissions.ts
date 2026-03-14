@@ -1,13 +1,19 @@
 export function useBusinessPermissions(tier: 'free' | 'basic' | 'premium' | 'spotlight') {
-  const isFreeOrBasic = tier === 'free' || tier === 'basic';
   return {
-    canShowDescription: !isFreeOrBasic,
-    canShowWebsite: !isFreeOrBasic,
-    canShowGallery: !isFreeOrBasic,
-    canShowSocial: !isFreeOrBasic,
-    canShowAmenities: !isFreeOrBasic,
-    canShowServices: !isFreeOrBasic,
-    maxPhotos: isFreeOrBasic ? 1 : tier === 'premium' ? 10 : 30,
+    canShowDescription: true,
+    canShowWebsite: tier !== 'free',
+    canShowGallery: tier === 'premium' || tier === 'spotlight',
+    canShowSocial: tier === 'premium' || tier === 'spotlight',
+    canShowAmenities: tier === 'premium' || tier === 'spotlight',
+    canShowServices: tier !== 'free',
+    maxPhotos:
+      tier === 'free'
+        ? 0
+        : tier === 'basic'
+          ? 3
+          : tier === 'premium'
+            ? 10
+            : 30,
     hasBadge: tier === 'premium' || tier === 'spotlight',
     badgeText: tier === 'spotlight' ? '⭐ Spotlight' : '✨ Premium',
     badgeClass:
