@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { BarChart3, CreditCard, Edit3, Image, LayoutDashboard } from 'lucide-react';
+import { BarChart3, Building2, CreditCard, Edit3, Image, LayoutDashboard } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useBusinessPermissions } from '../hooks/useBusinessPermissions';
@@ -238,12 +238,16 @@ export function BusinessDashboard() {
             <div className="lg:col-span-2 space-y-6">
               <div className="card overflow-hidden">
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  {business.image && (
+                  {business.image ? (
                     <img
                       src={business.image}
                       alt={business.name}
                       className="h-32 w-32 flex-shrink-0 rounded-xl object-cover"
                     />
+                  ) : (
+                    <div className="h-32 w-32 flex-shrink-0 rounded-xl bg-surface-container-high flex items-center justify-center">
+                      <Building2 className="w-12 h-12 text-on-surface-variant/40" />
+                    </div>
                   )}
                   <div className="min-w-0">
                     <h2 className="text-2xl font-semibold text-on-surface mb-1 truncate">{business.name}</h2>
