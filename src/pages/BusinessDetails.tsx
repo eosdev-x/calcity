@@ -244,7 +244,7 @@ export function BusinessDetails() {
                     className="flex items-center text-on-surface-variant hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   >
                     <Globe className="w-5 h-5 text-on-surface-variant mr-2" />
-                    <span className="hover:underline">{business.website}</span>
+                    <span className="hover:underline truncate">{business.website}</span>
                   </a>
                 )}
                 {!permissions.canShowWebsite && isOwner && (
