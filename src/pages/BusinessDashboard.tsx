@@ -236,19 +236,19 @@ export function BusinessDashboard() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <div className="card">
+              <div className="card overflow-hidden">
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
                   {business.image && (
                     <img
                       src={business.image}
                       alt={business.name}
-                      className="h-32 w-32 rounded-xl object-cover"
+                      className="h-32 w-32 flex-shrink-0 rounded-xl object-cover"
                     />
                   )}
-                  <div>
-                    <h2 className="text-2xl font-semibold text-on-surface mb-1">{business.name}</h2>
-                    <p className="text-on-surface-variant">{business.category}</p>
-                    <p className="text-sm text-on-surface-variant mt-2">{business.address}</p>
+                  <div className="min-w-0">
+                    <h2 className="text-2xl font-semibold text-on-surface mb-1 truncate">{business.name}</h2>
+                    <p className="text-on-surface-variant truncate">{business.category}</p>
+                    <p className="text-sm text-on-surface-variant mt-2 truncate">{business.address}</p>
                   </div>
                 </div>
               </div>
