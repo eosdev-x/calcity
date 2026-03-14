@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Elements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { SubscriptionPlans } from '../components/payment/SubscriptionPlans';
-import { PaymentMethods } from '../components/payment/PaymentMethods';
 import { PaymentHistory } from '../components/payment/PaymentHistory';
 import { useAuth } from '../context/AuthContext';
 import { usePayment } from '../context/PaymentContext';
-import { stripePromise } from '../lib/stripe';
 import { SubscriptionTier } from '../types/payment';
 import { siteConfig } from '../config/site';
 import { SEO } from '../components/SEO';
@@ -107,20 +104,13 @@ export function Payment() {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-3 mb-8">
+        <TabsList className="grid grid-cols-2 mb-8">
           <TabsTrigger value="subscriptions">Subscription Plans</TabsTrigger>
-          <TabsTrigger value="payment-methods">Payment Methods</TabsTrigger>
           <TabsTrigger value="payment-history">Payment History</TabsTrigger>
         </TabsList>
 
         <TabsContent value="subscriptions">
           <SubscriptionPlans />
-        </TabsContent>
-
-        <TabsContent value="payment-methods">
-          <Elements stripe={stripePromise}>
-            <PaymentMethods />
-          </Elements>
         </TabsContent>
 
         <TabsContent value="payment-history">

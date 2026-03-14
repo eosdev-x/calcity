@@ -23,6 +23,9 @@ export interface SiteConfig {
       pricingTitle: string;
       pricingDescription: string;
       termsTitle: string;
+      privacyTitle: string;
+      contactTitle: string;
+      contactDescription: string;
       loginTitle: string;
       signupTitle: string;
       forgotPasswordTitle: string;
@@ -131,6 +134,9 @@ export const siteConfig: SiteConfig = {
       pricingTitle: 'Pricing',
       pricingDescription: 'Compare listing plans and promotion options for California City businesses.',
       termsTitle: 'Terms of Service',
+      privacyTitle: 'Privacy Policy',
+      contactTitle: 'Contact',
+      contactDescription: 'Send a message to the CalCity.info team.',
       loginTitle: 'Log In',
       signupTitle: 'Sign Up',
       forgotPasswordTitle: 'Forgot Password',

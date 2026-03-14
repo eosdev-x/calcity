@@ -53,7 +53,7 @@ export function Home() {
       <section 
         className="relative min-h-[800px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1577303610524-3b00c10b1e65?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bW9qYXZlJTIwY2F8ZW58MHx8MHx8fDA%3D")'
+          backgroundImage: 'url("https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/hero/calcity-hero-sunset.png")'
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-scrim/70 to-scrim/50" />
