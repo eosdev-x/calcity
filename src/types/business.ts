@@ -25,7 +25,6 @@ export interface Business {
   subscription_tier: "basic" | "premium" | "spotlight";
   is_featured: boolean;
   is_spotlight: boolean;
-  rating: number;
   review_count: number;
   view_count: number;
   status: "pending" | "active" | "rejected" | "suspended" | "archived";

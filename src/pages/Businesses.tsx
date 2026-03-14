@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MapPin, Phone, Globe, Star, Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { MapPin, Phone, Globe, Star, Search, SlidersHorizontal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Business } from '../types/business';
 import { BusinessHoursStatus } from '../components/BusinessHoursStatus';
@@ -15,7 +15,6 @@ export function Businesses() {
   // State for search, filter, and sort functionality
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [sortOption, setSortOption] = useState<'name' | 'rating'>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   
@@ -68,19 +67,13 @@ export function Businesses() {
       if (tierDiff !== 0) {
         return tierDiff;
       }
-      if (sortOption === 'name') {
-        return sortDirection === 'asc' 
-          ? a.name.localeCompare(b.name) 
-          : b.name.localeCompare(a.name);
-      } else {
-        return sortDirection === 'asc' 
-          ? a.rating - b.rating 
-          : b.rating - a.rating;
-      }
+      return sortDirection === 'asc' 
+        ? a.name.localeCompare(b.name) 
+        : b.name.localeCompare(a.name);
     });
     
     setFilteredBusinesses(results);
-  }, [businesses, searchTerm, selectedCategory, sortOption, sortDirection]);
+  }, [businesses, searchTerm, selectedCategory, sortDirection]);
 
   // Toggle sort direction
   const toggleSortDirection = () => {
@@ -148,23 +141,15 @@ export function Businesses() {
                 </div>
               </div>
 
-              {/* Sort Options */}
+              {/* Sort Direction */}
               <div className="flex items-center space-x-2 h-12">
-                <label className="text-on-surface-variant text-sm font-medium whitespace-nowrap">Sort by:</label>
-                <select
-                  className="rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary h-full"
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as 'name' | 'rating')}
-                >
-                  <option value="name">Name</option>
-                  <option value="rating">Rating</option>
-                </select>
+                <label className="text-on-surface-variant text-sm font-medium whitespace-nowrap">Sort:</label>
                 <button 
                   onClick={toggleSortDirection}
-                  className="p-2 h-full rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+                  className="px-3 h-full rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors duration-[var(--md-sys-motion-duration-short3)] text-sm text-on-surface-variant"
                   aria-label={`Sort ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
                 >
-                  <ArrowUpDown className={`h-5 w-5 text-on-surface-variant ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
+                  {sortDirection === 'asc' ? 'A → Z' : 'Z → A'}
                 </button>
               </div>
             </div>
@@ -195,7 +180,7 @@ export function Businesses() {
                   className="w-full h-48 object-cover rounded-t-xl mb-4 hover:opacity-90 transition-opacity duration-[var(--md-sys-motion-duration-short3)]"
                 />
               </Link>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center mb-2">
                 <Link to={`/businesses/${business.id}`}>
                   <div className="flex items-center gap-2">
                     <h3 className="text-xl font-semibold hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">
@@ -213,10 +198,6 @@ export function Businesses() {
                     )}
                   </div>
                 </Link>
-                <div className="flex items-center">
-                  <Star className="w-4 h-4 text-on-surface-variant fill-current" />
-                  <span className="ml-1">{business.rating}</span>
-                </div>
               </div>
               
               <p className="text-on-surface-variant mb-2">
@@ -273,7 +254,6 @@ export function Businesses() {
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedCategory('');
-                  setSortOption('name');
                   setSortDirection('asc');
                 }}
               >

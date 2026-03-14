@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Calendar, Building2, MapPin, Clock, Phone, Star, Compass, Info, Sun, Car } from 'lucide-react';
+import { Calendar, Building2, MapPin, Clock, Phone, Compass, Info, Sun, Car } from 'lucide-react';
 import { WeatherWidget } from '../components/WeatherWidget';
 import { GlobalSearch } from '../components/GlobalSearch';
 import { useEvents } from '../context/EventContext';
@@ -23,15 +23,15 @@ export function Home() {
     .filter(event => new Date(event.date) >= new Date())
     .slice(0, 3);
   
-  // Get featured businesses (could be based on rating or premium status)
+  // Get featured businesses based on premium status
   const spotlightBusinesses = [...businesses]
     .filter(business => business.is_spotlight && business.status === 'active')
-    .sort((a, b) => b.rating - a.rating)
+    .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, 6);
 
   const featuredBusinesses = [...businesses]
     .filter(business => business.is_featured && business.status === 'active')
-    .sort((a, b) => b.rating - a.rating)
+    .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, 3);
 
   const webSiteJsonLd = buildWebSiteJsonLd(siteConfig);
@@ -196,10 +196,6 @@ export function Home() {
                           {business.name}
                         </h3>
                       </Link>
-                      <div className="flex items-center">
-                        <Star className="w-4 h-4 text-on-surface-variant fill-current" />
-                        <span className="ml-1">{business.rating}</span>
-                      </div>
                     </div>
 
                     <p className="text-on-surface-variant mb-4">
@@ -256,10 +252,9 @@ export function Home() {
                         alt={business.name}
                         className="w-full h-48 object-cover rounded-t-xl"
                       />
-                      {business.rating >= 4.5 && (
+                      {business.is_featured && (
                         <div className="absolute top-2 right-2 bg-primary text-on-primary text-xs font-bold px-2 py-1 rounded flex items-center">
-                          <Star className="w-3 h-3 mr-1 fill-current" />
-                          Premium
+                          Featured
                         </div>
                       )}
                     </div>
@@ -270,10 +265,6 @@ export function Home() {
                       <Link to={`/businesses/${business.id}`}>
                         <h3 className="text-xl font-semibold line-clamp-1 hover:text-primary transition-colors duration-[var(--md-sys-motion-duration-short3)]">{business.name}</h3>
                       </Link>
-                      <div className="flex items-center">
-                        <Star className="w-4 h-4 text-on-surface-variant fill-current" />
-                        <span className="ml-1">{business.rating}</span>
-                      </div>
                     </div>
                     
                     <p className="text-on-surface-variant mb-2">

@@ -4,7 +4,7 @@ import {
   MapPin, 
   Phone, 
   Globe, 
-  Star, 
+  
   Clock,
   ArrowLeft,
   Facebook,
@@ -126,9 +126,7 @@ export function BusinessDetails() {
                   )}
                 </div>
                 <div className="flex items-center text-inverse-on-surface">
-                  <Star className="w-5 h-5 text-inverse-on-surface fill-current mr-1" />
-                  <span className="mr-2">{business.rating}</span>
-                  <span className="text-inverse-on-surface">• {business.category}</span>
+                  <span className="text-inverse-on-surface">{business.category}</span>
                 </div>
               </div>
               <BusinessHoursStatus hours={business.hours} />
