@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import {
   Building2,
   Calendar,
-  Check,
   MapPin,
   Users,
   Star,
@@ -59,54 +58,32 @@ export function About() {
 
   const plans = [
     {
-      name: 'Free Listing',
+      name: 'Free',
       price: 'Free',
       description: 'Basic listing with the essentials.',
-      features: [
-        'Business name, address & phone',
-        'Business hours display',
-        'Business description',
-        'Category listing',
-        'Generic placeholder photo',
-      ],
+      features: ['Name, address, phone, hours'],
+      accent: 'bg-surface-container',
     },
     {
-      name: 'Basic Listing',
-      price: '$4.99/month',
+      name: 'Basic',
+      price: '$4.99/mo',
       description: 'A stronger presence for growing businesses.',
-      features: [
-        'Everything in Free',
-        'Upload up to 3 photos',
-        'Website link',
-        'Services list',
-        'Higher search priority',
-      ],
+      features: ['Website link', 'Services', 'Up to 3 photos'],
+      accent: 'bg-surface-container-low',
     },
     {
-      name: 'Premium Listing',
-      price: '$14.99/month',
+      name: 'Premium',
+      price: '$14.99/mo',
       description: 'Stand out with rich visuals and social reach.',
-      features: [
-        'Everything in Basic',
-        'Photo gallery (up to 10)',
-        'Featured in search results',
-        'Business description & services',
-        'Direct website link',
-        'Premium badge',
-      ],
+      features: ['Featured badge', '10 photos', 'Social links'],
+      accent: 'bg-surface-container-high',
     },
     {
-      name: 'Spotlight Listing',
-      price: '$29.99/month',
+      name: 'Spotlight',
+      price: '$29.99/mo',
       description: 'Maximum visibility across CalCity.info.',
-      features: [
-        'Everything in Premium',
-        'Top of search results',
-        'Homepage spotlight rotation',
-        'Monthly event promotion',
-        'Social media cross-promotion',
-        'Analytics dashboard',
-      ],
+      features: ['Top of search', 'Homepage rotation', 'Analytics', '30 photos'],
+      accent: 'bg-surface-container-high',
       highlight: true,
     },
   ];
@@ -292,26 +269,28 @@ export function About() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`card overflow-hidden ${plan.highlight ? 'shadow-md' : ''}`}
+                className={`card border border-outline-variant ${plan.accent} ${plan.highlight ? 'shadow-md' : ''}`}
               >
-                <div className="p-6 bg-surface-container">
-                  <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                  <p className="text-3xl font-bold text-on-surface mb-2">{plan.price}</p>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-semibold">{plan.name}</h3>
+                  {plan.highlight && (
+                    <span className="text-xs font-semibold uppercase tracking-wide text-primary">Most Popular</span>
+                  )}
                 </div>
-                <div className="p-6 bg-surface-container-low">
-                  <ul className="space-y-4">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-center space-x-2">
-                        <Check className="w-5 h-5 text-on-surface-variant flex-shrink-0" />
-                        <span className="text-on-surface-variant">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <p className="text-2xl font-bold mb-2">{plan.price}</p>
+                <p className="text-on-surface-variant mb-4">{plan.description}</p>
+                <ul className="space-y-2 text-on-surface-variant">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
