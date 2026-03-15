@@ -548,22 +548,23 @@ export function Resources() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="card bg-surface-container-low">
               <h3 className="text-lg font-semibold mb-2">Documents</h3>
-              <ul className="text-on-surface-variant space-y-2">
-                <li>Municipal Code (updated version online)</li>
-                <li>Budget (request through Finance Department)</li>
-                <li>Urban Water Management Plan (2020 version)</li>
-                <li>Water & Sewer Rate Study</li>
-                <li>Consumer Confidence Report (water quality)</li>
-                <li>Applications & forms from respective departments</li>
+              <ul className="text-on-surface-variant space-y-3">
+                <li><a href="https://www.californiacity-ca.gov/CC/index.php/community/local-news/166-california-city-municipal-code" target="_blank" rel="noreferrer" className="text-primary hover:underline">Municipal Code</a></li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/2023_June_Cal_City_2020_UWMP_with_Dates.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">2020 Urban Water Management Plan</a> (PDF)</li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/California_City_Tables_-_Water-Sewer_Rates_v2_2018.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">Water & Sewer Rates & Fees</a> (PDF)</li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/2017-Validated-Water-Loss-Audit-Report.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">Water Loss Audit Report</a> (PDF)</li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/Indoor_Tips_100.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">Water Saving Tips</a> (PDF)</li>
+                <li><a href="https://www.californiacity-ca.gov/CC/index.php/mandatory-water-conservation" target="_blank" rel="noreferrer" className="text-primary hover:underline">Mandatory Water Conservation Restrictions</a></li>
               </ul>
             </div>
             <div className="card bg-surface-container-low">
-              <h3 className="text-lg font-semibold mb-2">Applications</h3>
-              <ul className="text-on-surface-variant space-y-2">
-                <li>Water Service Application</li>
-                <li>Authorization to Close Water Account</li>
-                <li>Water Bill Payment (online)</li>
-                <li>Appointment applications for city positions and boards</li>
+              <h3 className="text-lg font-semibold mb-2">Applications & Forms</h3>
+              <ul className="text-on-surface-variant space-y-3">
+                <li><a href="https://www.californiacity-ca.gov/CC/index.php/building/permit-applications-forms" target="_blank" rel="noreferrer" className="text-primary hover:underline">Building Permit Applications & Forms</a></li>
+                <li><a href="https://www.californiacity-ca.gov/CC/index.php/planning/applications" target="_blank" rel="noreferrer" className="text-primary hover:underline">Planning Department Applications</a></li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/Water_Standby_Fee_Waiver_Letter_2023_080323_2.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">Water Standby Fee Appeal Form</a> (PDF)</li>
+                <li><a href="https://www.californiacity-ca.gov/CC/" target="_blank" rel="noreferrer" className="text-primary hover:underline">Pay Water Bill Online</a></li>
+                <li><a href="https://www.californiacity-ca.gov/CC/images/What_you_need_to_know_about_the_Water_Department.pdf" target="_blank" rel="noreferrer" className="text-primary hover:underline">Understanding Your Water Bill</a> (PDF)</li>
               </ul>
             </div>
           </div>
