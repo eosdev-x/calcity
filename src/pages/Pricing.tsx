@@ -253,86 +253,93 @@ export function Pricing() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => (
-            <div 
-              key={plan.id}
-              className={`card overflow-hidden ${
-                isCurrentPlan(plan.tier) 
-                  ? 'border-outline  shadow-sm' 
-                  : ''
-              }`}
-            >
-              {/* Plan header */}
-              <div className={`p-6 ${
-                isCurrentPlan(plan.tier)
-                  ? 'bg-primary text-on-primary'
-                  : 'bg-surface-container'
-              }`}>
-                <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                <p className={`text-3xl font-bold ${
-                  isCurrentPlan(plan.tier)
-                    ? 'text-on-primary'
-                    : 'text-on-surface'
-                } mb-2`}>
-                  {plan.priceDisplay}
-                </p>
-                {isCurrentPlan(plan.tier) && (
-                  <div className="mt-1 text-sm font-medium text-on-primary">
-                    Current Plan
-                  </div>
-                )}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {plans.map((plan) => {
+            const isSpotlight = plan.tier === SubscriptionTier.SPOTLIGHT;
+            const isCurrent = isCurrentPlan(plan.tier);
+            const bgClass = isSpotlight
+              ? 'bg-surface-container-high'
+              : plan.tier === SubscriptionTier.PREMIUM
+                ? 'bg-surface-container-high'
+                : plan.tier === SubscriptionTier.BASIC
+                  ? 'bg-surface-container-low'
+                  : 'bg-surface-container';
 
-              {/* Plan features */}
-              <div className="p-6 bg-surface-container-low">
-                <ul className="space-y-4 mb-8">
+            return (
+              <div
+                key={plan.id}
+                className={`card flex flex-col border border-outline-variant ${bgClass} ${isSpotlight ? 'shadow-md' : ''} ${
+                  isCurrent ? 'ring-2 ring-primary' : ''
+                }`}
+              >
+                {/* Fixed-height header area — keeps headings, prices, and badges aligned */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-4 min-h-[28px]">
+                    <h3 className="text-xl font-semibold">{plan.name}</h3>
+                    {isSpotlight && !isCurrent && (
+                      <span className="text-xs font-semibold uppercase tracking-wide text-primary">Most Popular</span>
+                    )}
+                    {isCurrent && (
+                      <span className="text-xs font-semibold uppercase tracking-wide text-primary">Current Plan</span>
+                    )}
+                  </div>
+                  <p className="text-2xl font-bold mb-2">{plan.priceDisplay}</p>
+                  <p className="text-on-surface-variant">
+                    {plan.tier === SubscriptionTier.FREE && 'Basic listing with the essentials.'}
+                    {plan.tier === SubscriptionTier.BASIC && 'A stronger presence for growing businesses.'}
+                    {plan.tier === SubscriptionTier.PREMIUM && 'Stand out with rich visuals and social reach.'}
+                    {plan.tier === SubscriptionTier.SPOTLIGHT && 'Maximum visibility across ' + siteConfig.name + '.'}
+                  </p>
+                </div>
+
+                {/* Features list — grows to fill available space */}
+                <ul className="space-y-2 text-on-surface-variant flex-1">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center space-x-2">
-                      <Check className="w-5 h-5 text-on-surface-variant" />
-                      <span className="text-on-surface-variant">{feature}</span>
+                    <li key={feature} className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* Action button */}
-                <button
-                  onClick={() => handleSubscribe(plan)}
-                  disabled={isLoading || processingPlanId === plan.id || isCurrentPlan(plan.tier)}
-                  className={`btn-primary w-full ${
-                    isCurrentPlan(plan.tier) ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {processingPlanId === plan.id ? (
-                    <div className="flex items-center justify-center">
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </div>
-                  ) : isCurrentPlan(plan.tier) ? (
-                    'Current Plan'
-                  ) : plan.tier === SubscriptionTier.FREE ? (
-                    'Get Started'
-                  ) : currentSubscription && getPlanRelation(plan.tier) === 'upgrade' ? (
-                    `Upgrade to ${plan.name}`
-                  ) : currentSubscription && getPlanRelation(plan.tier) === 'downgrade' ? (
-                    `Downgrade to ${plan.name}`
-                  ) : (
-                    'Subscribe Now'
+                {/* Button area — always pinned to bottom */}
+                <div className="mt-6">
+                  <button
+                    onClick={() => handleSubscribe(plan)}
+                    disabled={isLoading || processingPlanId === plan.id || isCurrent}
+                    className={`btn-primary w-full ${isCurrent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {processingPlanId === plan.id ? (
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Processing...
+                      </div>
+                    ) : isCurrent ? (
+                      'Current Plan'
+                    ) : plan.tier === SubscriptionTier.FREE ? (
+                      'Get Started'
+                    ) : currentSubscription && getPlanRelation(plan.tier) === 'upgrade' ? (
+                      `Upgrade to ${plan.name}`
+                    ) : currentSubscription && getPlanRelation(plan.tier) === 'downgrade' ? (
+                      `Downgrade to ${plan.name}`
+                    ) : (
+                      'Subscribe Now'
+                    )}
+                  </button>
+                  {currentSubscription && getPlanRelation(plan.tier) === 'upgrade' && (
+                    <p className="mt-3 text-xs text-on-surface-variant">
+                      You will be charged the prorated difference.
+                    </p>
                   )}
-                </button>
-                {currentSubscription && getPlanRelation(plan.tier) === 'upgrade' && (
-                  <p className="mt-3 text-xs text-on-surface-variant">
-                    You will be charged the prorated difference.
-                  </p>
-                )}
-                {currentSubscription && getPlanRelation(plan.tier) === 'downgrade' && (
-                  <p className="mt-3 text-xs text-on-surface-variant">
-                    Credit will be applied to your next billing cycle.
-                  </p>
-                )}
+                  {currentSubscription && getPlanRelation(plan.tier) === 'downgrade' && (
+                    <p className="mt-3 text-xs text-on-surface-variant">
+                      Credit will be applied to your next billing cycle.
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-12 text-center text-sm text-on-surface-variant max-w-2xl mx-auto">
