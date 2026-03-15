@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, CalendarDays, Clock, Users, ClipboardCheck } from 'lucide-react';
+import { Building2, CalendarDays, Clock, Users, ClipboardCheck, Shield } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { siteConfig } from '../../config/site';
 import { SEO } from '../../components/SEO';
@@ -122,6 +122,12 @@ export function AdminDashboard() {
       description: 'Review and approve pending business listings.',
       to: '/admin/businesses',
       icon: Building2,
+    },
+    {
+      title: 'Manage Businesses',
+      description: 'Pause, resume, or remove business listings.',
+      to: '/admin/manage-businesses',
+      icon: Shield,
     },
     {
       title: 'Approve Events',

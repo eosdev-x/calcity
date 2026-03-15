@@ -31,6 +31,7 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { BusinessApprovals } from './pages/admin/BusinessApprovals';
 import { EventApprovals } from './pages/admin/EventApprovals';
 import { UserManagement } from './pages/admin/UserManagement';
+import { ManageBusinesses } from './pages/admin/ManageBusinesses';
 import { siteConfig } from './config/site';
 
 // Auth pages
@@ -97,6 +98,7 @@ function App() {
                   {/* Admin Routes */}
                   <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                   <Route path="/admin/businesses" element={<AdminRoute><BusinessApprovals /></AdminRoute>} />
+                  <Route path="/admin/manage-businesses" element={<AdminRoute><ManageBusinesses /></AdminRoute>} />
                   <Route path="/admin/events" element={<AdminRoute><EventApprovals /></AdminRoute>} />
                   <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
                 </Routes>
