@@ -80,10 +80,10 @@ export function Guide() {
           )}
           
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-inverse-on-surface mb-4">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
               Visitor Guide
             </h1>
-            <p className="text-xl text-inverse-on-surface">
+            <p className="text-xl text-white/90">
               Everything you need to know about visiting {siteConfig.city}
             </p>
           </div>
