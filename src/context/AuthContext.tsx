@@ -109,9 +109,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     getInitialSession();
+
+    // Handle Firefox/Zen BFCache: when page is restored from cache,
+    // re-fetch session to avoid stale auth state
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        getInitialSession();
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
     
     // Cleanup subscription on unmount
     return () => {
+      window.removeEventListener('pageshow', handlePageShow);
       if (authSubscription) {
         authSubscription.unsubscribe();
       }
