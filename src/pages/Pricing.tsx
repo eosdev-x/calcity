@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Check, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Check, Loader2, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePayment } from '../context/PaymentContext';
 import { useAuth } from '../context/AuthContext';
@@ -10,9 +10,10 @@ import { SEO } from '../components/SEO';
 
 export function Pricing() {
   const { user } = useAuth();
-  const { createCheckoutSession, currentSubscription, isLoading, error } = usePayment();
+  const { createCheckoutSession, updateSubscription, currentSubscription, isLoading, error } = usePayment();
   const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const navigate = useNavigate();
 
   // Define subscription plans with features and Stripe price IDs
@@ -113,10 +114,28 @@ export function Pricing() {
     }
   ];
 
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 3000);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
   // Get current plan
   const currentTier = currentSubscription?.tier ?? (user ? SubscriptionTier.FREE : null);
+  const tierOrder: Record<SubscriptionTier, number> = {
+    [SubscriptionTier.FREE]: 0,
+    [SubscriptionTier.BASIC]: 1,
+    [SubscriptionTier.PREMIUM]: 2,
+    [SubscriptionTier.SPOTLIGHT]: 3,
+  };
 
-  // Handle subscription checkout
+  const getPlanRelation = (tier: SubscriptionTier) => {
+    if (!currentTier || !currentSubscription) return null;
+    if (tier === currentTier) return 'current';
+    return tierOrder[tier] > tierOrder[currentTier] ? 'upgrade' : 'downgrade';
+  };
+
+  // Handle subscription checkout or update
   const handleSubscribe = async (plan: typeof plans[0]) => {
     if (plan.tier === SubscriptionTier.FREE) {
       const returnTo = encodeURIComponent('/businesses/new');
@@ -150,18 +169,29 @@ export function Pricing() {
         return;
       }
 
-      const result = await createCheckoutSession({
-        priceId: plan.stripePriceId,
-        businessId,
-      });
+      if (currentSubscription && plan.tier !== currentSubscription.tier) {
+        const result = await updateSubscription(plan.stripePriceId, businessId);
 
-      if ('error' in result) {
-        const message = typeof result.error === 'string' ? result.error : result.error.message;
-        throw new Error(message || 'Failed to create checkout session');
-      }
+        if ('error' in result) {
+          const message = typeof result.error === 'string' ? result.error : result.error.message;
+          throw new Error(message || 'Failed to update subscription');
+        }
 
-      if (result.url) {
-        window.location.href = result.url;
+        setToast({ type: 'success', message: `Plan updated to ${plan.name}.` });
+      } else {
+        const result = await createCheckoutSession({
+          priceId: plan.stripePriceId,
+          businessId,
+        });
+
+        if ('error' in result) {
+          const message = typeof result.error === 'string' ? result.error : result.error.message;
+          throw new Error(message || 'Failed to create checkout session');
+        }
+
+        if (result.url) {
+          window.location.href = result.url;
+        }
       }
     } catch (err: any) {
       console.error('Subscription error:', err);
@@ -194,10 +224,27 @@ export function Pricing() {
           </p>
         </div>
 
-        {/* Error message */}
         {(localError || error) && (
           <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
             <p className="text-on-error-container">{localError || error}</p>
+          </div>
+        )}
+        {toast && (
+          <div
+            className={`max-w-2xl mx-auto mb-8 rounded-xl border px-4 py-3 text-sm shadow-lg transition-all ${
+              toast.type === 'success'
+                ? 'bg-tertiary-container text-on-tertiary-container border-tertiary/30'
+                : 'bg-error-container text-on-error-container border-error/30'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              {toast.type === 'success' ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <X className="h-4 w-4" />
+              )}
+              <span>{toast.message}</span>
+            </div>
           </div>
         )}
 
@@ -260,10 +307,24 @@ export function Pricing() {
                     'Current Plan'
                   ) : plan.tier === SubscriptionTier.FREE ? (
                     'Get Started'
+                  ) : currentSubscription && getPlanRelation(plan.tier) === 'upgrade' ? (
+                    `Upgrade to ${plan.name}`
+                  ) : currentSubscription && getPlanRelation(plan.tier) === 'downgrade' ? (
+                    `Downgrade to ${plan.name}`
                   ) : (
                     'Subscribe Now'
                   )}
                 </button>
+                {currentSubscription && getPlanRelation(plan.tier) === 'upgrade' && (
+                  <p className="mt-3 text-xs text-on-surface-variant">
+                    You will be charged the prorated difference.
+                  </p>
+                )}
+                {currentSubscription && getPlanRelation(plan.tier) === 'downgrade' && (
+                  <p className="mt-3 text-xs text-on-surface-variant">
+                    Credit will be applied to your next billing cycle.
+                  </p>
+                )}
               </div>
             </div>
           ))}

@@ -126,6 +126,10 @@ export interface PaymentContextType {
   paymentMethods: PaymentMethod[];
   paymentHistory: PaymentHistoryItem[];
   createCheckoutSession: (options: CheckoutOptions) => Promise<{ url: string } | { error: any }>;
+  updateSubscription: (
+    newPriceId: string,
+    businessId: string
+  ) => Promise<{ success: boolean; tier?: SubscriptionTier } | { error: any }>;
   createPaymentIntent: (amount: number, metadata?: Record<string, string>) => Promise<{ clientSecret: string } | { error: any }>;
   cancelSubscription: (subscriptionId: string) => Promise<{ success: boolean } | { error: any }>;
   getCustomerPortalUrl: () => Promise<{ url: string } | { error: any }>;
