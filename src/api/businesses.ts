@@ -24,6 +24,13 @@ export async function submitBusiness(business: Omit<Business, 'id'>): Promise<Bu
     throw new Error(error?.message || 'Failed to submit business');
   }
 
+  // Notify admin of new submission (fire-and-forget, don't block on failure)
+  fetch('/api/notify-submission', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ businessId: data.id }),
+  }).catch(() => {});
+
   return data;
 }
 
