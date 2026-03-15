@@ -24,6 +24,8 @@ export interface SiteConfig {
       pricingDescription: string;
       aboutTitle: string;
       aboutDescription: string;
+      resourcesTitle: string;
+      resourcesDescription: string;
       termsTitle: string;
       privacyTitle: string;
       contactTitle: string;
@@ -138,6 +140,8 @@ export const siteConfig: SiteConfig = {
       pricingDescription: 'Compare listing plans and promotion options for California City businesses.',
       aboutTitle: 'About',
       aboutDescription: 'Learn how CalCity.info connects California City, CA with local businesses, events, and community resources.',
+      resourcesTitle: 'Community Resources',
+      resourcesDescription: 'Essential city services, department contacts, and community resources for California City, CA residents and visitors.',
       termsTitle: 'Terms of Service',
       privacyTitle: 'Privacy Policy',
       contactTitle: 'Contact',
