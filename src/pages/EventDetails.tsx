@@ -113,13 +113,13 @@ export function EventDetails() {
           <div className="absolute inset-0 bg-gradient-to-t from-scrim/70 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="flex items-center justify-between">
-              <h1 className="text-4xl font-display font-bold text-inverse-on-surface mb-2">
+              <h1 className="text-4xl font-display font-bold text-white mb-2">
                 {event.title}
               </h1>
               <div className="flex gap-4">
                 <button
                   onClick={handleShare}
-                  className="p-2 rounded-full bg-scrim/20 hover:bg-scrim/30 text-inverse-on-surface transition-colors duration-[var(--md-sys-motion-duration-short3)]"
+                  className="p-2 rounded-full bg-scrim/20 hover:bg-scrim/30 text-white transition-colors duration-[var(--md-sys-motion-duration-short3)]"
                   aria-label="Share event"
                 >
                   <Share2 className="w-5 h-5" />
@@ -129,7 +129,7 @@ export function EventDetails() {
                   className={`p-2 rounded-full transition-colors duration-[var(--md-sys-motion-duration-short3)] ${
                     isBookmarked 
                       ? 'bg-primary text-on-primary' 
-                      : 'bg-scrim/20 hover:bg-scrim/30 text-inverse-on-surface'
+                      : 'bg-scrim/20 hover:bg-scrim/30 text-white'
                   }`}
                   aria-label="Bookmark event"
                 >
