@@ -174,8 +174,8 @@ export const siteConfig: SiteConfig = {
   stripe: {
     freePriceId: null,
     basicPriceId: import.meta.env.VITE_STRIPE_BASIC_PRICE_ID || 'price_1TASQfRpRbHjjRj8mXv5x9rB',
-    premiumPriceId: import.meta.env.VITE_STRIPE_PREMIUM_PRICE_ID || 'price_1TASRPRpRbHjjRj8rZMNIJ4i',
-    spotlightPriceId: import.meta.env.VITE_STRIPE_SPOTLIGHT_PRICE_ID || 'price_1TASSRRpRbHjjRj8nfJz5gSc',
+    premiumPriceId: import.meta.env.VITE_STRIPE_PREMIUM_PRICE_ID || 'price_1TAveRRpRbHjjRj85ycm5SRB',
+    spotlightPriceId: import.meta.env.VITE_STRIPE_SPOTLIGHT_PRICE_ID || 'price_1TAvdgRpRbHjjRj85WrDuMHH',
   },
 
   guide: {
