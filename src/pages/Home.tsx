@@ -65,10 +65,10 @@ export function Home() {
           )}
           
           <div className="max-w-2xl text-center mb-8">
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-inverse-on-surface mb-6">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
               Welcome to {siteConfig.city}
             </h1>
-            <p className="text-xl text-inverse-on-surface mb-8">
+            <p className="text-xl text-white mb-8">
               {siteConfig.tagline}
             </p>
           </div>

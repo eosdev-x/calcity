@@ -114,7 +114,7 @@ export function BusinessDetails() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-4xl font-display font-bold text-inverse-on-surface">
+                  <h1 className="text-4xl font-display font-bold text-white">
                     {business.name}
                   </h1>
                   {permissions.hasBadge && (
@@ -125,8 +125,8 @@ export function BusinessDetails() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center text-inverse-on-surface">
-                  <span className="text-inverse-on-surface">{business.category}</span>
+                <div className="flex items-center text-white">
+                  <span className="text-white">{business.category}</span>
                 </div>
               </div>
               <BusinessHoursStatus hours={business.hours} />
