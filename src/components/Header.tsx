@@ -27,6 +27,7 @@ export function Header() {
               <Link to="/businesses" className="nav-link">Businesses</Link>
             )}
             <Link to="/about" className="nav-link">About</Link>
+            <Link to="/resources" className="nav-link">Resources</Link>
             <Link to="/pricing" className="nav-link">Pricing</Link>
             {!isLoading && user && (
               <Link to="/dashboard" className="nav-link">Dashboard</Link>
@@ -100,6 +101,13 @@ export function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
+              </Link>
+              <Link
+                to="/resources"
+                className="block nav-link py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Resources
               </Link>
               <Link
                 to="/pricing"

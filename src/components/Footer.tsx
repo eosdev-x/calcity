@@ -13,6 +13,7 @@ export function Footer() {
     { label: 'Events', to: '/events', enabled: siteConfig.features.events },
     { label: 'Businesses', to: '/businesses', enabled: siteConfig.features.businesses },
     { label: 'About', to: '/about', enabled: true },
+    { label: 'Resources', to: '/resources', enabled: true },
     { label: 'Pricing', to: '/pricing', enabled: siteConfig.features.businesses },
     { label: 'Visitor Guide', to: '/guide', enabled: siteConfig.features.guide },
     { label: 'Contact', to: '/contact', enabled: true },
