@@ -433,8 +433,8 @@ export function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
               <img
-                src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba"
-                alt="Desert landscape"
+                src="https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/why-choose/natural-beauty.jpg"
+                alt="Mojave Desert sunset near California City"
                 className="rounded-xl shadow-sm mb-6"
               />
               <h3 className="text-xl font-semibold mb-2">Natural Beauty</h3>
@@ -444,8 +444,8 @@ export function Home() {
             </div>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1682687220198-88e9bdea9931"
-                alt="Community event"
+                src="https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/why-choose/strong-community.jpg"
+                alt="California City community gathering"
                 className="rounded-xl shadow-sm mb-6"
               />
               <h3 className="text-xl font-semibold mb-2">Strong Community</h3>
