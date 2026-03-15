@@ -319,9 +319,9 @@ export function Pricing() {
                     ) : plan.tier === SubscriptionTier.FREE ? (
                       'Get Started'
                     ) : currentSubscription && getPlanRelation(plan.tier) === 'upgrade' ? (
-                      `Upgrade to ${plan.name}`
+                      'Upgrade'
                     ) : currentSubscription && getPlanRelation(plan.tier) === 'downgrade' ? (
-                      `Downgrade to ${plan.name}`
+                      'Downgrade'
                     ) : (
                       'Subscribe Now'
                     )}
