@@ -224,6 +224,11 @@ export function Pricing() {
           </p>
         </div>
 
+        <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-outline px-4 py-3 text-sm" style={{ backgroundColor: '#fef3cd', color: '#664d03', borderColor: '#ffecb5' }}>
+          <p className="font-semibold">⚠️ Testing Mode</p>
+          <p>Payments are currently in test mode. Please do not enter real credit card information. Subscriptions will be available soon!</p>
+        </div>
+
         {(localError || error) && (
           <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
             <p className="text-on-error-container">{localError || error}</p>
