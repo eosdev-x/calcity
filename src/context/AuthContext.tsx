@@ -96,10 +96,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setUser(currentSession?.user as AuthUser || null);
             
             if (currentSession?.user) {
+              setIsLoading(true);
               const userProfile = await fetchUserProfile(currentSession.user.id);
               setProfile(userProfile);
+              setIsLoading(false);
             } else {
               setProfile(null);
+              setIsLoading(false);
             }
           }
         );

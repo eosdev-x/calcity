@@ -278,7 +278,7 @@ export function BusinessProfileCreation() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   />
                 </div>
@@ -293,7 +293,7 @@ export function BusinessProfileCreation() {
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   >
                     <option value="">Select a category</option>
@@ -316,7 +316,7 @@ export function BusinessProfileCreation() {
                     value={formData.description}
                     onChange={handleChange}
                     rows={5}
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   />
                   <p className="mt-1 text-sm text-on-surface-variant">
@@ -396,7 +396,7 @@ export function BusinessProfileCreation() {
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   />
                 </div>
@@ -414,7 +414,7 @@ export function BusinessProfileCreation() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="(555) 123-4567"
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     required
                   />
                 </div>
@@ -432,7 +432,7 @@ export function BusinessProfileCreation() {
                     value={formData.website}
                     onChange={handleChange}
                     placeholder="www.yourbusiness.com"
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                   />
                 </div>
                 
@@ -448,7 +448,7 @@ export function BusinessProfileCreation() {
                       value={newAmenity}
                       onChange={(e) => setNewAmenity(e.target.value)}
                       placeholder="Add an amenity (e.g., Wi-Fi, Parking)"
-                      className="flex-grow rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                      className="flex-grow px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                     />
                     <button
                       type="button"
@@ -502,7 +502,7 @@ export function BusinessProfileCreation() {
                     value={hours}
                     onChange={(e) => handleHoursChange(day, e.target.value)}
                     placeholder="9:00 AM - 5:00 PM"
-                    className="w-full rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-3 text-sm rounded-xl border border-outline bg-surface-container-high text-on-surface focus:ring-primary focus:border-primary"
                   />
                 </div>
               ))}

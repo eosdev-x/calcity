@@ -9,9 +9,9 @@ interface AdminRouteProps {
 }
 
 export function AdminRoute({ children }: AdminRouteProps) {
-  const { profile, isLoading } = useAuth();
+  const { profile, user, isLoading } = useAuth();
 
-  if (isLoading) {
+  if (isLoading || (user && !profile)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface">
         <div className="text-center">
