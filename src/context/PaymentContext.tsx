@@ -310,6 +310,52 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     }
   };
 
+  // Update subscription (upgrade/downgrade)
+  const updateSubscription = async (newPriceId: string, businessId: string) => {
+    if (!user) {
+      return { error: 'User not authenticated' };
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const token = await getAccessToken();
+      if (!token) {
+        return { error: 'User not authenticated' };
+      }
+
+      const response = await fetch('/api/stripe/update-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          newPriceId,
+          businessId,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || result?.error) {
+        const message = result?.error || 'Failed to update subscription';
+        setError(typeof message === 'string' ? message : message.message);
+        return { error: result?.error || message };
+      }
+
+      await fetchUserSubscription();
+      return { success: true, tier: result?.tier };
+    } catch (err: any) {
+      console.error('Error updating subscription:', err);
+      setError(err.message || 'Failed to update subscription');
+      return { error: err };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getCustomerPortalUrl = async () => {
     if (!user) {
       return { error: 'User not authenticated' };
@@ -529,6 +575,7 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     paymentMethods,
     paymentHistory,
     createCheckoutSession,
+    updateSubscription,
     createPaymentIntent,
     cancelSubscription,
     getCustomerPortalUrl,
