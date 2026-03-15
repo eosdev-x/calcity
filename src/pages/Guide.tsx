@@ -62,7 +62,7 @@ export function Guide() {
       <section className="relative h-[500px] overflow-hidden">
         {/* Background Image */}
         <img 
-          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&auto=format&fit=crop&q=80" 
+          src="https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/guide/hero-desert-highway.png" 
           alt="" 
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"

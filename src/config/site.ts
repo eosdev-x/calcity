@@ -187,45 +187,56 @@ export const siteConfig: SiteConfig = {
   },
 
   guide: {
-    gettingHere: 'California City is easily accessible via Highway 14 and Highway 58. The nearest major airports are Mojave Air & Space Port (30 minutes) and Los Angeles International Airport (LAX, 2 hours).',
-    bestTimeToVisit: 'Spring (March-May) and Fall (September-November) offer the most pleasant temperatures. Summer can be very hot, while winter nights can be quite cold. Always bring sun protection and plenty of water.',
-    attractions: "Don't miss Central Park with its 26-acre lake, the California City Municipal Airport, and the Tierra Del Sol Golf Course. The surrounding desert offers excellent opportunities for off-road adventures and stargazing.",
+    gettingHere: 'California City is located in the western Mojave Desert in Kern County. From Los Angeles, take I-5 North to CA-14 North through Palmdale and Lancaster (about 100 miles, ~2 hours). From Bakersfield, take CA-58 East to CA-14 South (about 65 miles, ~1 hour). From Las Vegas, take I-15 South to CA-58 West to CA-14 South (about 230 miles, ~3.5 hours). The nearest regional airport is Mojave Air & Space Port, just 25 minutes south. LAX is approximately 2 hours away.',
+    bestTimeToVisit: 'Spring (March–May) is the best time to visit — temperatures are comfortable in the 70s–80s°F, and the desert wildflowers bloom after winter rains. Fall (September–November) is equally pleasant with warm days and cool nights perfect for stargazing. Summer (June–August) brings intense heat, often exceeding 100°F — plan outdoor activities for early morning or evening. Winter (December–February) offers mild days in the 50s–60s°F but nights can drop near freezing. Always bring sun protection, layers, and plenty of water regardless of season.',
+    attractions: "California City offers a unique desert experience. Explore Central Park and its 26-acre lake for fishing, walking trails, and picnics. Thrill-seekers love Cal City MX Park, one of the premier motocross facilities in Southern California. The Desert Tortoise Natural Area, a 40-square-mile preserve northeast of town, protects the endangered desert tortoise in its native habitat. The region's dark skies make it exceptional for stargazing — the Mojave Desert is one of the best spots in California for astrophotography. Golfers can enjoy the Silver Saddle Golf Course, and the surrounding open desert terrain is popular for off-road riding and exploration.",
     attractionsList: [
       {
-        name: 'Central Park',
-        description: '26-acre lake with walking trails and picnic areas',
-        image: 'https://images.unsplash.com/photo-1588714477688-cf28a50e94f7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFya3xlbnwwfHwwfHx8MA%3D%3D?auto=format&fit=crop&q=80',
+        name: 'Central Park & Lake',
+        description: '26-acre lake with fishing, walking trails, picnic areas, and playgrounds — the heart of Cal City recreation',
+        image: 'https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/guide/central-park-lake.png',
       },
       {
-        name: 'Desert Observatory',
-        description: 'Experience the beauty of the desert night sky',
-        image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a',
+        name: 'Cal City MX Park',
+        description: 'Premier motocross facility with jumps from 10–110 ft, peewee track, open practice Saturdays & Sundays',
+        image: 'https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/guide/mx-park.png',
+      },
+      {
+        name: 'Desert Tortoise Natural Area',
+        description: '40-square-mile preserve protecting endangered desert tortoises — self-guided nature trails and wildlife viewing',
+        image: 'https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/guide/desert-tortoise.png',
+      },
+      {
+        name: 'Mojave Desert Stargazing',
+        description: 'World-class dark skies for stargazing and astrophotography — Milky Way visible with the naked eye',
+        image: 'https://mbazrezahuojknfgcwou.supabase.co/storage/v1/object/public/site-images/guide/desert-stargazing.png',
       },
     ],
     importantLocations: [
-      { name: 'City Hall', detail: '21000 Hacienda Blvd' },
+      { name: 'City Hall', detail: '21000 Hacienda Blvd — (760) 373-8661' },
+      { name: 'Police Department', detail: '21000 Hacienda Blvd — (760) 373-4800' },
+      { name: 'Fire Station', detail: '21000 Hacienda Blvd — (760) 373-7344' },
       { name: 'Post Office', detail: '7949 California City Blvd' },
+      { name: 'Library', detail: '9507 California City Blvd — (760) 373-4757' },
       { name: 'Medical Center', detail: '8001 Cal City Blvd' },
-      { name: 'Fire Station', detail: '21000 Hacienda Blvd' },
+      { name: 'Cal City MX Park', detail: '24510 168th St — (760) 977-9774' },
     ],
     annualEvents: [
-      { name: 'Spring Desert Festival', month: 'April' },
-      { name: 'Independence Day Celebration', month: 'July' },
-      { name: 'Desert Star-Gazing Night', month: 'August' },
-      { name: 'Fall Arts & Crafts Fair', month: 'October' },
-      { name: 'Winter Holiday Parade', month: 'December' },
+      { name: 'Cal City MX Park Open Practice', month: 'Weekly (Sat & Sun)' },
+      { name: 'Kern County Fair', month: 'September–October' },
+      { name: 'Red Rock Canyon Star Parties', month: 'Various (2 hrs away)' },
     ],
   },
 
   legal: {
     arbitrationLocation: 'Kern County, California',
-    address: '123 Main Street',
+    address: '21000 Hacienda Blvd',
     zipCode: '93505',
   },
 
   contact: {
-    phone: '(555) 123-4567',
-    email: 'info@calcity.info',
+    phone: '(760) 373-8661',
+    email: 'help@tux.st',
   },
 
   social: {},
