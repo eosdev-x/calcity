@@ -198,6 +198,11 @@ export function BusinessDashboard() {
             {error}
           </div>
         )}
+        {currentSubscription?.cancelAtPeriodEnd && (
+          <div className="mb-6 rounded-xl border border-tertiary bg-tertiary-container p-4 text-on-tertiary-container text-sm">
+            Your plan is active until the end of your current billing period.
+          </div>
+        )}
 
         {business.status === 'rejected' && (
           <div className="mb-6 rounded-xl border border-error bg-error-container p-4">
@@ -327,7 +332,9 @@ export function BusinessDashboard() {
                   Status: {currentSubscription?.status ?? 'none'}
                 </div>
                 {currentSubscription?.cancelAtPeriodEnd && (
-                  <div className="mt-1 text-sm text-error">Canceling at period end</div>
+                  <div className="mt-1 text-sm text-on-surface-variant">
+                    Active until period end
+                  </div>
                 )}
               </div>
               <div className="flex flex-col gap-2">

@@ -223,11 +223,11 @@ export function Pricing() {
             Select the perfect plan for your business and start reaching more customers in {siteConfig.city}
           </p>
         </div>
-
-        <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-outline px-4 py-3 text-sm" style={{ backgroundColor: '#fef3cd', color: '#664d03', borderColor: '#ffecb5' }}>
-          <p className="font-semibold">⚠️ Testing Mode</p>
-          <p>Payments are currently in test mode. Please do not enter real credit card information. Subscriptions will be available soon!</p>
-        </div>
+        {currentSubscription?.cancelAtPeriodEnd && (
+          <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-tertiary bg-tertiary-container px-4 py-3 text-sm text-on-tertiary-container">
+            Your plan is active until the end of your current billing period.
+          </div>
+        )}
 
         {(localError || error) && (
           <div className="max-w-2xl mx-auto mb-8 p-4 bg-error-container border border-error rounded-xl">
@@ -290,6 +290,11 @@ export function Pricing() {
                     {plan.tier === SubscriptionTier.PREMIUM && 'Stand out with rich visuals and social reach.'}
                     {plan.tier === SubscriptionTier.SPOTLIGHT && 'Maximum visibility across ' + siteConfig.name + '.'}
                   </p>
+                  {isCurrent && currentSubscription?.cancelAtPeriodEnd && (
+                    <p className="mt-2 text-xs text-on-surface-variant">
+                      Active until period end
+                    </p>
+                  )}
                 </div>
 
                 {/* Features list — grows to fill available space */}

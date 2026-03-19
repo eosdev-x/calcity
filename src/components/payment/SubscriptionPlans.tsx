@@ -219,6 +219,13 @@ export function SubscriptionPlans() {
           <p className="text-on-tertiary-container">{successMessage}</p>
         </div>
       )}
+      {currentSubscription?.cancelAtPeriodEnd && (
+        <div className="mb-6 p-4 bg-tertiary-container border border-tertiary rounded-xl">
+          <p className="text-on-tertiary-container">
+            Your plan is active until the end of your current billing period.
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
         {subscriptionPlans.map((plan) => (
@@ -244,6 +251,11 @@ export function SubscriptionPlans() {
               {isCurrentPlan(plan.tier) && (
                 <div className="mt-2 text-sm font-medium">
                   Current Plan
+                </div>
+              )}
+              {isCurrentPlan(plan.tier) && currentSubscription?.cancelAtPeriodEnd && (
+                <div className="mt-1 text-xs text-on-primary/80">
+                  Active until period end
                 </div>
               )}
             </div>
