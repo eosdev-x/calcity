@@ -166,7 +166,7 @@ export const siteConfig: SiteConfig = {
   seedColor: '#C47451',
 
   features: {
-    chat: true,
+    chat: false,
     weather: true,
     events: true,
     businesses: true,
