@@ -10,8 +10,8 @@ const getSupabaseUrl = () => {
   if (typeof window !== 'undefined' && window.env && window.env.VITE_SUPABASE_URL) {
     return window.env.VITE_SUPABASE_URL;
   }
-  // Fallback to hardcoded value
-  return 'https://mbazrezahuojknfgcwou.supabase.co';
+  // Fallback to empty string
+  return '';
 };
 
 const getSupabaseAnonKey = () => {
@@ -24,7 +24,7 @@ const getSupabaseAnonKey = () => {
     return window.env.VITE_SUPABASE_ANON_KEY;
   }
   // Fallback to empty string
-  return 'sb_publishable_98WQlIzjiBwD9soSjB9QgA_54OZ72T9';
+  return '';
 };
 
 // Initialize Supabase client
