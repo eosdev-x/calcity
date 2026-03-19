@@ -23,6 +23,7 @@ export interface Business {
   amenities: string[];
   services: string[];
   subscription_tier: "free" | "basic" | "premium" | "spotlight";
+  is_hiring: boolean;
   is_featured: boolean;
   is_spotlight: boolean;
   review_count: number;
@@ -31,4 +32,17 @@ export interface Business {
   rejection_reason: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface Job {
+  id: string;
+  business_id: string;
+  owner_id: string;
+  title: string;
+  description: string | null;
+  job_type: 'full-time' | 'part-time' | 'seasonal' | 'contract';
+  apply_url: string | null;
+  created_at: string;
+  updated_at: string;
+  expires_at: string;
 }
