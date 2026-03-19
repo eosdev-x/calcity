@@ -1,0 +1,16 @@
+# Stripe
+STRIPE_SECRET_KEY=sk_live_your_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_BASIC_PRICE_ID=price_basic_placeholder
+STRIPE_PREMIUM_PRICE_ID=price_premium_placeholder
+STRIPE_SPOTLIGHT_PRICE_ID=price_spotlight_placeholder
+
+# Supabase
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# Resend
+RESEND_API_KEY=re_your_resend_api_key
+
+# Cloudflare Turnstile
+TURNSTILE_SECRET_KEY=0x0000000000000000000000000000000AA
