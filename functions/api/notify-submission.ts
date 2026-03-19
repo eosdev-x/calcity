@@ -1,9 +1,8 @@
-import { jsonResponse } from './stripe/_shared';
+import { verifyAdmin } from './admin/_shared';
+import { jsonResponse, StripeEnv } from './stripe/_shared';
 
-type NotifyEnv = {
+type NotifyEnv = StripeEnv & {
   RESEND_API_KEY: string;
-  SUPABASE_URL: string;
-  SUPABASE_SERVICE_ROLE_KEY: string;
 };
 
 const escapeHtml = (value: string) =>
@@ -28,8 +27,9 @@ export async function onRequestPost(context: { request: Request; env: NotifyEnv 
     return jsonResponse({ error: 'Missing RESEND_API_KEY' }, 500);
   }
 
-  // Auth: require service-internal call with a simple shared secret
-  // For now, we just verify the request came from our own origin
+  const adminCheck = await verifyAdmin(request, env as any);
+  if (adminCheck.error) return adminCheck.error;
+
   const body = await request.json().catch(() => null);
   if (!body || !body.businessId) {
     return jsonResponse({ error: 'Missing businessId' }, 400);
