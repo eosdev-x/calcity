@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { BarChart3, Building2, CreditCard, Edit3, Image, LayoutDashboard } from 'lucide-react';
+import { BarChart3, Briefcase, Building2, CreditCard, Edit3, Image, LayoutDashboard } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useBusinessPermissions } from '../hooks/useBusinessPermissions';
@@ -9,6 +9,7 @@ import { Business } from '../types/business';
 import { BusinessEditForm } from '../components/dashboard/BusinessEditForm';
 import { PhotoManager } from '../components/dashboard/PhotoManager';
 import { AnalyticsDashboard } from '../components/dashboard/AnalyticsDashboard';
+import { JobManager } from '../components/dashboard/JobManager';
 import { siteConfig } from '../config/site';
 import { SEO } from '../components/SEO';
 
@@ -17,6 +18,7 @@ const tabs = [
   { id: 'edit', label: 'Edit Profile', icon: Edit3 },
   { id: 'photos', label: 'Photos', icon: Image },
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { id: 'jobs', label: 'Jobs', icon: Briefcase },
   { id: 'subscription', label: 'Subscription', icon: CreditCard },
 ];
 
@@ -129,7 +131,7 @@ export function BusinessDashboard() {
             <div className="h-8 w-64 bg-surface-container-high rounded-xl" />
             <div className="h-4 w-48 bg-surface-container-high rounded-lg" />
             <div className="flex gap-2 border-b border-outline-variant pb-2">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: tabs.length }).map((_, i) => (
                 <div key={i} className="h-8 w-24 bg-surface-container-high rounded-lg" />
               ))}
             </div>
@@ -320,6 +322,10 @@ export function BusinessDashboard() {
 
         {activeTab === 'analytics' && (
           <AnalyticsDashboard business={business} totalViewCount={viewCount} />
+        )}
+
+        {activeTab === 'jobs' && (
+          <JobManager business={business} onUpdated={setBusiness} />
         )}
 
         {activeTab === 'subscription' && (

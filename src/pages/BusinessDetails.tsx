@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   MapPin, 
@@ -20,9 +20,12 @@ import { useBusinessPermissions } from '../hooks/useBusinessPermissions';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { siteConfig } from '../config/site';
 import { SEO } from '../components/SEO';
+import { JobCard } from '../components/JobCard';
 import { Helmet } from 'react-helmet-async';
 import { buildBreadcrumbListJsonLd, buildLocalBusinessJsonLd } from '../utils/jsonLd';
 import { truncateText } from '../utils/seo';
+import { fetchJobsByBusiness } from '../api/jobs';
+import { Job } from '../types/business';
 
 function UpgradeCard({ label }: { label: string }) {
   return (
@@ -39,6 +42,7 @@ export function BusinessDetails() {
   const { businesses, loading } = useBusinesses();
   const { user } = useAuth();
   const { trackView } = useAnalytics();
+  const [jobs, setJobs] = useState<Job[]>([]);
 
   const business = businesses.find(b => b.id === id);
   const permissions = useBusinessPermissions(business?.subscription_tier ?? 'free');
@@ -54,6 +58,27 @@ export function BusinessDetails() {
       void trackView(business.id);
     }
   }, [business?.id, business?.status, trackView]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadJobs = async () => {
+      if (!business?.id || !business.is_hiring) {
+        if (isMounted) setJobs([]);
+        return;
+      }
+      try {
+        const data = await fetchJobsByBusiness(business.id);
+        if (isMounted) setJobs(data);
+      } catch {
+        if (isMounted) setJobs([]);
+      }
+    };
+
+    void loadJobs();
+    return () => {
+      isMounted = false;
+    };
+  }, [business?.id, business?.is_hiring]);
 
   if (loading) {
     return null;
@@ -124,6 +149,11 @@ export function BusinessDetails() {
                       {permissions.badgeText}
                     </span>
                   )}
+                  {business.is_hiring && (
+                    <span className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold bg-tertiary-container text-on-tertiary-container">
+                      Hiring
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center text-white">
                   <span className="text-white">{business.category}</span>
@@ -150,6 +180,29 @@ export function BusinessDetails() {
                   <UpgradeCard label="About" />
                 </div>
               )
+            )}
+
+            {business.is_hiring && jobs.length > 0 && (
+              <div className="card mb-8">
+                <h2 className="text-2xl font-semibold mb-6">Open Positions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {jobs.map(job => (
+                    <JobCard
+                      key={job.id}
+                      job={job}
+                      business={{
+                        id: business.id,
+                        name: business.name,
+                        phone: business.phone,
+                        email: business.email,
+                        slug: business.slug,
+                      }}
+                      showBusinessName={false}
+                      showContactFallback
+                    />
+                  ))}
+                </div>
+              </div>
             )}
 
             {permissions.canShowAmenities ? (

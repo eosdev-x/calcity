@@ -194,6 +194,11 @@ export function Businesses() {
                         {badge.text}
                       </span>
                     )}
+                    {business.is_hiring && (
+                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold bg-tertiary-container text-on-tertiary-container">
+                        Hiring
+                      </span>
+                    )}
                     {business.is_featured && (
                       <Star className="w-4 h-4 text-primary fill-current" aria-label="Featured business" />
                     )}
