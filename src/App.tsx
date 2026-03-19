@@ -20,6 +20,7 @@ import { Privacy } from './pages/Privacy';
 import { Contact } from './pages/Contact';
 import { ScrollToTop } from './components/ScrollToTop';
 import { FloatingChatWidget } from './components/FloatingChatWidget';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { EventProvider } from './context/EventContext';
 import { BusinessProvider } from './context/BusinessContext';
 import { AuthProvider } from './context/AuthContext';
@@ -35,6 +36,7 @@ import { EventApprovals } from './pages/admin/EventApprovals';
 import { UserManagement } from './pages/admin/UserManagement';
 import { ManageBusinesses } from './pages/admin/ManageBusinesses';
 import { siteConfig } from './config/site';
+import { NotFound } from './pages/NotFound';
 
 // Auth pages
 import { Login } from './pages/auth/Login';
@@ -50,70 +52,75 @@ function App() {
       <PaymentProvider>
         <EventProvider>
           <BusinessProvider>
-          <Router>
-            <ScrollToTop />
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-grow">
-                <Routes>
-                  {/* Main Routes */}
-                  <Route path="/" element={<Home />} />
-                  {siteConfig.features.events && (
-                    <>
-                      <Route path="/events" element={<Events />} />
-                      <Route path="/events/new" element={<ProtectedRoute><EventSubmission /></ProtectedRoute>} />
-                      <Route path="/events/calendar" element={<EventCalendarView />} />
-                      <Route path="/events/:id" element={<EventDetails />} />
-                    </>
-                  )}
-                  {siteConfig.features.businesses && (
-                    <>
-                      <Route path="/businesses" element={<Businesses />} />
-                      <Route path="/businesses/new" element={<ProtectedRoute><BusinessProfileCreation /></ProtectedRoute>} />
-                      <Route path="/businesses/:id" element={<BusinessDetails />} />
-                      <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
-                    </>
-                  )}
-                  {siteConfig.features.businesses && (
-                    <Route path="/pricing" element={<Pricing />} />
-                  )}
-                  <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-                  <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
-                  <Route path="/payment/cancel" element={<PaymentCancel />} />
-                  {siteConfig.features.guide && (
-                    <Route path="/guide" element={<Guide />} />
-                  )}
-                  <Route path="/about" element={<About />} />
-                  <Route path="/resources" element={<Resources />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/contact" element={<Contact />} />
-                  
-                  {/* Auth Routes */}
-                  <Route path="/auth/login" element={<Login />} />
-                  <Route path="/auth/signup" element={<Signup />} />
-                  <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/auth/reset-password" element={<ResetPassword />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
-                  
-                  {/* Protected Profile Routes */}
-                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Router>
+              <ScrollToTop />
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-grow">
+                  <ErrorBoundary>
+                    <Routes>
+                      {/* Main Routes */}
+                      <Route path="/" element={<Home />} />
+                      {siteConfig.features.events && (
+                        <>
+                          <Route path="/events" element={<Events />} />
+                          <Route path="/events/new" element={<ProtectedRoute><EventSubmission /></ProtectedRoute>} />
+                          <Route path="/events/calendar" element={<EventCalendarView />} />
+                          <Route path="/events/:id" element={<EventDetails />} />
+                        </>
+                      )}
+                      {siteConfig.features.businesses && (
+                        <>
+                          <Route path="/businesses" element={<Businesses />} />
+                          <Route path="/businesses/new" element={<ProtectedRoute><BusinessProfileCreation /></ProtectedRoute>} />
+                          <Route path="/businesses/:id" element={<BusinessDetails />} />
+                          <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
+                        </>
+                      )}
+                      {siteConfig.features.businesses && (
+                        <Route path="/pricing" element={<Pricing />} />
+                      )}
+                      <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+                      <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
+                      <Route path="/payment/cancel" element={<PaymentCancel />} />
+                      {siteConfig.features.guide && (
+                        <Route path="/guide" element={<Guide />} />
+                      )}
+                      <Route path="/about" element={<About />} />
+                      <Route path="/resources" element={<Resources />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms" element={<Terms />} />
+                      <Route path="/contact" element={<Contact />} />
 
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                  <Route path="/admin/businesses" element={<AdminRoute><BusinessApprovals /></AdminRoute>} />
-                  <Route path="/admin/manage-businesses" element={<AdminRoute><ManageBusinesses /></AdminRoute>} />
-                  <Route path="/admin/events" element={<AdminRoute><EventApprovals /></AdminRoute>} />
-                  <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
-                </Routes>
-              </main>
-              <Footer />
-              {siteConfig.features.chat && <FloatingChatWidget />}
-            </div>
-          </Router>
-        </BusinessProvider>
-      </EventProvider>
-    </PaymentProvider>
+                      {/* Auth Routes */}
+                      <Route path="/auth/login" element={<Login />} />
+                      <Route path="/auth/signup" element={<Signup />} />
+                      <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/auth/reset-password" element={<ResetPassword />} />
+                      <Route path="/auth/callback" element={<AuthCallback />} />
+
+                      {/* Protected Profile Routes */}
+                      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+                      {/* Admin Routes */}
+                      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                      <Route path="/admin/businesses" element={<AdminRoute><BusinessApprovals /></AdminRoute>} />
+                      <Route path="/admin/manage-businesses" element={<AdminRoute><ManageBusinesses /></AdminRoute>} />
+                      <Route path="/admin/events" element={<AdminRoute><EventApprovals /></AdminRoute>} />
+                      <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+
+                      {/* 404 */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </ErrorBoundary>
+                </main>
+                <Footer />
+                {siteConfig.features.chat && <FloatingChatWidget />}
+              </div>
+            </Router>
+          </BusinessProvider>
+        </EventProvider>
+      </PaymentProvider>
     </AuthProvider>
   );
 }
