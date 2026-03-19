@@ -254,12 +254,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       
       // Update the profile in the database
+      const { role: _stripRole, ...safeData } = data;
       const { error } = await supabase
         .from('profiles')
         .upsert({ 
           id: user.id,
           email: user.email || '', // Always include email to satisfy NOT NULL constraint
-          ...data,
+          ...safeData,
           updated_at: new Date().toISOString(),
         });
       
