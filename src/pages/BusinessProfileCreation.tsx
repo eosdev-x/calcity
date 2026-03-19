@@ -168,6 +168,7 @@ export function BusinessProfileCreation() {
         amenities: formData.amenities,
         services: [],
         subscription_tier: 'free',
+        is_hiring: false,
         is_featured: false,
         is_spotlight: false,
         review_count: 0,
