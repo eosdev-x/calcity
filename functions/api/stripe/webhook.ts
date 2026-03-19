@@ -29,7 +29,8 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
   try {
     event = await stripe.webhooks.constructEventAsync(payload, signature, env.STRIPE_WEBHOOK_SECRET);
   } catch (error) {
-    console.error('Webhook signature verification failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Webhook signature verification failed:', message);
     return new Response('Invalid signature', { status: 400 });
   }
 
@@ -60,7 +61,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           }, { onConflict: 'user_id' });
 
         if (customerUpsertError) {
-          console.error('Failed to upsert customer from checkout session:', customerUpsertError);
+          console.error('Failed to upsert customer from checkout session:', customerUpsertError.message);
         }
 
         const { error: subscriptionUpsertError } = await supabase
@@ -79,7 +80,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           }, { onConflict: 'stripe_subscription_id' });
 
         if (subscriptionUpsertError) {
-          console.error('Failed to upsert subscription from checkout session:', subscriptionUpsertError);
+          console.error('Failed to upsert subscription from checkout session:', subscriptionUpsertError.message);
         }
 
         const { error: businessUpdateError } = await supabase
@@ -91,7 +92,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           })
           .eq('id', businessId);
         if (businessUpdateError) {
-          console.error('Failed to update business from checkout session:', businessUpdateError);
+          console.error('Failed to update business from checkout session:', businessUpdateError.message);
         }
         break;
       }
@@ -107,7 +108,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           .maybeSingle();
 
         if (existingError) {
-          console.error('Failed to fetch existing subscription mapping:', existingError);
+          console.error('Failed to fetch existing subscription mapping:', existingError.message);
         }
 
         const businessId = subscription.metadata?.businessId || existing?.business_id || null;
@@ -129,7 +130,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
               cancel_at_period_end: subscription.cancel_at_period_end,
             }, { onConflict: 'stripe_subscription_id' });
           if (subscriptionUpsertError) {
-            console.error('Failed to upsert subscription from update:', subscriptionUpsertError);
+            console.error('Failed to upsert subscription from update:', subscriptionUpsertError.message);
           }
         } else {
           const { error: subscriptionUpdateError } = await supabase
@@ -146,7 +147,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
             })
             .eq('stripe_subscription_id', subscription.id);
           if (subscriptionUpdateError) {
-            console.error('Failed to update subscription from update:', subscriptionUpdateError);
+            console.error('Failed to update subscription from update:', subscriptionUpdateError.message);
           }
         }
 
@@ -160,7 +161,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
             })
             .eq('id', businessId);
           if (businessUpdateError) {
-            console.error('Failed to update business from subscription update:', businessUpdateError);
+            console.error('Failed to update business from subscription update:', businessUpdateError.message);
           }
         }
         break;
@@ -175,7 +176,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           .maybeSingle();
 
         if (existingError) {
-          console.error('Failed to fetch existing subscription mapping:', existingError);
+          console.error('Failed to fetch existing subscription mapping:', existingError.message);
         }
 
         const businessId = subscription.metadata?.businessId || existing?.business_id || null;
@@ -188,7 +189,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
           })
           .eq('stripe_subscription_id', subscription.id);
         if (subscriptionUpdateError) {
-          console.error('Failed to update subscription from deletion:', subscriptionUpdateError);
+          console.error('Failed to update subscription from deletion:', subscriptionUpdateError.message);
         }
 
         if (businessId) {
@@ -203,7 +204,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
             })
             .eq('id', businessId);
           if (businessUpdateError) {
-            console.error('Failed to clear business subscription from deletion:', businessUpdateError);
+            console.error('Failed to clear business subscription from deletion:', businessUpdateError.message);
           }
         }
         break;
@@ -220,7 +221,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
             })
             .eq('stripe_subscription_id', subscriptionId);
           if (subscriptionUpdateError) {
-            console.error('Failed to update subscription from payment failure:', subscriptionUpdateError);
+            console.error('Failed to update subscription from payment failure:', subscriptionUpdateError.message);
           }
         }
         break;
@@ -229,7 +230,8 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
         break;
     }
   } catch (error) {
-    console.error('Error processing Stripe webhook:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error processing Stripe webhook:', message);
   }
 
   return new Response('ok', { status: 200 });

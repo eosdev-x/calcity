@@ -136,7 +136,8 @@ export async function onRequestPost(context: { request: Request; env: ContactEnv
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Contact form error:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Contact form error:', message);
     return jsonResponse({ error: 'Failed to send message.' }, 500);
   }
 }

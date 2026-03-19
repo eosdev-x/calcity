@@ -46,13 +46,14 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
     }
 
     if (updateError) {
-      console.error('Failed to update business:', updateError);
+      console.error('Failed to update business:', updateError.message);
       return jsonResponse({ error: 'Failed to update business' }, 500);
     }
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Error approving business:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error approving business:', message);
     return jsonResponse({ error: 'Failed to update business' }, 500);
   }
 }

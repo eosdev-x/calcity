@@ -71,7 +71,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .maybeSingle();
 
     if (subscriptionError) {
-      console.error('Failed to fetch subscription record:', subscriptionError);
+      console.error('Failed to fetch subscription record:', subscriptionError.message);
       return jsonResponse({ error: 'Failed to fetch subscription record' }, 500);
     }
 
@@ -108,7 +108,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .eq('stripe_subscription_id', updated.id);
 
     if (updateError) {
-      console.error('Failed to update subscription record:', updateError);
+      console.error('Failed to update subscription record:', updateError.message);
       return jsonResponse({ error: 'Failed to update subscription record' }, 500);
     }
 
@@ -118,13 +118,14 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .eq('id', businessId);
 
     if (businessUpdateError) {
-      console.error('Failed to update business record:', businessUpdateError);
+      console.error('Failed to update business record:', businessUpdateError.message);
       return jsonResponse({ error: 'Failed to update business record' }, 500);
     }
 
     return jsonResponse({ success: true, tier });
   } catch (error) {
-    console.error('Error updating subscription:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error updating subscription:', message);
     return jsonResponse({ error: 'Failed to update subscription' }, 500);
   }
 }

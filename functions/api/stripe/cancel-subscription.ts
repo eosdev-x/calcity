@@ -35,7 +35,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .maybeSingle();
 
     if (subscriptionError) {
-      console.error('Failed to verify subscription ownership:', subscriptionError);
+      console.error('Failed to verify subscription ownership:', subscriptionError.message);
       return jsonResponse({ error: 'Failed to verify subscription ownership' }, 500);
     }
 
@@ -56,13 +56,14 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .eq('stripe_subscription_id', subscriptionId);
 
     if (updateError) {
-      console.error('Failed to update subscription record:', updateError);
+      console.error('Failed to update subscription record:', updateError.message);
       return jsonResponse({ error: 'Failed to update subscription record' }, 500);
     }
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Error canceling subscription:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error canceling subscription:', message);
     return jsonResponse({ error: 'Failed to cancel subscription' }, 500);
   }
 }

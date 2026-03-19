@@ -27,7 +27,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .maybeSingle();
 
     if (customerError) {
-      console.error('Failed to fetch customer record:', customerError);
+      console.error('Failed to fetch customer record:', customerError.message);
       return jsonResponse({ error: 'Failed to fetch customer record' }, 500);
     }
 
@@ -43,7 +43,8 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
 
     return jsonResponse({ url: portalSession.url });
   } catch (error) {
-    console.error('Error creating customer portal session:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error creating customer portal session:', message);
     return jsonResponse({ error: 'Failed to create customer portal session' }, 500);
   }
 }

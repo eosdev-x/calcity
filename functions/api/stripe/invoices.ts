@@ -49,7 +49,8 @@ export async function onRequestGet(context: { request: Request; env: StripeEnv }
 
     return jsonResponse({ invoices: formattedInvoices });
   } catch (error) {
-    console.error('Error fetching invoices:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error fetching invoices:', message);
     return jsonResponse({ error: 'Failed to fetch payment history' }, 500);
   }
 }

@@ -48,7 +48,7 @@ export async function onRequestPost(context: { request: Request; env: NotifyEnv 
     .maybeSingle();
 
   if (bizError || !business) {
-    console.error('Failed to fetch business for notification:', bizError);
+    console.error('Failed to fetch business for notification:', bizError?.message ?? 'Unknown error');
     return jsonResponse({ error: 'Business not found' }, 404);
   }
 
@@ -120,7 +120,8 @@ export async function onRequestPost(context: { request: Request; env: NotifyEnv 
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Notification error:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Notification error:', message);
     return jsonResponse({ error: 'Failed to send notification' }, 500);
   }
 }

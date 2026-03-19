@@ -36,7 +36,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       }
 
       if (deleteError) {
-        console.error('Failed to delete business:', deleteError);
+        console.error('Failed to delete business:', deleteError.message);
         return jsonResponse({ error: 'Failed to delete business' }, 500);
       }
 
@@ -61,13 +61,14 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
     }
 
     if (updateError) {
-      console.error('Failed to update business:', updateError);
+      console.error('Failed to update business:', updateError.message);
       return jsonResponse({ error: 'Failed to update business' }, 500);
     }
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Error managing business:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error managing business:', message);
     return jsonResponse({ error: 'Failed to update business' }, 500);
   }
 }

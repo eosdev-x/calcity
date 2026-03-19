@@ -46,7 +46,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
       .maybeSingle();
 
     if (customerError) {
-      console.error('Failed to fetch customer record:', customerError);
+      console.error('Failed to fetch customer record:', customerError.message);
       return jsonResponse({ error: 'Failed to fetch customer record' }, 500);
     }
 
@@ -70,7 +70,7 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
         }, { onConflict: 'user_id' });
 
       if (upsertError) {
-        console.error('Failed to store customer record:', upsertError);
+        console.error('Failed to store customer record:', upsertError.message);
         return jsonResponse({ error: 'Failed to store customer record' }, 500);
       }
     }
@@ -104,7 +104,8 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
 
     return jsonResponse({ url: session.url });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error creating checkout session:', message);
     return jsonResponse({ error: 'Failed to create checkout session' }, 500);
   }
 }

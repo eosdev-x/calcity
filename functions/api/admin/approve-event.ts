@@ -46,13 +46,14 @@ export async function onRequestPost(context: { request: Request; env: StripeEnv 
     }
 
     if (updateError) {
-      console.error('Failed to update event:', updateError);
+      console.error('Failed to update event:', updateError.message);
       return jsonResponse({ error: 'Failed to update event' }, 500);
     }
 
     return jsonResponse({ success: true });
   } catch (error) {
-    console.error('Error approving event:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error approving event:', message);
     return jsonResponse({ error: 'Failed to update event' }, 500);
   }
 }
