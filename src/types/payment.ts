@@ -36,18 +36,6 @@ export interface SubscriptionPlan {
   stripePriceId?: string; // Stripe price ID for this plan
 }
 
-// Payment method
-export interface PaymentMethod {
-  id: string;
-  type: string;
-  card?: {
-    brand: string;
-    last4: string;
-    expMonth: number;
-    expYear: number;
-  };
-}
-
 // Payment status
 export enum PaymentStatus {
   PENDING = 'pending',
@@ -91,17 +79,6 @@ export interface Subscription {
   cancelAtPeriodEnd: boolean;
 }
 
-// Invoice
-export interface Invoice {
-  id: string;
-  subscriptionId: string;
-  amount: number;
-  status: 'paid' | 'open' | 'void' | 'uncollectible';
-  created: number;
-  dueDate: number;
-  pdfUrl?: string;
-}
-
 // Payment history item
 export interface PaymentHistoryItem {
   id: string;
@@ -123,20 +100,14 @@ export interface PaymentContextType {
   isLoading: boolean;
   error: string | null;
   currentSubscription: Subscription | null;
-  paymentMethods: PaymentMethod[];
   paymentHistory: PaymentHistoryItem[];
   createCheckoutSession: (options: CheckoutOptions) => Promise<{ url: string } | { error: any }>;
   updateSubscription: (
     newPriceId: string,
     businessId: string
   ) => Promise<{ success: boolean; tier?: SubscriptionTier } | { error: any }>;
-  createPaymentIntent: (amount: number, metadata?: Record<string, string>) => Promise<{ clientSecret: string } | { error: any }>;
   cancelSubscription: (subscriptionId: string) => Promise<{ success: boolean } | { error: any }>;
   getCustomerPortalUrl: () => Promise<{ url: string } | { error: any }>;
-  addPaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;
-  removePaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;
-  setDefaultPaymentMethod: (paymentMethodId: string) => Promise<{ success: boolean } | { error: any }>;
-  getInvoices: () => Promise<{ invoices: Invoice[] } | { error: any }>;
   elements: Stripe.StripeElements | null;
   stripe: Stripe | null;
 }

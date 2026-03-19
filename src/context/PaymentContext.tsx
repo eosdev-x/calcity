@@ -6,11 +6,9 @@ import { useAuth } from './AuthContext';
 import { supabase } from '../lib/supabase';
 import {
   PaymentContextType,
-  PaymentMethod,
   Subscription,
   PaymentHistoryItem,
   CheckoutOptions,
-  Invoice,
   SubscriptionStatus,
   SubscriptionTier
 } from '../types/payment';
@@ -38,7 +36,6 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
   const [stripe, setStripe] = useState<Stripe | null>(null);
   const [elements, setElements] = useState<Stripe.StripeElements | null>(null);
   const [currentSubscription, setCurrentSubscription] = useState<Subscription | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryItem[]>([]);
 
   // Initialize Stripe
@@ -60,11 +57,9 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
   useEffect(() => {
     if (user) {
       fetchUserSubscription();
-      fetchPaymentMethods();
       fetchPaymentHistory();
     } else {
       setCurrentSubscription(null);
-      setPaymentMethods([]);
       setPaymentHistory([]);
     }
   }, [user]);
@@ -114,13 +109,6 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // Fetch user's payment methods
-  // Payment methods are managed via Stripe Customer Portal — no local table needed
-  const fetchPaymentMethods = async () => {
-    // No-op: payment methods live in Stripe, accessed via Customer Portal
-    setPaymentMethods([]);
   };
 
   // Fetch user's payment history from Stripe via backend
@@ -208,50 +196,6 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     } catch (err: any) {
       console.error('Error creating checkout session:', err);
       setError(err.message || 'Failed to create checkout session');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Create a payment intent
-  const createPaymentIntent = async (amount: number, metadata?: Record<string, string>) => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount,
-          metadata: {
-            userId: user.id,
-            ...metadata
-          }
-        }),
-      });
-
-      const paymentIntent = await response.json();
-
-      if (paymentIntent.error) {
-        setError(paymentIntent.error.message);
-        return { error: paymentIntent.error };
-      }
-
-      return { clientSecret: paymentIntent.clientSecret };
-    } catch (err: any) {
-      console.error('Error creating payment intent:', err);
-      setError(err.message || 'Failed to create payment intent');
       return { error: err };
     } finally {
       setIsLoading(false);
@@ -401,188 +345,16 @@ export function PaymentProvider({ children }: PaymentProviderProps) {
     }
   };
 
-  // Add payment method
-  const addPaymentMethod = async (paymentMethodId: string) => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/add-payment-method`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethodId
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
-      }
-
-      // Refresh payment methods
-      await fetchPaymentMethods();
-      
-      return { success: true };
-    } catch (err: any) {
-      console.error('Error adding payment method:', err);
-      setError(err.message || 'Failed to add payment method');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Remove payment method
-  const removePaymentMethod = async (paymentMethodId: string) => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/remove-payment-method`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethodId
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
-      }
-
-      // Update payment methods in state with optimistic UI update
-      setPaymentMethods(paymentMethods.filter(method => method.id !== paymentMethodId));
-      
-      return { success: true };
-    } catch (err: any) {
-      console.error('Error removing payment method:', err);
-      setError(err.message || 'Failed to remove payment method');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Set default payment method
-  const setDefaultPaymentMethod = async (paymentMethodId: string) => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/set-default-payment-method`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethodId
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
-      }
-
-      // Refresh payment methods
-      await fetchPaymentMethods();
-      
-      return { success: true };
-    } catch (err: any) {
-      console.error('Error setting default payment method:', err);
-      setError(err.message || 'Failed to set default payment method');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Get invoices
-  const getInvoices = async () => {
-    if (!user) {
-      return { error: 'User not authenticated' };
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // In a real implementation, this would call a backend API
-      // For now, we'll simulate a response
-      // This would be replaced with an actual API call to your server
-      const response = await fetch(`/api/get-invoices`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      const result = await response.json();
-
-      if (result.error) {
-        setError(result.error.message);
-        return { error: result.error };
-      }
-
-      return { invoices: result.invoices as Invoice[] };
-    } catch (err: any) {
-      console.error('Error getting invoices:', err);
-      setError(err.message || 'Failed to get invoices');
-      return { error: err };
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Context value
   const value: PaymentContextType = {
     isLoading,
     error,
     currentSubscription,
-    paymentMethods,
     paymentHistory,
     createCheckoutSession,
     updateSubscription,
-    createPaymentIntent,
     cancelSubscription,
     getCustomerPortalUrl,
-    addPaymentMethod,
-    removePaymentMethod,
-    setDefaultPaymentMethod,
-    getInvoices,
     elements,
     stripe
   };
