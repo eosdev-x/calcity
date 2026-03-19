@@ -57,6 +57,7 @@ export interface SiteConfig {
     events: boolean;
     businesses: boolean;
     guide: boolean;
+    jobs: boolean;
   };
 
   // Chat
@@ -171,6 +172,7 @@ export const siteConfig: SiteConfig = {
     events: true,
     businesses: true,
     guide: true,
+    jobs: true,
   },
 
   chatBotName: 'CalCityBot',

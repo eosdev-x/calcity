@@ -12,6 +12,7 @@ export function Footer() {
   const quickLinks = [
     { label: 'Events', to: '/events', enabled: siteConfig.features.events },
     { label: 'Businesses', to: '/businesses', enabled: siteConfig.features.businesses },
+    { label: 'Jobs', to: '/jobs', enabled: siteConfig.features.jobs },
     { label: 'About', to: '/about', enabled: true },
     { label: 'Resources', to: '/resources', enabled: true },
     { label: 'Pricing', to: '/pricing', enabled: siteConfig.features.businesses },

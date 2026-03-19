@@ -11,6 +11,7 @@ import { Businesses } from './pages/Businesses';
 import { BusinessDetails } from './pages/BusinessDetails';
 import { BusinessProfileCreation } from './pages/BusinessProfileCreation';
 import { BusinessDashboard } from './pages/BusinessDashboard';
+import { Jobs } from './pages/Jobs';
 import { Pricing } from './pages/Pricing';
 import { Guide } from './pages/Guide';
 import { About } from './pages/About';
@@ -76,6 +77,9 @@ function App() {
                           <Route path="/businesses/:id" element={<BusinessDetails />} />
                           <Route path="/dashboard" element={<ProtectedRoute><BusinessDashboard /></ProtectedRoute>} />
                         </>
+                      )}
+                      {siteConfig.features.jobs && (
+                        <Route path="/jobs" element={<Jobs />} />
                       )}
                       {siteConfig.features.businesses && (
                         <Route path="/pricing" element={<Pricing />} />

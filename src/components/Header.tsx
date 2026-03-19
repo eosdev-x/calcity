@@ -26,6 +26,9 @@ export function Header() {
             {siteConfig.features.businesses && (
               <Link to="/businesses" className="nav-link">Businesses</Link>
             )}
+            {siteConfig.features.jobs && (
+              <Link to="/jobs" className="nav-link">Jobs</Link>
+            )}
             <Link to="/about" className="nav-link">About</Link>
             <Link to="/resources" className="nav-link">Resources</Link>
             <Link to="/pricing" className="nav-link">Pricing</Link>
@@ -93,6 +96,15 @@ export function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Businesses
+                </Link>
+              )}
+              {siteConfig.features.jobs && (
+                <Link
+                  to="/jobs"
+                  className="block nav-link py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Jobs
                 </Link>
               )}
               <Link

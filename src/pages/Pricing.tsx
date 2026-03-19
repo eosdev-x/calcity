@@ -77,7 +77,8 @@ export function Pricing() {
         "Featured in search results",
         "Business description & services",
         "Direct website link",
-        "Premium badge"
+        "Premium badge",
+        "Job listings (1 position)"
       ],
       featureDetails: {
         photoLimit: 10,
@@ -101,7 +102,8 @@ export function Pricing() {
         "Homepage spotlight rotation",
         "Monthly event promotion",
         "Social media cross-promotion",
-        "Analytics dashboard"
+        "Analytics dashboard",
+        "Job listings (up to 3)"
       ],
       featureDetails: {
         photoLimit: 30,
